@@ -1,0 +1,1 @@
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=SQueaL4w1f1nd!" -p 1433:1433 --name wifindthesql --hostname wifindthesql -d mcr.microsoft.com/mssql/server:latest
