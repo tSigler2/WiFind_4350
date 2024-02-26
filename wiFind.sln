@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wiFind.Server", "wiFind.Server\wiFind.Server.csproj", "{8B2A0347-350C-41A2-BA67-C5FC70EA983E}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "wiFind.client", "wiFind.client\wiFind.client.esproj", "{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A7CCED8-BA86-4D7F-A651-BFA2C855EEFA}"
+	ProjectSection(SolutionItems) = preProject
+		run_db.sh = run_db.sh
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B2A0347-350C-41A2-BA67-C5FC70EA983E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2A0347-350C-41A2-BA67-C5FC70EA983E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2A0347-350C-41A2-BA67-C5FC70EA983E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2A0347-350C-41A2-BA67-C5FC70EA983E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81703661-D224-45DE-A5B7-956F86232F89}
+	EndGlobalSection
+EndGlobal
