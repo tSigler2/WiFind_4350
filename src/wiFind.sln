@@ -9,6 +9,7 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "wiFind.client", "wiFind.cli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A7CCED8-BA86-4D7F-A651-BFA2C855EEFA}"
 	ProjectSection(SolutionItems) = preProject
+		db-instr.txt = db-instr.txt
 		run_db.sh = run_db.sh
 	EndProjectSection
 EndProject
