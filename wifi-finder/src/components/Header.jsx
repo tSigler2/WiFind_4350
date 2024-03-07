@@ -1,13 +1,14 @@
 import React from 'react';
 import '../App.css';
-
+import { Link } from 'react-router-dom';
 function Header() {
     return (
         <header className="header">
             <nav className="navbar">
-                <h1 className="navbar__title">WiFi Finder & Rentals</h1>
+            <Link to="/home">
+                        <h1 className="navbar__title">WiFi Finder & Rentals</h1>
+                    </Link>
                 <div className="navbar__links">
-                    <a href="/home">Home</a>
                     <a href="/rent">Rent WiFi</a>
                     <a href="/sell">Sell WiFi</a>
                     <a href="/about">About</a>
