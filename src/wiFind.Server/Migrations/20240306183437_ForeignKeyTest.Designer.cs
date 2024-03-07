@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240306183437_ForeignKeyTest")]
+    partial class ForeignKeyTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,6 +74,9 @@ namespace wiFind.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("user_id"));
 
+                    b.Property<int?>("UserReferenceId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("amt_made")
                         .HasColumnType("decimal(18,2)");
 
@@ -79,8 +85,7 @@ namespace wiFind.Server.Migrations
 
                     b.Property<string>("email")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("first_name")
                         .IsRequired()
@@ -97,10 +102,11 @@ namespace wiFind.Server.Migrations
 
                     b.Property<string>("phone_number")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("user_id");
+
+                    b.HasIndex("UserReferenceId");
 
                     b.ToTable("Users");
                 });
@@ -113,13 +119,16 @@ namespace wiFind.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("wifi_id"));
 
-                    b.Property<int>("owned_by")
+                    b.Property<int>("UserReferenceId")
                         .HasColumnType("int");
 
                     b.Property<string>("security")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("user_id")
+                        .HasColumnType("int");
 
                     b.Property<float>("wifi_latitude")
                         .HasColumnType("real");
@@ -139,25 +148,30 @@ namespace wiFind.Server.Migrations
 
                     b.HasKey("wifi_id");
 
-                    b.HasIndex("owned_by");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Wifis");
+                });
+
+            modelBuilder.Entity("wiFind.Server.User", b =>
+                {
+                    b.HasOne("wiFind.Server.User", null)
+                        .WithMany("Users")
+                        .HasForeignKey("UserReferenceId");
                 });
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
                 {
                     b.HasOne("wiFind.Server.User", "User")
-                        .WithMany("Wifis")
-                        .HasForeignKey("owned_by")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("user_id");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("wiFind.Server.User", b =>
                 {
-                    b.Navigation("Wifis");
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

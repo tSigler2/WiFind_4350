@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240306190530_ForeignKeyTest3")]
+    partial class ForeignKeyTest3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,6 +124,9 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("user_id")
+                        .HasColumnType("int");
+
                     b.Property<float>("wifi_latitude")
                         .HasColumnType("real");
 
@@ -139,7 +145,7 @@ namespace wiFind.Server.Migrations
 
                     b.HasKey("wifi_id");
 
-                    b.HasIndex("owned_by");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Wifis");
                 });
@@ -148,7 +154,7 @@ namespace wiFind.Server.Migrations
                 {
                     b.HasOne("wiFind.Server.User", "User")
                         .WithMany("Wifis")
-                        .HasForeignKey("owned_by")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
