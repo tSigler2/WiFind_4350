@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
+public enum TicketStatus
+{
+    Open, Inprogess, Closed
+}
+
 namespace wiFind.Server
 {
     public class WiFindContext : DbContext
@@ -14,7 +19,7 @@ namespace wiFind.Server
         public DbSet<Rent> Rents { get; set; }
         public DbSet<PaymentInfo> PaymentInfos { get; set; }
         public DbSet<AccountInfo> AccountInfos { get; set; }
-        public DbSet<SupportTicket> SupportTicket { get; set; }
+        public DbSet<SupportTicket> SupportTickets { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Response> Responses { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -242,9 +247,8 @@ namespace wiFind.Server
         [Required, MaxLength(500)]
         public string description { get; set; }
 
-        // TODO: Change this to only allow predetermined strings from a list
         [Required, MaxLength(50)]
-        public string status { get; set; }
+        public TicketStatus status { get; set; }
 
         [AllowNull]
         public int assigned_to { get; set; }
