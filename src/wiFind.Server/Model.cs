@@ -150,13 +150,14 @@ namespace wiFind.Server
     // User can rent many different wifis; One wifi can be rented by multiple users.
     public class Rent
     {
-        [Required]
-        public int user_id {  get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int rent_id { get; set; }
+
+        public int? user_id {  get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
-        [Required]
-        public int wifi_id { get; set; }
+        public int? wifi_id { get; set; }
         [ForeignKey("wifi_id")]
         public Wifi Wifi { get; set; }
 
@@ -183,6 +184,9 @@ namespace wiFind.Server
     // Primary Key for this table is (user_id, card_number) tuple
     public class PaymentInfo
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int payInfo_id { get; set; }
+
         [Required]
         public int user_id { get; set; }
         [ForeignKey("user_id")]
@@ -216,12 +220,12 @@ namespace wiFind.Server
         public string password { get; set;}
 
         [AllowNull]
-        public int user_id { get; set; }
+        public int? user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
         [AllowNull]
-        public int admin_id { get; set; }
+        public int? admin_id { get; set; }
         [ForeignKey("admin_id")]
         public Admin Admin { get; set; }
     }
@@ -234,7 +238,7 @@ namespace wiFind.Server
         public int ticket_id { get; set; }
 
         [Required]
-        public int user_id { get; set; }
+        public int? user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
@@ -251,7 +255,7 @@ namespace wiFind.Server
         public TicketStatus status { get; set; }
 
         [AllowNull]
-        public int assigned_to { get; set; }
+        public int? assigned_to { get; set; }
         [ForeignKey("assigned_to")]
         public Admin Admin { get; set; }
     }
@@ -271,12 +275,12 @@ namespace wiFind.Server
         public int request_id {  get; set; }
 
         [Required]
-        public int user_id { get; set; }
+        public int? user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
         [Required]
-        public int wifi_id { get; set; }
+        public int? wifi_id { get; set; }
         [ForeignKey("wifi_id")]
         public Wifi Wifi { get; set; }
 
@@ -298,8 +302,11 @@ namespace wiFind.Server
     // If response is not acknowledged in time (such as user goes MIA indefinitely) delete pair of records
     public class Response
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int respnse_id { get; set; }
+
         [Required]
-        public int request_id { get; set; }
+        public int? request_id { get; set; }
         [ForeignKey("request_id")]
         public Request Request { get; set; }
 
@@ -313,15 +320,15 @@ namespace wiFind.Server
         public string guest_password { get; set; }
     }
     
-    // PK: (user_id, feedback_no) FK: user_id (assumes feedback is for WiFind website)
-    // TODO: IF feedback is meant for each wifi, then PK is (user_id, wifi_id, feedback_no)
-    // Weak Entity. feedback_no is not unique and is only unique with user_id.
-    // Ex: user can make many feedback such as 5 reviews (1, 2, 3, 4, 5 will be the feedback_no)
-    // another user can also make as many feedback and the feedback_no will also be 1, 2, 3, 4, 5
+    // FK: user_id PK: feedback_id
+    // TODO: Cascade NULL
     public class Feedback
     {
-        [Required]
-        public int user_id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? feedback_id{ get; set; }
+
+        [AllowNull]
+        public int? user_id { get; set; }
 
         [ForeignKey("user_id")]
         public User User { get; set; }
@@ -331,9 +338,6 @@ namespace wiFind.Server
 
         //[ForeignKey("wifi_id")]
         //public Wifi Wifi { get; set; }
-        
-        [Required]
-        public short feedback_no { get; set; }
 
         [Required, MaxLength(30)]
         public string subject { get; set; }
@@ -343,7 +347,7 @@ namespace wiFind.Server
 
         // TODO: Decide if this is a scale of 1-5 OR 1-10
         [Required, Range(1,10)]
-        public byte rating { get; set; }
+        public short rating { get; set; }
 
         [Required, DataType(DataType.Date)]
         public DateOnly date_stamp { get; set; }
