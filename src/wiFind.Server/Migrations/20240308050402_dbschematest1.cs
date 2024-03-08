@@ -208,7 +208,7 @@ namespace wiFind.Server.Migrations
                     request_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<int>(type: "int", nullable: false),
-                    wifi_id = table.Column<int>(type: "int", nullable: false),
+                    wifi_id = table.Column<int>(type: "int", nullable: true),
                     time_stamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     time_start = table.Column<DateTime>(type: "datetime2", nullable: false),
                     requested_rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -226,8 +226,7 @@ namespace wiFind.Server.Migrations
                         name: "FK_Requests_Wifis_wifi_id",
                         column: x => x.wifi_id,
                         principalTable: "Wifis",
-                        principalColumn: "wifi_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "wifi_id");
                 });
 
             migrationBuilder.CreateTable(

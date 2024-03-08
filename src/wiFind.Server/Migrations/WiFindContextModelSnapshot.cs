@@ -210,12 +210,10 @@ namespace wiFind.Server.Migrations
                     b.Property<DateTime>("time_start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("user_id")
-                        .IsRequired()
+                    b.Property<int>("user_id")
                         .HasColumnType("int");
 
                     b.Property<int?>("wifi_id")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("request_id");
@@ -444,9 +442,7 @@ namespace wiFind.Server.Migrations
 
                     b.HasOne("wiFind.Server.Wifi", "Wifi")
                         .WithMany("Requests")
-                        .HasForeignKey("wifi_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("wifi_id");
 
                     b.Navigation("User");
 

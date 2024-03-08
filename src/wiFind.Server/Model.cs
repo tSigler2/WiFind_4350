@@ -138,8 +138,6 @@ namespace wiFind.Server
         [Required, Range(1,250)]
         public int max_users { get; set; }
 
-        // if feedback is for each wifi, not WiFind
-        //public ICollection<Feedback>? Feedbacks { get; set; }
         public ICollection<Rent>? Rents { get; set; }
         public ICollection<Request>? Requests { get; set; }
     }
@@ -275,11 +273,10 @@ namespace wiFind.Server
         public int request_id {  get; set; }
 
         [Required]
-        public int? user_id { get; set; }
+        public int user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
-        [Required]
         public int? wifi_id { get; set; }
         [ForeignKey("wifi_id")]
         public Wifi Wifi { get; set; }
@@ -327,17 +324,10 @@ namespace wiFind.Server
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? feedback_id{ get; set; }
 
-        [AllowNull]
         public int? user_id { get; set; }
 
         [ForeignKey("user_id")]
         public User User { get; set; }
-
-        //[Required]
-        //public int wifi_id { get; set; }
-
-        //[ForeignKey("wifi_id")]
-        //public Wifi Wifi { get; set; }
 
         [Required, MaxLength(30)]
         public string subject { get; set; }
