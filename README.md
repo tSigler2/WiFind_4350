@@ -1,5 +1,7 @@
 # WiFind
 
+[![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&le&logo=react&logoColor=%2361DA)](reactnative.dev/)
+
 | New | In Progress | Done |
 | --- | ----------- | ---- |
 | Class Diagram | Frontend Logic | Backend Logic |
