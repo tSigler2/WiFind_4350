@@ -48,14 +48,23 @@ footer {
     background-color: #008080;
 }
 
-.navbar__title {
-    margin: 0;
-    color: white;
-    font-family: 'Spectral', sans-serif;
-}
 
+a.navbar__title {
+    text-decoration: none;
+    color: #ffffff;
+    font-family: 'Spectral', sans-serif;
+    margin: 0;
+    font-size: xx-large;
+}
 .navbar__links a {
     margin-left: 1rem;
     text-decoration: none;
     color: #ffffff;
+}
+.Rental {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #008080;
 }
