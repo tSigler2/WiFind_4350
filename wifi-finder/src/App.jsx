@@ -9,6 +9,7 @@ import Contact from './pages/Contact.jsx';
 import Rent from './pages/Rent.jsx';
 import List from './pages/List.jsx';
 import Login from './pages/Login.jsx';
+import CreateAccount from './pages/CreateAccount.jsx';
 function App() {
   return (
   
@@ -23,6 +24,7 @@ function App() {
           <Route path="/rent" element={<Rent />} />
           <Route path="/list" element={<List />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/create-account" element={<CreateAccount />} />
           
         </Routes>
       </Router>
