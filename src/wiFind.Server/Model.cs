@@ -9,6 +9,11 @@ public enum TicketStatus
     Open, Inprogess, Closed
 }
 
+//public enum PermissionLevels
+//{
+//
+//}
+
 namespace wiFind.Server
 {
     public class WiFindContext : DbContext
@@ -64,7 +69,6 @@ namespace wiFind.Server
         public ICollection<Rent>? Rents { get; set; }
         public ICollection<PaymentInfo>? PaymentInfos { get; set; }
         public ICollection<AccountInfo>? AccountInfos { get; set; }
-        public ICollection<SupportTicket>? SupportTickets { get; set; }
         public ICollection<Request>? Requests { get; set; }
         public ICollection<Feedback>? Feedbacks { get; set; }
     }
@@ -226,6 +230,8 @@ namespace wiFind.Server
         public int? admin_id { get; set; }
         [ForeignKey("admin_id")]
         public Admin Admin { get; set; }
+
+        public ICollection<SupportTicket>? SupportTickets { get; set; }
     }
 
     // PK: ticket_id, FK: user_id (required), assigned_to (optional) references admin_id in Admin
@@ -236,9 +242,9 @@ namespace wiFind.Server
         public int ticket_id { get; set; }
 
         [Required]
-        public int? user_id { get; set; }
-        [ForeignKey("user_id")]
-        public User User { get; set; }
+        public string username { get; set; }
+        [ForeignKey("username")]
+        public AccountInfo AccountInfo { get; set; }
 
         [Required]
         public DateTime time_stamp { get; set; }

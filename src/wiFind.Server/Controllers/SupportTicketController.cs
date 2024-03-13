@@ -8,21 +8,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using wiFind.Server;
-
 namespace wiFind.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SupportTicketController : ControllerBase
     {
-        private readonly WiFindContext server;
+        private readonly WiFindContext _wifFindContext;
 
-        public SupportTicketController(WiFindContext s)
+        public SupportTicketController(WiFindContext wifFindContext)
         {
-            server = s;
+            _wifFindContext = wifFindContext;
         }
 
+        // Gets all tickets, only used by admins
+        // TODO: Admin token validation
+        [HttpGet]
+        public async Task<IActionResult> GetTickets()
+        {
+            var ticketList = await _wifFindContext.SupportTickets.ToListAsync();
+            return Ok(ticketList);
+        }
+
+        // TODO: Add Client token verification
         [HttpPost]
         public async Task<IActionResult> SubmitTicket(SupportTicket ticket)
         {
@@ -34,15 +42,33 @@ namespace wiFind.Server.Controllers
             ticket.status = TicketStatus.Open;
             ticket.time_stamp = DateTime.UtcNow;
 
-            server.SupportTickets.Add(ticket);
-            await server.SaveChangesAsync();
+            _wifFindContext.SupportTickets.Add(ticket);
+            await _wifFindContext.SaveChangesAsync();
 
             return Ok( new { ticketId = ticket.ticket_id });
         }
 
+        // Removes tickets, only used by admins
+        // TODO: admin token validation
+        // Possibly add check for 'Complete' Status?
+        [HttpDelete]
+        public async Task<IActionResult> RemoveTicket(SupportTicket ticket)
+        {
+            var query = from t in _wifFindContext.Set<SupportTicket>() where t.ticket_id == ticket.ticket_id select t;
+            _wifFindContext.Remove(query);
+            await _wifFindContext.SaveChangesAsync();
+
+            return Ok("Ticket removed");
+        }
+
+        // Sends user email of ticket submission receipt
         private void SendEmailConfirmation(SupportTicket ticket)
         {
+            // Join ticket with accountInfo to get email.
+            var query = from acctLogin in _wifFindContext.Set<AccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
+            var email = query.GetEnumerator().Current;
 
+            // TODO: Rest of email logic
         }
     }
 

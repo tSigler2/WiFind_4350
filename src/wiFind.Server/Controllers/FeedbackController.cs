@@ -7,33 +7,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using wiFind.Server;
-
 namespace wiFind.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class FeedbackController : ControllerBase
     {
-        private readonly WiFindContext server;
+        private readonly WiFindContext _wifFindContext;
 
-        public FeedbackController(WiFindContext s)
+        public FeedbackController(WiFindContext wifFindContext)
         {
-            server = s;
+            _wifFindContext = wifFindContext;
         }
 
+        // TODO: Add Client token verification
+        // Adds User Feedback
         [HttpPost]
         public async Task<IActionResult> SubmitFeedback(Feedback feedback)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Feedback Data");
 
-            // not sure if theres a better way to get date only but this soln works for now
             feedback.date_stamp = DateOnly.FromDateTime(DateTime.UtcNow);
 
-            server.Feedbacks.Add(feedback);
-            await server.SaveChangesAsync();
+            _wifFindContext.Feedbacks.Add(feedback);
+            await _wifFindContext.SaveChangesAsync();
 
             return Ok("Feedback Submitted Successfully");
+        }
+
+        // Returns All Feedbacks
+        [HttpGet]
+        public async Task<IActionResult> GetFeedbacks()
+        {
+            var feedbacks = await _wifFindContext.Feedbacks.ToListAsync();
+            return Ok(feedbacks);
         }
     }
 }
