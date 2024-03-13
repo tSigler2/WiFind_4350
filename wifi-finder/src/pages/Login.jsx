@@ -18,7 +18,7 @@ function Login() {
 
     return (
         <div style={{ background: "#f9f9f9", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div style={{ background: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", padding: "40px", maxWidth: "400px", width: "100%", boxSizing: "border-box" }}>
+            <div style={{ background: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", padding: "40px", maxWidth: "400px", width: "100%", boxSizing: "border-box", marginTop: "-5%" }}>
                 <h2 style={{ textAlign: "center", marginBottom: "30px", color: "black" }}>Login</h2>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <input 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import './CreateAccount.css'; // Import the CSS file
+import { Link } from "react-router-dom";
+import './CreateAccount.css'; 
 
 function CreateAccount() {
     const [username, setUsername] = useState("");
@@ -11,7 +12,7 @@ function CreateAccount() {
         if (username === "" || email === "" || password === "") {
             setError("All fields must be filled out");
         } else {
-            /* Uncomment the following code when you're ready to connect to your backend
+  /* Uncomment the following code when you're ready to connect to your backend
             fetch('http://localhost:5000/api/accounts', { // Replace with your backend URL
                 method: 'POST',
                 headers: {
@@ -67,7 +68,9 @@ function CreateAccount() {
                 <button className="create-account-button" onClick={handleCreateAccount}>Sign Up</button>
                 {error && <p className="error">{error}</p>}
             </form>
-            <p>Already have an account? <a href="/login">Login</a></p>
+            <p style={{ color: "black" }}>Already have an account? 
+                <Link to="/login" style={{ textDecoration: "none", color: "#20B2AA", marginLeft: "5px" }}>Login</Link>
+            </p>
         </div>
     );
 }

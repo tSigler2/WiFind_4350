@@ -14,7 +14,9 @@ function App() {
   return (
   
     <div className="App">
-      <div style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#2e8b57', padding: '10px', textAlign: 'center' }}>
+      
+ 
+      <div style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'transparent', padding: '10px', textAlign: 'center' }}>
       <Router>
         <Header />
         <Routes>
