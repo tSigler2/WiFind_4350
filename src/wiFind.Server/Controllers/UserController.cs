@@ -36,6 +36,8 @@ namespace wiFind.Server.Controllers
         // Step 4 :: Use temporary id assigned by EF Core to assign AccountInfo id with object's
         // Step 5 :: Connect to DB and save changes to DB
 
+        // Error Message: Only one parameter per action may be bound from body. Inspect the following paramters, and use 'FromQueryAttribute' to specify bound from query...
+        /*
         [HttpPost("register")]
         public async Task<IActionResult> Register(AccountInfo acctInfo, User userInfo)
         {
@@ -59,6 +61,7 @@ namespace wiFind.Server.Controllers
 
             return Ok("Registration Successful");
         }
+        */
 
         // Login Verification
         // Requires: User submitted a (username OR email) AND a password

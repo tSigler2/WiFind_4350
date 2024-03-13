@@ -60,7 +60,8 @@ namespace wiFind.Server.Controllers
 
         // Edit Wifi, for users that want to edit information on the wifi listed
         // Condition: User cannot reduce max number of user allowed IF RENTS count > new max
-        [HttpPost]
+        // Change to Post later? Not sure why but HttpPost causes middleware error (Swagger)
+        [HttpPut]
         public async Task<IActionResult> EditWifiListing(Wifi wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
