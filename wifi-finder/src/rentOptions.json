@@ -1,0 +1,105 @@
+{
+    "options": [
+      {
+        "name": "Basic Wi-Fi Rental",
+        "description": "Standard Wi-Fi service suitable for general browsing and basic tasks.",
+        "price": 5.99,
+        "features": [
+          "Standard speed",
+          "Limited bandwidth",
+          "Suitable for light internet usage"
+        ]
+      },
+      {
+        "name": "Premium Wi-Fi Rental",
+        "description": "High-speed Wi-Fi service suitable for streaming, gaming, and heavy internet usage.",
+        "price": 9.99,
+        "features": [
+          "High-speed connection",
+          "Unlimited bandwidth",
+          "Suitable for streaming and gaming"
+        ]
+      },
+      {
+        "name": "Secure Wi-Fi Rental",
+        "description": "Wi-Fi service with enhanced security features for sensitive online activities.",
+        "price": 7.99,
+        "features": [
+          "Encrypted connection",
+          "Secure browsing",
+          "Protects sensitive data"
+        ]
+      },
+      {
+        "name": "On-Demand Wi-Fi Rental",
+        "description": "Flexibility to rent Wi-Fi on an hourly basis.",
+        "price": 1.99,
+        "features": [
+          "Hourly rental option",
+          "Ideal for short-term needs",
+          "Pay-as-you-go"
+        ]
+      },
+      {
+        "name": "Customized Wi-Fi Rental",
+        "description": "Tailored Wi-Fi service based on specific requirements provided by the user.",
+        "price": "Varies",
+        "features": [
+          "Customizable options",
+          "Tailored to user needs",
+          "Price depends on specifications"
+        ]
+      },
+      {
+        "name": "Business Wi-Fi Rental",
+        "description": "Enterprise-grade Wi-Fi service suitable for businesses and large groups.",
+        "price": 19.99,
+        "features": [
+          "Dedicated support",
+          "High capacity",
+          "Customized solutions for businesses"
+        ]
+      },
+      {
+        "name": "Traveler's Wi-Fi Pass",
+        "description": "Wi-Fi service designed for travelers offering coverage in multiple locations.",
+        "price": 12.99,
+        "features": [
+          "Access in multiple locations",
+          "Ideal for frequent travelers",
+          "Continuous connectivity on-the-go"
+        ]
+      },
+      {
+        "name": "Family Wi-Fi Plan",
+        "description": "Wi-Fi service package for families with multiple devices and users.",
+        "price": 14.99,
+        "features": [
+          "Multiple device support",
+          "Parental controls",
+          "Family-friendly features"
+        ]
+      },
+      {
+        "name": "Event Wi-Fi Rental",
+        "description": "Temporary Wi-Fi service for events, conferences, and gatherings.",
+        "price": "Contact for quote",
+        "features": [
+          "Scalable solutions for events",
+          "On-site support",
+          "Customized packages"
+        ]
+      },
+      {
+        "name": "Emergency Wi-Fi Backup",
+        "description": "Backup Wi-Fi service for emergencies or as a secondary connection.",
+        "price": 7.99,
+        "features": [
+          "Reliable backup connection",
+          "Automatic failover",
+          "Peace of mind in case of primary connection failure"
+        ]
+      }
+    ]
+  }
+  
