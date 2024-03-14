@@ -10,6 +10,9 @@ import Rent from './pages/Rent.jsx';
 import List from './pages/List.jsx';
 import Login from './pages/Login.jsx';
 import CreateAccount from './pages/CreateAccount.jsx';
+import Checkout from './pages/Checkout.jsx';
+import { CartProvider } from './components/CartProvider';
+
 function App() {
   return (
   
@@ -19,6 +22,7 @@ function App() {
       <div style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'transparent', padding: '10px', textAlign: 'center' }}>
       <Router>
         <Header />
+        <CartProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -27,8 +31,9 @@ function App() {
           <Route path="/list" element={<List />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
-          
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
+        </CartProvider>
       </Router>
       </div>
 

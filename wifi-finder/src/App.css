@@ -75,3 +75,14 @@ a.navbar__title {
   padding: 1rem;
   background-color: #008080;
 }
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

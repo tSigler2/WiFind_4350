@@ -1,10 +1,11 @@
 import React from "react";
 import "../App.css";
 import data from "../rentOptions.json";
-
+import { useContext } from "react";
+import { CartContext } from "../components/CartContext.jsx";
 function Rent() {
     const rentOptions = data.options; // Access the "options" property of the imported data
-
+    const { addToCart } = useContext(CartContext); // Get the addToCart function from the CartContext
     return (
         <div>
             <h1>Rent</h1>

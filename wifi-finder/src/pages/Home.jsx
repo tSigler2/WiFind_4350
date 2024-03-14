@@ -1,12 +1,10 @@
 import React from 'react';
 import '../App.css';
-
+import HeroSection from '../components/HeroSection.jsx';
  function Home() {
     return (
         <div>
-           
-            <p>Welcome to WiFi Finder & Rentals</p>
-            
+            <HeroSection />
         </div>
     );
 }
