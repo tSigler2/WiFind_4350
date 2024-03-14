@@ -4,8 +4,8 @@ import "../App.css";
 function List() {
     return (
         <div>
-        <h1>Rent</h1>
-        <p>Rent WiFi</p>
+        <h1>List</h1>
+        <p>List Wifi</p>
         </div>
     );
     }

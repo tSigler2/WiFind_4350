@@ -69,7 +69,7 @@ function CreateAccount() {
                 {error && <p className="error">{error}</p>}
             </form>
             <p style={{ color: "black" }}>Already have an account? 
-                <Link to="/login" style={{ textDecoration: "none", color: "#20B2AA", marginLeft: "5px" }}>Login</Link>
+                <Link to="/login" style={{ textDecoration: "none", color: "#A74D4A", marginLeft: "5px" }}>Login</Link>
             </p>
         </div>
     );

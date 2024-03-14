@@ -1,5 +1,5 @@
 body {
-    background-color: #f9f9f9; 
+    background-color: #EAE6E1; 
 }
 
 .login-container {
@@ -22,7 +22,7 @@ body {
     box-sizing: border-box;
   }
   .create-account-button {
-    background-color: #20b2aa; 
+    background-color: #A74D4A; 
     color: white;
     font-weight: bold;
   }
