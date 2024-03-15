@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using wiFind.Server.Helpers;
 
 namespace wiFind.Server.Controllers
 {
@@ -20,8 +21,8 @@ namespace wiFind.Server.Controllers
             _wifFindContext = wifFindContext;
         }
 
-        // TODO: Add Client token verification
         // Adds User Feedback
+        [Authorize]
         [HttpPost("submitfeedback")]
         public async Task<IActionResult> SubmitFeedback(Feedback feedback)
         {

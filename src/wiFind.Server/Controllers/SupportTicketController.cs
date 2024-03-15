@@ -4,7 +4,7 @@ using System.Net.WebSockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,7 @@ namespace wiFind.Server.Controllers
             return Ok(ticketList);
         }
 
-        // TODO: Add Client token verification
+        [Authorize]
         [HttpPost("submitticket")]
         public async Task<IActionResult> SubmitTicket(SupportTicket ticket)
         {
@@ -64,8 +64,8 @@ namespace wiFind.Server.Controllers
         private void SendEmailConfirmation(SupportTicket ticket)
         {
             // Join ticket with accountInfo to get email.
-            var query = from acctLogin in _wifFindContext.Set<AccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
-            var email = query.GetEnumerator().Current;
+            var query = from acctLogin in _wifFindContext.Set<UserAccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
+            var email = query.First();
 
             // TODO: Rest of email logic
         }

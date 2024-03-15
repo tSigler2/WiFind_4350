@@ -46,7 +46,8 @@ namespace wiFind.Server.Helpers
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                // first ensure jwt actually has enough info to determine if user is admin or not
+
+                // ** Gets user id here. How to assign this to addWifi?
                 var userId = jwtToken.Claims.First(x => x.Type == "id").Value;
 
                 // attach user to context on successful jwt validation

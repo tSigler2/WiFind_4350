@@ -28,44 +28,37 @@ namespace wiFind.Server.Services
 
         public AuthResponse Authenticate(AuthRequest request)
         {
-
-            // TODO: Clean this
-            var user = from u in _wifFindContext.Set<User>() 
-                       join accountLogin in _wifFindContext.Set<AccountInfo>() 
-                       on u.user_id equals accountLogin.user_id 
+            var user = from accountLogin in _wifFindContext.Set<UserAccountInfo>() 
                        where (accountLogin.username == request.username || accountLogin.email == request.username)
-                       select u;
+                       select accountLogin;
 
-            if (user == null) return null;
+            if (user != null)
+            {
+                // check if login credentials are valid, then generate a token for the user
+                var check = user.First();
+                bool isValid = VerifyPassword(check.passwordHash, check.passwordSalt, request.password);
 
-            // check if login credentials are valid, then generate a token for the user
-            var check = user.GetEnumerator().Current;
-            bool isValid = VerifyPassword(check.passwordHash, check.passwordSalt, request.password);
-
-            if (isValid) 
-            { 
-                var token = generateJwtToken(check);
-                return new AuthResponse(check, token);
+                if (isValid)
+                {
+                    var token = generateJwtToken(check);
+                    return new AuthResponse(check.user_id, token);
+                }
             }
-
             return null;
         }
 
         public User GetById(string id)
         {
-            // Recheck this.
             return _wifFindContext.Users.FirstOrDefault(x => x.user_id == id);
         }
-
-
-        private string generateJwtToken(User user)
+        
+        // Going to need to refactor authorization to consider different roles (admin and each admin's role)
+        private string generateJwtToken(UserAccountInfo user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                // this will cause an issue if user_id is null
-                // need to change when admin is implemented
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.user_id) }),
                 Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

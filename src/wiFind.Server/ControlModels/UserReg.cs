@@ -11,7 +11,7 @@ namespace wiFind.Server.AuthModels
         [Required, DataType(DataType.EmailAddress), MaxLength(200)]
         public string email { get; set; }
 
-        [Required, DataType(DataType.Password), JsonIgnore]
+        [Required, DataType(DataType.Password)]
         public string password { get; set; }
 
         [Required, MaxLength(100)]

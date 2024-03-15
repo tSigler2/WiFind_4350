@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using wiFind.Server.Helpers;
+using wiFind.Server.ControlModels;
 
 namespace wiFind.Server.Controllers
 {
@@ -21,8 +23,8 @@ namespace wiFind.Server.Controllers
             _wifFindContext = wifFindContext;
         }
 
-        // TODO: Add Client token verification
         // Returns All Wifi Listing
+        [Authorize]
         [HttpGet("wifilistings")]
         public async Task<IActionResult> GetListings()
         {
@@ -32,10 +34,12 @@ namespace wiFind.Server.Controllers
 
         // Adds Wifi to listing
         // Requires the user's id in owned_by
+        [Authorize]
         [HttpPost("addwifi")]
         public async Task<IActionResult> AddWifi(Wifi wifi)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Wifi Submission");
+            wifi.wifi_id = Guid.NewGuid().ToString();
 
             _wifFindContext.Wifis.Add(wifi);
             await _wifFindContext.SaveChangesAsync();
@@ -46,6 +50,7 @@ namespace wiFind.Server.Controllers
         // Remove Wifi Listing by wifi_id
         // Condition: User cannot remove wifi listing if Rents table has a user renting that wifi id
         // Parameter consideration: using just wifi_id instead of the entire object
+        [Authorize]
         [HttpDelete("removewifi")]
         public async Task<IActionResult> RemoveWifiListing(Wifi wifi)
         {
@@ -61,6 +66,7 @@ namespace wiFind.Server.Controllers
         // Edit Wifi, for users that want to edit information on the wifi listed
         // Condition: User cannot reduce max number of user allowed IF RENTS count > new max
         // Change to Post later? Not sure why but HttpPost causes middleware error (Swagger)
+        [Authorize]
         [HttpPost("updatewifi")]
         public async Task<IActionResult> EditWifiListing(Wifi wifi)
         {

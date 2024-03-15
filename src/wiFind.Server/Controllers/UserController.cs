@@ -35,7 +35,7 @@ namespace wiFind.Server.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Registration");
 
-            if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
+            if (await _wiFindContext.UserAccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
                 return BadRequest("Email OR Username already Taken");
 
             var (pHash, pSalt) = CreatePasswordHash(newUser.password);
@@ -46,21 +46,20 @@ namespace wiFind.Server.Controllers
                 last_name = newUser.last_name,
                 dob = newUser.dob,
                 phone_number = newUser.phone_number,
-                passwordHash = pHash,
-                passwordSalt = pSalt,
                 last_login = DateTime.UtcNow,
             };
             _wiFindContext.Users.Add(user);
 
-            var acct = new AccountInfo
+            var acct = new UserAccountInfo
             {
                 username = newUser.username,
                 email = newUser.email,
-                password = newUser.password,
+                passwordHash = pHash,
+                passwordSalt = pSalt
             };
 
             acct.user_id = user.user_id;
-            _wiFindContext.AccountInfos.Add(acct);
+            _wiFindContext.UserAccountInfos.Add(acct);
             await _wiFindContext.SaveChangesAsync();
 
             return Ok("Registration Successful");
@@ -79,14 +78,14 @@ namespace wiFind.Server.Controllers
 
         // Update User Profile
         // Input should have same user_id and not let db generate one
-        // Need to check: since user is a dbset, user_id of the same should override existing?
+        // Authorization checK: in header do: 'Authorization' then Paste the token 
         [Authorize]
         [HttpPost("updateprofile")]
         public async Task<IActionResult> UpdateUserProfile(UserUpdate update)
         {
             // Change this to query and edit user matching guid
             var query = from u in _wiFindContext.Set<User>() where u.user_id == update.user_id select u;
-            var user = query.GetEnumerator().Current;
+            var user = query.First();
             user.first_name = update.first_name;
             user.last_name = update.last_name;
             user.phone_number = update.phone_number;
@@ -97,7 +96,7 @@ namespace wiFind.Server.Controllers
             return Ok("placeholder for update user profile");
         }
 
-        // Below is for admins only.
+        // Below is for admins only. TODO: Figure out how to do admin token validations and roles
 
         // Returns Users who have been inactive for more than 3 months, only used by admins
         [HttpGet("inactiveusers")]
@@ -109,7 +108,6 @@ namespace wiFind.Server.Controllers
         }
 
         // Remove Users, only used by admins
-        // TODO: admin token validation in parameters
         [HttpDelete("removeusers")]
         public async Task<IActionResult> RemoveInactiveUser(User user)
         {
