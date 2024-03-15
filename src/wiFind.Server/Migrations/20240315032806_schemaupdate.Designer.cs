@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240315032806_schemaupdate")]
+    partial class schemaupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,6 +308,9 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("admin_id")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -323,6 +329,8 @@ namespace wiFind.Server.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("username");
+
+                    b.HasIndex("admin_id");
 
                     b.HasIndex("user_id");
 
@@ -465,6 +473,10 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.UserAccountInfo", b =>
                 {
+                    b.HasOne("wiFind.Server.Admin", null)
+                        .WithMany("AccountInfos")
+                        .HasForeignKey("admin_id");
+
                     b.HasOne("wiFind.Server.User", "User")
                         .WithMany("UserAccountInfos")
                         .HasForeignKey("user_id")
@@ -487,6 +499,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Admin", b =>
                 {
+                    b.Navigation("AccountInfos");
+
                     b.Navigation("AdminAccountInfos");
 
                     b.Navigation("SupportTickets");

@@ -26,15 +26,20 @@ namespace wiFind.Server.Controllers
             // Do this in a separate 'seedDbController'
             // drop all existing records
             // seed with new records
-            var obj = new User()
-            {
-                nickname = "obj"
-            };
-            // add in-memory
-            _wiFindContext.Add(obj);
-            // save to db
-            _wiFindContext.SaveChanges();
-            // CRUD commands with db context...
+            //for (var i = 0; i < 3; i++)
+            //{
+            //var u = new User()
+            //{
+            //    first_name = "test user " + i.ToString(),
+            //    last_name = "abc",
+            //    dob = DateOnly.FromDateTime(DateTime.Now),
+            //    email = "demostudent@student.gsu.edu",
+            //    phone_number = "1234567890",
+            //};
+            //// add in-memory
+            //_wiFindContext.Add(u);
+            // wifFindContext.SaveChanges();
+            //}
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

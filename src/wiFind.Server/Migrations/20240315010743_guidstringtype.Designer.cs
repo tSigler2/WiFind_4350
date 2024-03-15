@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,16 +12,48 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240315010743_guidstringtype")]
+    partial class guidstringtype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("wiFind.Server.AccountInfo", b =>
+                {
+                    b.Property<string>("username")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("admin_id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("username");
+
+                    b.HasIndex("admin_id");
+
+                    b.HasIndex("user_id");
+
+                    b.ToTable("AccountInfos");
+                });
 
             modelBuilder.Entity("wiFind.Server.Admin", b =>
                 {
@@ -37,31 +70,6 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("permission_level")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.HasKey("admin_id");
-
-                    b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("wiFind.Server.AdminAccountInfo", b =>
-                {
-                    b.Property<string>("username")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("admin_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<byte[]>("passwordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -70,11 +78,14 @@ namespace wiFind.Server.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.HasKey("username");
+                    b.Property<string>("permission_level")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
-                    b.HasIndex("admin_id");
+                    b.HasKey("admin_id");
 
-                    b.ToTable("AdminAccountInfos");
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("wiFind.Server.Feedback", b =>
@@ -289,27 +300,6 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("phone_number")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("user_id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("wiFind.Server.UserAccountInfo", b =>
-                {
-                    b.Property<string>("username")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<byte[]>("passwordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -318,15 +308,14 @@ namespace wiFind.Server.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("user_id")
+                    b.Property<string>("phone_number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("username");
+                    b.HasKey("user_id");
 
-                    b.HasIndex("user_id");
-
-                    b.ToTable("UserAccountInfos");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
@@ -372,15 +361,19 @@ namespace wiFind.Server.Migrations
                     b.ToTable("Wifis");
                 });
 
-            modelBuilder.Entity("wiFind.Server.AdminAccountInfo", b =>
+            modelBuilder.Entity("wiFind.Server.AccountInfo", b =>
                 {
                     b.HasOne("wiFind.Server.Admin", "Admin")
-                        .WithMany("AdminAccountInfos")
-                        .HasForeignKey("admin_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("AccountInfos")
+                        .HasForeignKey("admin_id");
+
+                    b.HasOne("wiFind.Server.User", "User")
+                        .WithMany("AccountInfos")
+                        .HasForeignKey("user_id");
 
                     b.Navigation("Admin");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("wiFind.Server.Feedback", b =>
@@ -452,26 +445,15 @@ namespace wiFind.Server.Migrations
                         .WithMany("SupportTickets")
                         .HasForeignKey("assigned_to");
 
-                    b.HasOne("wiFind.Server.UserAccountInfo", "UserAccountInfo")
+                    b.HasOne("wiFind.Server.AccountInfo", "AccountInfo")
                         .WithMany("SupportTickets")
                         .HasForeignKey("username")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AccountInfo");
+
                     b.Navigation("Admin");
-
-                    b.Navigation("UserAccountInfo");
-                });
-
-            modelBuilder.Entity("wiFind.Server.UserAccountInfo", b =>
-                {
-                    b.HasOne("wiFind.Server.User", "User")
-                        .WithMany("UserAccountInfos")
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
@@ -485,9 +467,14 @@ namespace wiFind.Server.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("wiFind.Server.AccountInfo", b =>
+                {
+                    b.Navigation("SupportTickets");
+                });
+
             modelBuilder.Entity("wiFind.Server.Admin", b =>
                 {
-                    b.Navigation("AdminAccountInfos");
+                    b.Navigation("AccountInfos");
 
                     b.Navigation("SupportTickets");
                 });
@@ -499,6 +486,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.User", b =>
                 {
+                    b.Navigation("AccountInfos");
+
                     b.Navigation("Feedbacks");
 
                     b.Navigation("PaymentInfos");
@@ -507,14 +496,7 @@ namespace wiFind.Server.Migrations
 
                     b.Navigation("Requests");
 
-                    b.Navigation("UserAccountInfos");
-
                     b.Navigation("Wifis");
-                });
-
-            modelBuilder.Entity("wiFind.Server.UserAccountInfo", b =>
-                {
-                    b.Navigation("SupportTickets");
                 });
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
