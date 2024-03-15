@@ -64,7 +64,7 @@ namespace wiFind.Server.Controllers
 
             return Ok("Registration Successful");
         }
-        
+
 
         // Login Verification
         // Requires: User submitted a (username OR email) AND a password
@@ -120,7 +120,7 @@ namespace wiFind.Server.Controllers
         }
 
         private (byte[] pHash, byte[] pSalt) CreatePasswordHash(string password)
-        {
+        {   
 
             byte[] salt;
             byte[] hash;

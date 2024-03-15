@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(253, 253, 253, 0.87);
-  background-color: beige;
+  background-color: #EAE6E1;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,10 +27,6 @@ html, body {
   padding: 0;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
 
 button {
   border-radius: 8px;

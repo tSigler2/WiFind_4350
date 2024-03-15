@@ -36,12 +36,22 @@ namespace wiFind.Server.Controllers
         // Requires the user's id in owned_by
         [Authorize]
         [HttpPost("addwifi")]
-        public async Task<IActionResult> AddWifi(Wifi wifi)
+        public async Task<IActionResult> AddWifi(WifiReg wifi)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Wifi Submission");
-            wifi.wifi_id = Guid.NewGuid().ToString();
 
-            _wifFindContext.Wifis.Add(wifi);
+            _wifFindContext.Wifis.Add(new Wifi
+            {
+                wifi_id = Guid.NewGuid().ToString(),
+                wifi_name = wifi.wifi_name,
+                security = wifi.security,
+                wifi_latitude = wifi.wifi_latitude,
+                wifi_longitude = wifi.wifi_longitude,
+                radius = wifi.radius,
+                wifi_source = wifi.wifi_source,
+                owned_by = wifi.owned_by,
+                max_users = wifi.max_users
+            });
             await _wifFindContext.SaveChangesAsync();
 
             return Ok("Wifi listed successfully.");

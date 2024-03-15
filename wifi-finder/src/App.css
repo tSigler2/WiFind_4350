@@ -1,8 +1,8 @@
 /* App.css */
 .App {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
-  color: beige;
+  color: black;
 }
 
 
@@ -10,7 +10,7 @@
 input[type="text"] {
   padding: 10px;
   margin-right: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #EAE6E1;
 }
 
 button {
@@ -32,30 +32,69 @@ h2 {
 
 footer {
   background-color: #007bff;
-  color: white;
+  color: #EAE6E1;
   padding: 10px;
   position: fixed;
   bottom: 0;
   width: 100%;
 }
 
-
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #008080;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
 }
 
-.navbar__title {
-    margin: 0;
-    color: white;
+a.navbar__title {
+    text-decoration: none;
+    color: #D2CDC7;
     font-family: 'Spectral', sans-serif;
+    margin: 0;
+    font-size: xx-large;
 }
-
 .navbar__links a {
     margin-left: 1rem;
     text-decoration: none;
-    color: #ffffff;
+    color: #D2CDC7;
+}
+.Rental {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #008080;
+}
+.Home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #008080;
+}
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #EAE6E1;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.hero-button {
+  padding: 10px 20px;
+  background-color: #A74D4A;
+  color: white;
+  border: 2px solid #A74D4A;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #A74D4A;
+  color: #fff;
 }
