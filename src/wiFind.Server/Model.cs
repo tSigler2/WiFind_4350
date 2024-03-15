@@ -2,11 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 public enum TicketStatus
 {
-    Open, Inprogess, Closed
+    Open, InProgess, Closed
 }
 
 //public enum PermissionLevels
@@ -33,12 +34,10 @@ namespace wiFind.Server
         public WiFindContext(DbContextOptions<WiFindContext> options) : base(options) { }
     }
 
-    // Primary Key is user_id. No Foreign Keys.
-    // Contains general information about User
     public class User
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int user_id { get; set; }
+        [Key]
+        public string user_id { get; set; }
 
         [Required, MaxLength(100)]
         public string first_name { get; set; } = "";
@@ -72,13 +71,11 @@ namespace wiFind.Server
         public ICollection<Request>? Requests { get; set; }
         public ICollection<Feedback>? Feedbacks { get; set; }
     }
-
-    // Primary Key is admin_id. No Foreign Keys.
-    // Contains general information about Admin
+    
     public class Admin
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int admin_id { get; set; }
+        [Key]
+        public string admin_id { get; set; }
 
         [Required, MaxLength(100)]
         public string first_name { get; set; } = "admin";
@@ -86,10 +83,10 @@ namespace wiFind.Server
         [Required, MaxLength(100)]
         public string last_name { get; set; } = "inster";
 
-        [Required]
+        [Required, JsonIgnore]
         public byte[] passwordHash { get; set; }
 
-        [Required]
+        [Required, JsonIgnore]
         public byte[] passwordSalt { get; set; }
 
         // TODO: Add a system for permission level.
@@ -105,12 +102,10 @@ namespace wiFind.Server
         public ICollection<SupportTicket>? SupportTickets { get; set; }
     }
 
-    // Primary Key is wifi_id. Foreign Keys: owned_by references user_id in User
-    // Contains general information about Existing Wifis
     public class Wifi
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int wifi_id { get; set;}
+        [Key]
+        public string wifi_id { get; set;}
 
         [Required, MaxLength(50)]
         public string wifi_name { get; set; } = "My Wifi";
@@ -131,7 +126,7 @@ namespace wiFind.Server
         public string wifi_source { get; set; } = "Unknown";
 
         [Required]
-        public int owned_by {  get; set; }
+        public string owned_by {  get; set; }
 
         [ForeignKey("owned_by")]
         public User User { get; set; }
@@ -146,20 +141,17 @@ namespace wiFind.Server
         public ICollection<Request>? Requests { get; set; }
     }
 
-    // PK: (user_id, wifi_id) tuple. FK: user_id from user_id in User, wifi_id from wifi_id in Wifi
     // ***Only insert into table after a successful Request and Response from Rentee and Renter.
-    // Information from Request and Response are required to fill this table.
-    // User can rent many different wifis; One wifi can be rented by multiple users.
     public class Rent
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int rent_id { get; set; }
+        [Key]
+        public string rent_id { get; set; }
 
-        public int? user_id {  get; set; }
+        public string? user_id {  get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
-        public int? wifi_id { get; set; }
+        public string? wifi_id { get; set; }
         [ForeignKey("wifi_id")]
         public Wifi Wifi { get; set; }
 
@@ -175,22 +167,18 @@ namespace wiFind.Server
         [Required, DataType(DataType.Currency)]
         public decimal locked_rate {  get; set; }
 
-        // TODO: Hash Salt this?
         // Renter is accountable for making guest account on renter's wifi.
         [DataType(DataType.Password), MaxLength(70)]
         public string? guest_password {  get; set; }
     }
 
-    // PaymentInfo is associated with user_id.
-    // Assuming user could create multiple accounts and save the same payment info on each account
-    // Primary Key for this table is (user_id, card_number) tuple
     public class PaymentInfo
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int payInfo_id { get; set; }
+        [Key]
+        public string payInfo_id { get; set; }
 
         [Required]
-        public int user_id { get; set; }
+        public string user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
@@ -207,7 +195,7 @@ namespace wiFind.Server
         public DateOnly exp_date { get; set; }
     }
 
-    // AccountInfo should have existing user_id XOR admin_id
+    // AccountInfo should have existing user_id XOR admin_id; TODO: refactor logic for future tokens
     // PK: username FK: user_id XOR admin_id
     // User should be able to log in with either user's unique username or unique email
     public class AccountInfo
@@ -218,28 +206,26 @@ namespace wiFind.Server
         [Required, DataType(DataType.EmailAddress), MaxLength(200)]
         public string email { get; set; }
 
-        [Required, DataType(DataType.Password)]
+        [Required, DataType(DataType.Password), JsonIgnore]
         public string password { get; set;}
 
         [AllowNull]
-        public int? user_id { get; set; }
+        public string? user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
         [AllowNull]
-        public int? admin_id { get; set; }
+        public string? admin_id { get; set; }
         [ForeignKey("admin_id")]
         public Admin Admin { get; set; }
 
         public ICollection<SupportTicket>? SupportTickets { get; set; }
     }
 
-    // PK: ticket_id, FK: user_id (required), assigned_to (optional) references admin_id in Admin
-    // TODO: tickets with resolved status needs to be deleted (TTL?)
     public class SupportTicket
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ticket_id { get; set; }
+        [Key]
+        public string ticket_id { get; set; }
 
         [Required]
         public string username { get; set; }
@@ -259,7 +245,7 @@ namespace wiFind.Server
         public TicketStatus status { get; set; }
 
         [AllowNull]
-        public int? assigned_to { get; set; }
+        public string? assigned_to { get; set; }
         [ForeignKey("assigned_to")]
         public Admin Admin { get; set; }
     }
@@ -270,20 +256,19 @@ namespace wiFind.Server
     // Ex: If renter does not respond to request in time, should be deleted and not allow insertion
     // into response for that request
 
-    // TODO: Decide how requests are tracked such as outgoing requests. Add time out to request record.
-    // user_id is the rentee, use wifi_id to get renter's id (Wifi.owned_by)
+    // TODO: Decide how requests are tracked such as outgoing requests.
     // NEED TO CHECK that user_id (rentee) is not equal to Wifi.owned_by
     public class Request
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int request_id {  get; set; }
+        [Key]
+        public string request_id {  get; set; }
 
         [Required]
-        public int user_id { get; set; }
+        public string user_id { get; set; }
         [ForeignKey("user_id")]
         public User User { get; set; }
 
-        public int? wifi_id { get; set; }
+        public string? wifi_id { get; set; }
         [ForeignKey("wifi_id")]
         public Wifi Wifi { get; set; }
 
@@ -305,11 +290,11 @@ namespace wiFind.Server
     // If response is not acknowledged in time (such as user goes MIA indefinitely) delete pair of records
     public class Response
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int respnse_id { get; set; }
+        [Key]
+        public string respnse_id { get; set; }
 
         [Required]
-        public int? request_id { get; set; }
+        public string? request_id { get; set; }
         [ForeignKey("request_id")]
         public Request Request { get; set; }
 
@@ -318,19 +303,16 @@ namespace wiFind.Server
         public bool req_ans { get; set; }
 
         // Should have value if req_ans is yes, else this will be null
-        // TODO: hash salt this too?
         [AllowNull, DataType(DataType.Password)]
         public string guest_password { get; set; }
     }
     
-    // FK: user_id PK: feedback_id
-    // TODO: Cascade NULL
     public class Feedback
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? feedback_id{ get; set; }
+        [Key]
+        public string? feedback_id{ get; set; }
 
-        public int? user_id { get; set; }
+        public string? user_id { get; set; }
 
         [ForeignKey("user_id")]
         public User User { get; set; }
@@ -341,7 +323,6 @@ namespace wiFind.Server
         [MaxLength(500)]
         public string description { get; set; } = "";
 
-        // TODO: Decide if this is a scale of 1-5 OR 1-10
         [Required, Range(1,10)]
         public short rating { get; set; }
 

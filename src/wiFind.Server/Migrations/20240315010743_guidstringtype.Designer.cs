@@ -12,8 +12,8 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    [Migration("20240313204511_testdbschema1")]
-    partial class testdbschema1
+    [Migration("20240315010743_guidstringtype")]
+    partial class guidstringtype
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,8 +31,8 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("admin_id")
-                        .HasColumnType("int");
+                    b.Property<string>("admin_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -43,8 +43,8 @@ namespace wiFind.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("user_id")
-                        .HasColumnType("int");
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("username");
 
@@ -57,11 +57,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Admin", b =>
                 {
-                    b.Property<int>("admin_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("admin_id"));
+                    b.Property<string>("admin_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("first_name")
                         .IsRequired()
@@ -93,11 +90,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Feedback", b =>
                 {
-                    b.Property<int?>("feedback_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("feedback_id"));
+                    b.Property<string>("feedback_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("date_stamp")
                         .HasColumnType("date");
@@ -115,8 +109,8 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("user_id")
-                        .HasColumnType("int");
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("feedback_id");
 
@@ -127,11 +121,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.PaymentInfo", b =>
                 {
-                    b.Property<int>("payInfo_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("payInfo_id"));
+                    b.Property<string>("payInfo_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("card_number")
                         .IsRequired()
@@ -150,8 +141,9 @@ namespace wiFind.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("user_id")
-                        .HasColumnType("int");
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("payInfo_id");
 
@@ -162,11 +154,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Rent", b =>
                 {
-                    b.Property<int>("rent_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("rent_id"));
+                    b.Property<string>("rent_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("end_time")
                         .HasColumnType("datetime2");
@@ -181,11 +170,11 @@ namespace wiFind.Server.Migrations
                     b.Property<DateTime>("start_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("user_id")
-                        .HasColumnType("int");
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("wifi_id")
-                        .HasColumnType("int");
+                    b.Property<string>("wifi_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("rent_id");
 
@@ -198,11 +187,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Request", b =>
                 {
-                    b.Property<int>("request_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("request_id"));
+                    b.Property<string>("request_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("requested_rate")
                         .HasColumnType("decimal(18,2)");
@@ -213,11 +199,12 @@ namespace wiFind.Server.Migrations
                     b.Property<DateTime>("time_start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("user_id")
-                        .HasColumnType("int");
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("wifi_id")
-                        .HasColumnType("int");
+                    b.Property<string>("wifi_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("request_id");
 
@@ -230,11 +217,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Response", b =>
                 {
-                    b.Property<int>("respnse_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("respnse_id"));
+                    b.Property<string>("respnse_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("guest_password")
                         .IsRequired()
@@ -243,9 +227,9 @@ namespace wiFind.Server.Migrations
                     b.Property<bool>("req_ans")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("request_id")
+                    b.Property<string>("request_id")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("respnse_id");
 
@@ -256,14 +240,11 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.SupportTicket", b =>
                 {
-                    b.Property<int>("ticket_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ticket_id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ticket_id"));
-
-                    b.Property<int?>("assigned_to")
-                        .HasColumnType("int");
+                    b.Property<string>("assigned_to")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -297,11 +278,8 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.User", b =>
                 {
-                    b.Property<int>("user_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("user_id"));
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("amt_made")
                         .HasColumnType("decimal(18,2)");
@@ -342,17 +320,15 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
                 {
-                    b.Property<int>("wifi_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("wifi_id"));
+                    b.Property<string>("wifi_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("max_users")
                         .HasColumnType("int");
 
-                    b.Property<int>("owned_by")
-                        .HasColumnType("int");
+                    b.Property<string>("owned_by")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("radius")
                         .HasColumnType("real");

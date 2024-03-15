@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace wiFind.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class dbschematest1 : Migration
+    public partial class guidstringtype : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,7 @@ namespace wiFind.Server.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    admin_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    admin_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     first_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     passwordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
@@ -32,8 +31,7 @@ namespace wiFind.Server.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     first_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     dob = table.Column<DateOnly>(type: "date", nullable: false),
@@ -55,8 +53,8 @@ namespace wiFind.Server.Migrations
                     username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: true),
-                    admin_id = table.Column<int>(type: "int", nullable: true)
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    admin_id = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,9 +75,8 @@ namespace wiFind.Server.Migrations
                 name: "Feedbacks",
                 columns: table => new
                 {
-                    feedback_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: true),
+                    feedback_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     subject = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     rating = table.Column<short>(type: "smallint", nullable: false),
@@ -99,9 +96,8 @@ namespace wiFind.Server.Migrations
                 name: "PaymentInfos",
                 columns: table => new
                 {
-                    payInfo_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
+                    payInfo_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     payment_type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     name_on_card = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     card_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -119,47 +115,17 @@ namespace wiFind.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SupportTickets",
-                columns: table => new
-                {
-                    ticket_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    time_stamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    subject = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    status = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    assigned_to = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SupportTickets", x => x.ticket_id);
-                    table.ForeignKey(
-                        name: "FK_SupportTickets_Admins_assigned_to",
-                        column: x => x.assigned_to,
-                        principalTable: "Admins",
-                        principalColumn: "admin_id");
-                    table.ForeignKey(
-                        name: "FK_SupportTickets_Users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "Users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Wifis",
                 columns: table => new
                 {
-                    wifi_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    wifi_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     wifi_name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     security = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     wifi_latitude = table.Column<float>(type: "real", nullable: false),
                     wifi_longitude = table.Column<float>(type: "real", nullable: false),
                     radius = table.Column<float>(type: "real", nullable: false),
                     wifi_source = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    owned_by = table.Column<int>(type: "int", nullable: false),
+                    owned_by = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     max_users = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -174,13 +140,40 @@ namespace wiFind.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SupportTickets",
+                columns: table => new
+                {
+                    ticket_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    username = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    time_stamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    subject = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    status = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    assigned_to = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupportTickets", x => x.ticket_id);
+                    table.ForeignKey(
+                        name: "FK_SupportTickets_AccountInfos_username",
+                        column: x => x.username,
+                        principalTable: "AccountInfos",
+                        principalColumn: "username",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SupportTickets_Admins_assigned_to",
+                        column: x => x.assigned_to,
+                        principalTable: "Admins",
+                        principalColumn: "admin_id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rents",
                 columns: table => new
                 {
-                    rent_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: true),
-                    wifi_id = table.Column<int>(type: "int", nullable: true),
+                    rent_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    wifi_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     start_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     end_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     locked_rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -205,10 +198,9 @@ namespace wiFind.Server.Migrations
                 name: "Requests",
                 columns: table => new
                 {
-                    request_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    wifi_id = table.Column<int>(type: "int", nullable: true),
+                    request_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    wifi_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     time_stamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     time_start = table.Column<DateTime>(type: "datetime2", nullable: false),
                     requested_rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -233,9 +225,8 @@ namespace wiFind.Server.Migrations
                 name: "Responses",
                 columns: table => new
                 {
-                    respnse_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    request_id = table.Column<int>(type: "int", nullable: false),
+                    respnse_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    request_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     req_ans = table.Column<bool>(type: "bit", nullable: false),
                     guest_password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -301,9 +292,9 @@ namespace wiFind.Server.Migrations
                 column: "assigned_to");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SupportTickets_user_id",
+                name: "IX_SupportTickets_username",
                 table: "SupportTickets",
-                column: "user_id");
+                column: "username");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Wifis_owned_by",
@@ -314,9 +305,6 @@ namespace wiFind.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AccountInfos");
-
             migrationBuilder.DropTable(
                 name: "Feedbacks");
 
@@ -336,10 +324,13 @@ namespace wiFind.Server.Migrations
                 name: "Requests");
 
             migrationBuilder.DropTable(
-                name: "Admins");
+                name: "AccountInfos");
 
             migrationBuilder.DropTable(
                 name: "Wifis");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Users");

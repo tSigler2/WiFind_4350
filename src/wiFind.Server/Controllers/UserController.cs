@@ -7,119 +7,117 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using wiFind.Server.Helpers;
+using wiFind.Server.ControlModels;
+using wiFind.Server.Services;
+using wiFind.Server.AuthModels;
+
 namespace wiFind.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
 
-    // TODO: Add log messages, consider implementing DTO
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        private readonly WiFindContext _wifFindContext;
-        public UserController(ILogger<UserController> logger, WiFindContext wifFindContext)
+        private readonly WiFindContext _wiFindContext;
+        private IUserService _userService;
+        public UserController(ILogger<UserController> logger, WiFindContext wiFindContext, IUserService userService)
         {
             _logger = logger;
-            _wifFindContext = wifFindContext;
+            _wiFindContext = wiFindContext;
+            _userService = userService;
         }
 
-        // JSON Web Token
-        // Client End: Auth token with expiration time, store id in body of token; for every client request, include auth token in header.
-        // In Back End: validate token 
-
-
         // User Registration
-        // Requires AccountInfo(username, email, password) and User(first_name, last_name, dob, phone_number)
-        // Step 1 :: Verify username or email does not exist in AccountInfo Table. 
-        // Step 2 :: Hash and Salt password
-        // Step 3 :: Fill in remaining required user information, add object to wifindcontext
-        // Step 4 :: Use temporary id assigned by EF Core to assign AccountInfo id with object's
-        // Step 5 :: Connect to DB and save changes to DB
-
-        // Error Message: Only one parameter per action may be bound from body. Inspect the following paramters, and use 'FromQueryAttribute' to specify bound from query...
-        /*
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AccountInfo acctInfo, User userInfo)
+        public async Task<IActionResult> Register(UserReg newUser)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Registration");
 
-            // Checks AccountInfo to see if entered email exists or see if entered username exists
-            if (await _wifFindContext.AccountInfos.AnyAsync(a => (a.email == acctInfo.email || a.username == acctInfo.username)))
+            if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
                 return BadRequest("Email OR Username already Taken");
 
-            var (pHash, pSalt) = CreatePasswordHash(acctInfo.password);
-            userInfo.passwordHash = pHash;
-            userInfo.passwordSalt = pSalt;
-            userInfo.last_login = DateTime.UtcNow;
+            var (pHash, pSalt) = CreatePasswordHash(newUser.password);
+            var user = new User
+            {
+                user_id = Guid.NewGuid().ToString(),
+                first_name = newUser.first_name,
+                last_name = newUser.last_name,
+                dob = newUser.dob,
+                phone_number = newUser.phone_number,
+                passwordHash = pHash,
+                passwordSalt = pSalt,
+                last_login = DateTime.UtcNow,
+            };
+            _wiFindContext.Users.Add(user);
 
-            _wifFindContext.Users.Add(userInfo);
+            var acct = new AccountInfo
+            {
+                username = newUser.username,
+                email = newUser.email,
+                password = newUser.password,
+            };
 
-            acctInfo.user_id = userInfo.user_id;
-            _wifFindContext.AccountInfos.Add(acctInfo);
-
-            await _wifFindContext.SaveChangesAsync();
+            acct.user_id = user.user_id;
+            _wiFindContext.AccountInfos.Add(acct);
+            await _wiFindContext.SaveChangesAsync();
 
             return Ok("Registration Successful");
         }
-        */
+        
 
         // Login Verification
         // Requires: User submitted a (username OR email) AND a password
-        // Step 1 :: Query AccountLogin Table filter rows for is_admin is false and for matching username/email (expected: only one row)
-        // Step 2 :: Verify password with hash salt
         [HttpPost("login")]
-        public async Task<IActionResult> Login(AccountInfo acctLogin)
+        public async Task<IActionResult> Login(AuthRequest credentials)
         {
-            if (!ModelState.IsValid) return BadRequest("Invalid Login");
-
-            //var user = await server.Users.FirstOrDefaultAsync(u => u.user_id == acctLogin.user_id);
-            var query = from user in _wifFindContext.Set<User>() join accountLogin in _wifFindContext.Set<AccountInfo>() on user.user_id equals accountLogin.user_id select user;
-            if (query.Count() != 1)
-                return BadRequest("Invalid Login Credentials"); // Relies on db correctiveness (only one user for one accountInfo)
-
-            var res = query.GetEnumerator().Current;
-
-            if (!VerifyPassword(res.passwordHash, res.passwordSalt, acctLogin.password)) 
-                return BadRequest("Invalid Email or Password");
-
-            return Ok("Login Successful");
-
-            // TODO: Update 'last_login' in User in a different API
+            var response = _userService.Authenticate(credentials);
+            if (response == null) return BadRequest(new { message = "Login Credentials is incorrect." });
+            return Ok(response);
         }
 
         // Update User Profile
-        // updateU needs to have the same user_id and not let db generate one
+        // Input should have same user_id and not let db generate one
         // Need to check: since user is a dbset, user_id of the same should override existing?
-        [HttpPost]
-        public async Task<IActionResult> UpdateUserProfile(User updateU)
+        [Authorize]
+        [HttpPost("updateprofile")]
+        public async Task<IActionResult> UpdateUserProfile(UserUpdate update)
         {
-            _wifFindContext.Users.Add(updateU);
-            await _wifFindContext.SaveChangesAsync();
+            // Change this to query and edit user matching guid
+            var query = from u in _wiFindContext.Set<User>() where u.user_id == update.user_id select u;
+            var user = query.GetEnumerator().Current;
+            user.first_name = update.first_name;
+            user.last_name = update.last_name;
+            user.phone_number = update.phone_number;
+
+            _wiFindContext.Users.Update(user);
+            await _wiFindContext.SaveChangesAsync();
 
             return Ok("placeholder for update user profile");
         }
 
+        // Below is for admins only.
+
         // Returns Users who have been inactive for more than 3 months, only used by admins
-        // TODO: Consider DTOs to only get relevant information; Add admin token in parameters.
-        // TODO: If this does not work, change to WifiController.GetListing() format
-        [HttpGet]
+        [HttpGet("inactiveusers")]
         public async Task<IEnumerable<User>> GetInactiveUsers()
         {
             var inactiveTime = DateTime.UtcNow.AddMonths(-3);
-            var query = from user in _wifFindContext.Set<User>() where user.last_login < inactiveTime select user;
+            var query = from user in _wiFindContext.Set<User>() where user.last_login < inactiveTime select user;
             return query.AsEnumerable();
         }
 
         // Remove Users, only used by admins
         // TODO: admin token validation in parameters
-        [HttpDelete]
+        [HttpDelete("removeusers")]
         public async Task<IActionResult> RemoveInactiveUser(User user)
         {
             //TODO: function for token validation. if wrong, return Unauthorized.
             // Optional: could add extra check to ensure user is truly inactive for over 3 months
-            var query = from u in _wifFindContext.Set<User>() where u.user_id == user.user_id select u;
-            _wifFindContext.Remove(query);
-            await _wifFindContext.SaveChangesAsync(); 
+            var query = from u in _wiFindContext.Set<User>() where u.user_id == user.user_id select u;
+            _wiFindContext.Remove(query);
+            await _wiFindContext.SaveChangesAsync(); 
             return Ok("Placeholder for remove");
         }
 
@@ -134,22 +132,7 @@ namespace wiFind.Server.Controllers
                 salt = hmac.Key;
                 hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
-
             return (hash, salt);
-        }
-
-        private static bool VerifyPassword(byte[] storedHash, byte[] storedSalt, string password)
-        {
-            using (var hmac = new HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != storedHash[i]) return false;
-                }
-            }
-
-            return true;
         }
     }
 }

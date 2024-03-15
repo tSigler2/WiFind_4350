@@ -23,7 +23,7 @@ namespace wiFind.Server.Controllers
 
         // TODO: Add Client token verification
         // Returns All Wifi Listing
-        [HttpGet]
+        [HttpGet("wifilistings")]
         public async Task<IActionResult> GetListings()
         {
             var listings = await _wifFindContext.Wifis.ToListAsync();
@@ -32,7 +32,7 @@ namespace wiFind.Server.Controllers
 
         // Adds Wifi to listing
         // Requires the user's id in owned_by
-        [HttpPost]
+        [HttpPost("addwifi")]
         public async Task<IActionResult> AddWifi(Wifi wifi)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Wifi Submission");
@@ -46,7 +46,7 @@ namespace wiFind.Server.Controllers
         // Remove Wifi Listing by wifi_id
         // Condition: User cannot remove wifi listing if Rents table has a user renting that wifi id
         // Parameter consideration: using just wifi_id instead of the entire object
-        [HttpDelete]
+        [HttpDelete("removewifi")]
         public async Task<IActionResult> RemoveWifiListing(Wifi wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
@@ -61,7 +61,7 @@ namespace wiFind.Server.Controllers
         // Edit Wifi, for users that want to edit information on the wifi listed
         // Condition: User cannot reduce max number of user allowed IF RENTS count > new max
         // Change to Post later? Not sure why but HttpPost causes middleware error (Swagger)
-        [HttpPut]
+        [HttpPost("updatewifi")]
         public async Task<IActionResult> EditWifiListing(Wifi wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;

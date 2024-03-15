@@ -22,7 +22,7 @@ namespace wiFind.Server.Controllers
 
         // TODO: Add Client token verification
         // Adds User Feedback
-        [HttpPost]
+        [HttpPost("submitfeedback")]
         public async Task<IActionResult> SubmitFeedback(Feedback feedback)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Feedback Data");
@@ -36,7 +36,7 @@ namespace wiFind.Server.Controllers
         }
 
         // Returns All Feedbacks
-        [HttpGet]
+        [HttpGet("allfeedbacks")]
         public async Task<IActionResult> GetFeedbacks()
         {
             var feedbacks = await _wifFindContext.Feedbacks.ToListAsync();
