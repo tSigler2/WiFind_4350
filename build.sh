@@ -16,13 +16,7 @@ cd ..
 
 echo "Building Backend..."
 cd $backend_dir || exit
-msbuild wiFind.sln /p:Configuration=Release /p:OutputPath="../$build_dir"
-cd ../../..
-
-echo "Copying Frontend to backend"
-cp -r "$frontend_dir/build" "$backend_dir/wwwroot"
-
-echo "Publishing Backend"
-dotnet publish "$backend_dir/wiFind.Server/wiFind.Server.csproj" -c Release -o "$output_dir"
+dotnet build 
+cd ..
 
 echo "Built"
