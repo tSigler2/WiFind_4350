@@ -6,9 +6,11 @@
 \
 Building and Running Wifind:\
 \
-Building: Build with a bash script, type "./build.sh" into your console in the Wifind directory to build the project.\
-Running Frontend: Type "./run_frontend.sh" to run the frontend while in the WiFind directory.\
-Running Backend: Type "./run_backend.sh" to run the backend while in the WiFind directory.
+`Building`: Build with a bash script, type `./build.sh` into your console in the Wifind directory to build the project.\
+\
+`Running Frontend`: Type `./run_frontend.sh` to run the frontend while in the WiFind directory.\
+\
+`Running Backend`: Type `./run_backend.sh` to run the backend while in the WiFind directory.
 
 | New | In Progress | Done |
 | --- | ----------- | ---- |
