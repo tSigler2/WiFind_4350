@@ -1,7 +1,7 @@
 #!/bin/bash
 
-frontend_dir="wifi-finder"
-backend_dir="src"
+frontend_dir="src/wiFind.client"
+backend_dir="src/wiFind.Server"
 build_dir="build_dir"
 output_dir="output_dir"
 

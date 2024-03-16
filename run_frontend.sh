@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd wifi-finder
+cd src/wiFind.client
 npm run dev
 cd ..
