@@ -9,11 +9,11 @@
 | Test Cases 4-6 | Database Setup | Test Cases 1-3 |
 | Test Cases 7-9 |  | Behavioral Modeling |
 | Test Cases 10-12 |  |  |
-| Test Cases 13-15 |  |  |\
-\
-\
-Building and Running Wifind:\
-\
+| Test Cases 13-15 |  |  |\\
+\\
+\\
+Building and Running Wifind:\\
+\\
 Building: Build with a bash script, type "./build.sh" into your console in the Wifind directory to build the project.\
 Running Frontend: Type "./run_frontend.sh" to run the frontend while in the WiFind directory.\
 Running Backend: Type "./run_backend.sh" to run the backend while in the WiFind directory.
