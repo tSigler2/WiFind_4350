@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd wifi-finder
-serve -s build
+npm run dev
 cd ..
