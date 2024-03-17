@@ -45,6 +45,8 @@ namespace wiFind.Server.Controllers
                 wifi_id = Guid.NewGuid().ToString(),
                 wifi_name = wifi.wifi_name,
                 security = wifi.security,
+                download_speed = wifi.download_speed,
+                upload_speed = wifi.upload_speed,
                 wifi_latitude = wifi.wifi_latitude,
                 wifi_longitude = wifi.wifi_longitude,
                 radius = wifi.radius,
