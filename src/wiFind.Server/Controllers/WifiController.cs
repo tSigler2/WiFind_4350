@@ -51,6 +51,8 @@ namespace wiFind.Server.Controllers
                 wifi_longitude = wifi.wifi_longitude,
                 radius = wifi.radius,
                 wifi_source = wifi.wifi_source,
+                curr_rate = wifi.curr_rate,
+                time_listed = wifi.time_listed,
                 owned_by = wifi.owned_by,
                 max_users = wifi.max_users
             });
