@@ -1,45 +1,54 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import './CreateAccount.css'; 
 
+
 function CreateAccount() {
+    
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [dob, setDob] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState("");
-
-    const handleCreateAccount = () => {
-        if (username === "" || email === "" || password === "") {
+    const navigate = useNavigate();
+    const handleCreateAccount = async () => {
+        if (username === "" || email === "" || password === "" || firstName === "" || lastName === "" || dob === "" || phoneNumber === "") {
             setError("All fields must be filled out");
         } else {
-  /* Uncomment the following code when you're ready to connect to your backend
-            fetch('http://localhost:5000/api/accounts', { // Replace with your backend URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password,
-                }),
-            })
-            .then(response => {
+            try {
+                const response = await fetch('https://localhost:7042/api/User/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        first_name: firstName,
+                        last_name: lastName,
+                        dob,
+                        phone_number: phoneNumber
+                    })
+                });
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Registration failed');
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
+
+                const data = await response.json();
+
+                // Do something with the response data
+                console.log(data);
+
                 setError(""); // Clear the error message
-                // Redirect or perform any other action upon successful account creation
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setError("An error occurred. Please try again later."); // Display error message
-            });
-            */
+                navigate("/login"); // Redirect to the login page
+            } catch (error) {
+                setError(error.message);
+            }
         }
     };
 
