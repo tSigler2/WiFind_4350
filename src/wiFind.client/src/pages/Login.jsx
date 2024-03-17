@@ -1,18 +1,39 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-
-    const handleLogin = () => {
+    const navigate = useNavigate();
+    const handleLogin = async () => {
         if (username === "" || password === "") {
             setError("Username and password cannot be empty");
         } else {
-            // Here you send the username and password to backend
-            console.log(`Logging in with username: ${username} and password: ${password}`);
-            setError(""); // Clear the error message
+            try {
+                const response = await fetch('https://localhost:7042/api/User/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+    
+                const data = await response.json();
+    
+                // Do something with the response data
+                console.log(data);
+    
+                setError(""); // Clear the error message
+               navigate("/"); // Redirect to the home page
+            } catch (error) {
+                setError(error.message);
+            }
         }
     };
 
