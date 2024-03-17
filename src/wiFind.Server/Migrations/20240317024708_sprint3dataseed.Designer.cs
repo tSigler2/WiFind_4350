@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240317024708_sprint3dataseed")]
+    partial class sprint3dataseed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -518,9 +521,6 @@ namespace wiFind.Server.Migrations
                     b.Property<string>("wifi_id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("curr_rate")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("download_speed")
                         .HasColumnType("int");
 
@@ -529,7 +529,7 @@ namespace wiFind.Server.Migrations
 
                     b.Property<string>("owned_by")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("radius")
                         .HasColumnType("real");
@@ -538,9 +538,6 @@ namespace wiFind.Server.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("time_listed")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("upload_speed")
                         .HasColumnType("int");
@@ -571,13 +568,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f",
-                            curr_rate = 0.50m,
                             download_speed = 500,
                             max_users = 1,
-                            owned_by = "user9",
+                            owned_by = "cc7c133a-b731-4299-b310-770ba9f3fe9f",
                             radius = 10f,
                             security = "SurpriseMe",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(742),
                             upload_speed = 500,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -587,13 +582,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "1d475c5a-f088-48fc-bb73-e83c5cbd364a",
-                            curr_rate = 2.0m,
                             download_speed = 300,
                             max_users = 50,
-                            owned_by = "user1",
+                            owned_by = "15ced7de-6cde-4d80-abc7-fb5d86179912",
                             radius = 10f,
                             security = "Unsecure",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(790),
                             upload_speed = 300,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -603,13 +596,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "34f3fb03-d917-48d2-8cd9-1e30c085cfb2",
-                            curr_rate = 5.0m,
                             download_speed = 300,
                             max_users = 10,
-                            owned_by = "user1",
+                            owned_by = "15ced7de-6cde-4d80-abc7-fb5d86179912",
                             radius = 10f,
                             security = "More Secure",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(793),
                             upload_speed = 200,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -619,13 +610,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "eca15f8b-ddfe-4109-bc9f-2e053e728c14",
-                            curr_rate = 1.0m,
                             download_speed = 450,
                             max_users = 50,
-                            owned_by = "user3",
+                            owned_by = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
                             radius = 10f,
                             security = "WPA2",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(796),
                             upload_speed = 444,
                             wifi_latitude = 10f,
                             wifi_longitude = 10f,
@@ -635,13 +624,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
-                            curr_rate = 20.99m,
                             download_speed = 100,
                             max_users = 1,
-                            owned_by = "user3",
+                            owned_by = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
                             radius = 10f,
                             security = "WPA3",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(798),
                             upload_speed = 50,
                             wifi_latitude = 100f,
                             wifi_longitude = -100f,
@@ -651,13 +638,11 @@ namespace wiFind.Server.Migrations
                         new
                         {
                             wifi_id = "8f704d7a-7de0-4b03-8230-36cdcc6f21d0",
-                            curr_rate = 10.0m,
                             download_speed = 400,
                             max_users = 100,
-                            owned_by = "user10",
+                            owned_by = "f4140a29-60b3-4e84-a8d6-0274432509a5",
                             radius = 10f,
                             security = "Unsecured",
-                            time_listed = new DateTime(2024, 3, 17, 3, 22, 3, 44, DateTimeKind.Local).AddTicks(801),
                             upload_speed = 300,
                             wifi_latitude = 10f,
                             wifi_longitude = -5f,
@@ -770,13 +755,13 @@ namespace wiFind.Server.Migrations
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>
                 {
-                    b.HasOne("wiFind.Server.UserAccountInfo", "UserAccountInfo")
+                    b.HasOne("wiFind.Server.User", "User")
                         .WithMany("Wifis")
                         .HasForeignKey("owned_by")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserAccountInfo");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("wiFind.Server.Admin", b =>
@@ -802,13 +787,13 @@ namespace wiFind.Server.Migrations
                     b.Navigation("Requests");
 
                     b.Navigation("UserAccountInfos");
+
+                    b.Navigation("Wifis");
                 });
 
             modelBuilder.Entity("wiFind.Server.UserAccountInfo", b =>
                 {
                     b.Navigation("SupportTickets");
-
-                    b.Navigation("Wifis");
                 });
 
             modelBuilder.Entity("wiFind.Server.Wifi", b =>

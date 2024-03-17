@@ -1,52 +1,64 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './CreateAccount.css'; 
+import { useNavigate } from "react-router-dom";
 
 function CreateAccount() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [dob, setDob] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    const handleCreateAccount = () => {
-        if (username === "" || email === "" || password === "") {
+    const handleCreateAccount = async (e) => {
+        e.preventDefault();
+        if (username === "" || email === "" || password === "" || firstName === "" || lastName === "" || dob === "" || phoneNumber === "") {
             setError("All fields must be filled out");
         } else {
-  /* Uncomment the following code when you're ready to connect to your backend
-            fetch('http://localhost:5000/api/accounts', { // Replace with your backend URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password,
-                }),
-            })
-            .then(response => {
+            try {
+                const response = await fetch('https://localhost:7042/api/User/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        first_name: firstName,
+                        last_name: lastName,
+                        dob,
+                        phone_number: phoneNumber
+                    })
+                });
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Registration failed');
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
+
+                const data = await response.json();
+
+                localStorage.setItem("token", data.token);
+
+                // Do something with the response data
+                console.log(data);
+
                 setError(""); // Clear the error message
-                // Redirect or perform any other action upon successful account creation
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setError("An error occurred. Please try again later."); // Display error message
-            });
-            */
+                navigate("/"); // Redirect to the home page
+            } catch (error) {
+                setError(error.message);
+            }
         }
     };
 
     return (
         <div className="login-container">
             <h2 style={{ color: "black" }}>Create Account</h2>
-            <form className="login-form">
+            <form className="login-form" onSubmit={e => handleCreateAccount(e)}>
                 <input 
                     type="text" 
                     placeholder="Username" 
@@ -65,7 +77,31 @@ function CreateAccount() {
                     value={password} 
                     onChange={e => setPassword(e.target.value)} 
                 />
-                <button className="create-account-button" onClick={handleCreateAccount}>Sign Up</button>
+                <input 
+                    type="text" 
+                    placeholder="First Name" 
+                    value={firstName} 
+                    onChange={e => setFirstName(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Last Name" 
+                    value={lastName} 
+                    onChange={e => setLastName(e.target.value)} 
+                />
+                <input 
+                    type="date" 
+                    placeholder="Date of Birth" 
+                    value={dob} 
+                    onChange={e => setDob(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Phone Number" 
+                    value={phoneNumber} 
+                    onChange={e => setPhoneNumber(e.target.value)} 
+                />
+                <button className="create-account-button">Sign Up</button>
                 {error && <p className="error">{error}</p>}
             </form>
             <p style={{ color: "black" }}>Already have an account? 

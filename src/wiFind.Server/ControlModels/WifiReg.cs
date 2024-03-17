@@ -10,6 +10,12 @@ namespace wiFind.Server.ControlModels
         [Required, MaxLength(100)]
         public string security { get; set; } = "Unknown";
 
+        [Required, Range(1, 1000)]
+        public int download_speed { get; set; }
+
+        [Required, Range(1, 1000)]
+        public int upload_speed { get; set; }
+
         [Required]
         public float wifi_latitude { get; set; }
 
@@ -21,6 +27,11 @@ namespace wiFind.Server.ControlModels
 
         [Required, MaxLength(50)]
         public string wifi_source { get; set; } = "Unknown";
+
+        [Required, DataType(DataType.Currency)]
+        public decimal curr_rate { get; set; } = 0.0M;
+        [Required]
+        public DateTime time_listed { get; set; }
 
         [Required]
         public string owned_by { get; set; }

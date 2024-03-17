@@ -61,8 +61,10 @@ namespace wiFind.Server.Controllers
             acct.user_id = user.user_id;
             _wiFindContext.UserAccountInfos.Add(acct);
             await _wiFindContext.SaveChangesAsync();
+            
+            var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password =  newUser.password });
 
-            return Ok("Registration Successful");
+            return Ok(authToken);
         }
 
 
@@ -93,7 +95,7 @@ namespace wiFind.Server.Controllers
             _wiFindContext.Users.Update(user);
             await _wiFindContext.SaveChangesAsync();
 
-            return Ok("placeholder for update user profile");
+            return Ok("Successful update for user profile");
         }
 
         // Below is for admins only. TODO: Figure out how to do admin token validations and roles

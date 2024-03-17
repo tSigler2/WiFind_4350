@@ -6,6 +6,10 @@ using wiFind.Server.Services;
 
 namespace wiFind.Server.Helpers
 {
+    // Known issue, not major yet:
+    // Jwt token generated for a different user works when testing addwifi api where the 'owned_by' object is not that user.
+    // In login: send username and token back, client side needs to send username in header when calling api
+    // in other endpoint that require identity and auth, check if username in header has same id as jwttoken's id
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
