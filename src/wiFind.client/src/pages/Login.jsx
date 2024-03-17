@@ -26,8 +26,7 @@ function Login() {
     
                 const data = await response.json();
     
-                // Do something with the response data
-                console.log(data);
+                localStorage.setItem("token", data.token);
     
                 setError(""); // Clear the error message
                navigate("/"); // Redirect to the home page

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './CreateAccount.css'; 
 
-
 function CreateAccount() {
-    
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,7 +11,7 @@ function CreateAccount() {
     const [dob, setDob] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState("");
-    const navigate = useNavigate();
+
     const handleCreateAccount = async () => {
         if (username === "" || email === "" || password === "" || firstName === "" || lastName === "" || dob === "" || phoneNumber === "") {
             setError("All fields must be filled out");
@@ -45,7 +43,6 @@ function CreateAccount() {
                 console.log(data);
 
                 setError(""); // Clear the error message
-                navigate("/login"); // Redirect to the login page
             } catch (error) {
                 setError(error.message);
             }
@@ -73,6 +70,30 @@ function CreateAccount() {
                     placeholder="Password" 
                     value={password} 
                     onChange={e => setPassword(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="First Name" 
+                    value={firstName} 
+                    onChange={e => setFirstName(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Last Name" 
+                    value={lastName} 
+                    onChange={e => setLastName(e.target.value)} 
+                />
+                <input 
+                    type="date" 
+                    placeholder="Date of Birth" 
+                    value={dob} 
+                    onChange={e => setDob(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Phone Number" 
+                    value={phoneNumber} 
+                    onChange={e => setPhoneNumber(e.target.value)} 
                 />
                 <button className="create-account-button" onClick={handleCreateAccount}>Sign Up</button>
                 {error && <p className="error">{error}</p>}
