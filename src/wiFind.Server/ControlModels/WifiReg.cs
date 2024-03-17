@@ -10,6 +10,12 @@ namespace wiFind.Server.ControlModels
         [Required, MaxLength(100)]
         public string security { get; set; } = "Unknown";
 
+        [Required, Range(1, 1000)]
+        public int download_speed { get; set; }
+
+        [Required, Range(1, 1000)]
+        public int upload_speed { get; set; }
+
         [Required]
         public float wifi_latitude { get; set; }
 
