@@ -34,10 +34,14 @@ function Rent() {
             <div key={listing.wifi_name} className="rent-card">
                 <div className="rent-card-content">
                     <h3 className="rent-card-title">{listing.wifi_name}</h3>
+                    <p className="rent-card-description">Rate: {listing.curr_rate}</p>
                     <p className="rent-card-description">Security: {listing.security}</p>
                     <p className="rent-card-description">Source: {listing.wifi_source}</p>
-                    <p className="rent-card-description">Owned by: {listing.owned_by}</p>
+                    <p className="rent-card-description">Download Speed: {listing.download_speed}</p>
+                    <p className="rent-card-description">Upload Speed: {listing.upload_speed}</p>
+                    <p className="rent-card-description">Listed by: {listing.owned_by}</p>
                     <p className="rent-card-description">Max users: {listing.max_users}</p>
+                    <p className="rent-card-description">Source: {listing.time_listed}</p>
                     <button className="rent-card-button" onClick={() => addToCart(listing)}>Add to Cart</button>
                 </div>
             </div>

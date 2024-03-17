@@ -28,6 +28,11 @@ namespace wiFind.Server.ControlModels
         [Required, MaxLength(50)]
         public string wifi_source { get; set; } = "Unknown";
 
+        [Required, DataType(DataType.Currency)]
+        public decimal curr_rate { get; set; } = 0.0M;
+        [Required]
+        public DateTime time_listed { get; set; }
+
         [Required]
         public string owned_by { get; set; }
 

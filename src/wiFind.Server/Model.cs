@@ -222,7 +222,9 @@ namespace wiFind.Server
                     wifi_longitude = 0,
                     wifi_source = "HotSpot",
                     radius = 10,
-                    owned_by = "cc7c133a-b731-4299-b310-770ba9f3fe9f",
+                    curr_rate = 0.50M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user9",
                     max_users = 1
                 },
                 new Wifi
@@ -236,7 +238,9 @@ namespace wiFind.Server
                     wifi_longitude = 0,
                     wifi_source = "Fiber",
                     radius = 10,
-                    owned_by = "15ced7de-6cde-4d80-abc7-fb5d86179912",
+                    curr_rate = 2.0M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user1",
                     max_users = 50
                 },
                 new Wifi
@@ -250,7 +254,9 @@ namespace wiFind.Server
                     wifi_longitude = 0,
                     wifi_source = "Fiber",
                     radius = 10,
-                    owned_by = "15ced7de-6cde-4d80-abc7-fb5d86179912",
+                    curr_rate = 5.0M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user1",
                     max_users = 10
                 },
                 new Wifi
@@ -264,7 +270,9 @@ namespace wiFind.Server
                     wifi_longitude = 10,
                     wifi_source = "ATT Fiber",
                     radius = 10,
-                    owned_by = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
+                    curr_rate = 1.0M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user3",
                     max_users = 50
                 },
                 new Wifi
@@ -278,7 +286,9 @@ namespace wiFind.Server
                     wifi_longitude = -100,
                     wifi_source = "Starlink",
                     radius = 10,
-                    owned_by = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
+                    curr_rate = 20.99M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user3",
                     max_users = 1
                 },
                 new Wifi
@@ -292,7 +302,9 @@ namespace wiFind.Server
                     wifi_longitude = -5,
                     wifi_source = "Starlink",
                     radius = 10,
-                    owned_by = "f4140a29-60b3-4e84-a8d6-0274432509a5",
+                    curr_rate = 10.0M,
+                    time_listed = DateTime.Now,
+                    owned_by = "user10",
                     max_users = 100
                 });
             #endregion
@@ -323,8 +335,6 @@ namespace wiFind.Server
         [DataType(DataType.DateTime), AllowNull]
         public DateTime last_login { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Wifi>? Wifis { get; set; }
         [JsonIgnore]
         public ICollection<Rent>? Rents { get; set; }
         [JsonIgnore]
@@ -394,12 +404,18 @@ namespace wiFind.Server
         [Required, MaxLength(50)]
         public string wifi_source { get; set; } = "Unknown";
 
+        [Required, DataType(DataType.Currency)]
+        public decimal curr_rate { get; set; } = 0.0M;
+
+        [Required]
+        public DateTime time_listed { get; set; }
+
         [Required]
         public string owned_by {  get; set; }
 
         [JsonIgnore]
         [ForeignKey("owned_by")]
-        public User User { get; set; }
+        public UserAccountInfo UserAccountInfo { get; set; }
 
         // Max number of users allowed to rent this wifi.
         // Use Rents table to count how many records are associated with the wifi_id
@@ -500,6 +516,9 @@ namespace wiFind.Server
 
         [JsonIgnore]
         public ICollection<SupportTicket>? SupportTickets { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Wifi>? Wifis { get; set; }
     }
 
     public class AdminAccountInfo

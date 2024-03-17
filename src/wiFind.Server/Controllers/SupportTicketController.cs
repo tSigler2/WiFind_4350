@@ -56,7 +56,7 @@ namespace wiFind.Server.Controllers
         // Removes tickets, only used by admins
         // TODO: admin token validation
         // Possibly add check for 'Complete' Status?
-        [HttpDelete("removeicket")]
+        [HttpDelete("removeticket")]
         public async Task<IActionResult> RemoveTicket(SupportTicket ticket)
         {
             var query = from t in _wifFindContext.Set<SupportTicket>() where t.ticket_id == ticket.ticket_id select t;

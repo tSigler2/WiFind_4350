@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './CreateAccount.css'; 
+import { useNavigate } from "react-router-dom";
 
 function CreateAccount() {
     const [username, setUsername] = useState("");
@@ -11,8 +12,10 @@ function CreateAccount() {
     const [dob, setDob] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    const handleCreateAccount = async () => {
+    const handleCreateAccount = async (e) => {
+        e.preventDefault();
         if (username === "" || email === "" || password === "" || firstName === "" || lastName === "" || dob === "" || phoneNumber === "") {
             setError("All fields must be filled out");
         } else {
@@ -39,10 +42,13 @@ function CreateAccount() {
 
                 const data = await response.json();
 
+                localStorage.setItem("token", data.token);
+
                 // Do something with the response data
                 console.log(data);
 
                 setError(""); // Clear the error message
+                navigate("/"); // Redirect to the home page
             } catch (error) {
                 setError(error.message);
             }
@@ -52,7 +58,7 @@ function CreateAccount() {
     return (
         <div className="login-container">
             <h2 style={{ color: "black" }}>Create Account</h2>
-            <form className="login-form">
+            <form className="login-form" onSubmit={e => handleCreateAccount(e)}>
                 <input 
                     type="text" 
                     placeholder="Username" 
@@ -95,7 +101,7 @@ function CreateAccount() {
                     value={phoneNumber} 
                     onChange={e => setPhoneNumber(e.target.value)} 
                 />
-                <button className="create-account-button" onClick={handleCreateAccount}>Sign Up</button>
+                <button className="create-account-button">Sign Up</button>
                 {error && <p className="error">{error}</p>}
             </form>
             <p style={{ color: "black" }}>Already have an account? 
