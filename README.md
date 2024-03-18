@@ -11,10 +11,20 @@
 
 - `Running Backend`: Type `./run_backend.sh` to run the backend while in the WiFind directory.
 
+- `Running Database`: Requires Docker, Type `cd src`, then type `./run_db.sh`, which will set up the database in Docker.
+
 | New | In Progress | Done |
 | --- | ----------- | ---- |
-| Class Diagram | Frontend Logic | Backend Logic |
-| Test Cases 4-6 | Database Setup | Test Cases 1-3 |
-| Test Cases 7-9 |  | Behavioral Modeling |
-| Test Cases 10-12 |  |  |
-| Test Cases 13-15 |  |  |
+| Database Setup - Continued |  |  |
+| Backend Logic Implementation |  |  |
+| Frontend Logic Implemenation |  |  |
+| Tests 1-3 Tables |  |  |
+| Tests 4-6 Tables |  |  |
+| Tests 7-9 Tables |  |  |
+| Tests 10-12 Tables |  |  |
+| Tests 13-15 Tables |  |  |
+| Architectural Model - Logical View |  |  |
+| Architectural Model - Development View |  |  |
+| Architectural Model - Process View |  |  |
+| Architectural Model - Physical View |  |  |
+| Architectural Model - Use Case Scenarios |  |  |
