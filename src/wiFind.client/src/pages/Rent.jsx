@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { CartContext } from "../components/CartContext.jsx";
+import { useNavigate } from "react-router-dom";
 import "./Rent.css"; // Import Rent page-specific styles
 
 function Rent() {
     const [wifiListings, setWifiListings] = useState();
     const { addToCart } = useContext(CartContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         populateWifiListings();
@@ -20,11 +22,13 @@ function Rent() {
         });
 
         if (!response.ok) {
+            navigate("/login"); // Redirect to login for token
             throw new Error(`HTTP error! status: ${response.status}`);
+
         }
 
         const data = await response.json();
-        console.log(data);
+        console.log(data); 
         setWifiListings(data);
     }
 

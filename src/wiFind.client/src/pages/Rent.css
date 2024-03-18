@@ -13,7 +13,6 @@
 }
 
 .rent-row {
-    display: flex;
     justify-content: space-around;
     margin-bottom: 50px;
 }
@@ -32,6 +31,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    text-align: left;
 }
 
 .rent-card-content {
@@ -88,8 +88,12 @@
     padding: 20px;
     margin: 0 auto;
     max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .rent-card {
-    flex: 1;
+    display: inline-table;
 }
