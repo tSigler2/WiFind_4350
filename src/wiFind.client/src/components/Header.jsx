@@ -1,8 +1,16 @@
 import React from 'react';
 import '../App.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate(); // Get the navigate function
+
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Remove the token from local storage
+        navigate("/login"); // Redirect to the login page
+    }
+
     return (
         <header className="header">
             <nav className="navbar">
@@ -14,7 +22,7 @@ function Header() {
                     <Link to="/list">List</Link>
                     <Link to="/about">About</Link>
                     <Link to="/contact">Contact</Link>
-                    <Link to="/login">Login</Link>
+                    {token && token !== '' ? <Link to="/logout" onClick={handleLogout}>Logout</Link> : <Link to="/login">Login</Link>}
                     <Link to="/checkout">Checkout</Link>
                 </div>
             </nav>
@@ -22,4 +30,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default Header; 
