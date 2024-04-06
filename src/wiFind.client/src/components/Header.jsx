@@ -1,7 +1,8 @@
 import React from 'react';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 function Header() {
     const token = localStorage.getItem("token");
     const navigate = useNavigate(); // Get the navigate function
@@ -14,20 +15,22 @@ function Header() {
 
     return (
         <header className="header">
-            <nav className="navbar">
-                <Link to="/" className='navbar__title'>
-                    WiFi Finder & Rentals
+        <nav className="navbar">
+            <Link to="/" className='navbar__title'>
+                WiFi Finder & Rentals
+            </Link>
+            <div className="navbar__links">
+                <Link to="/rent">Rent</Link>
+                <Link to="/list">List</Link>
+                <Link to="/Ticketsupport">Ticket Support</Link>
+                {token && token !== '' ? <Link to="/profile">Profile</Link> : null} {/* Only show the Profile link if the user is logged in */}
+                {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
+                 <Link to="/checkout">
+                    <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
                 </Link>
-                <div className="navbar__links">
-                    <Link to="/rent">Rent</Link>
-                    <Link to="/list">List</Link>
-                    <Link to="/about">About</Link>
-                    <Link to="/contact">Contact</Link>
-                    {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
-                    <Link to="/checkout">Checkout</Link>
-                </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
+    </header>
     );
 }
 
