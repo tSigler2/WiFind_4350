@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 
-function Contact() {
+function TicketSupport() {
     return (
         <div>
         <h1>Contact</h1>
@@ -9,4 +9,4 @@ function Contact() {
         </div>
     );
     }
-export default Contact;
+export default TicketSupport;
