@@ -10,11 +10,11 @@ namespace wiFind.Server.UnitTest
     [TestFixture]
     public class TicketTests
     {
-
         [Test]
         public void TicketTest()
         {
-            ticketController = new SupportTicketController(new WifindContext);
+            wfc = new WiFindContext();
+            ticketController = new SupportTicketController(wfc);
 
             testTicket = new SupportTicketReg
             {
@@ -27,6 +27,5 @@ namespace wiFind.Server.UnitTest
 
             Assert.AreEqual("Ticket has been submitted.", response);
         }
-
     }
 }

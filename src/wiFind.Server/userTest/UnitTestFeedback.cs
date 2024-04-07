@@ -7,45 +7,48 @@ using wiFind.Server.ControlModels;
 namespace wiFind.Server.UnitTest
 {
 
-[TestFixture]
-public class TicketTests
-{
-    [Test]
-    public void FeedbackSubmitTest()
+    [TestFixture]
+    public class TicketTests
     {
-        FeedbackControl = new FeedbackController(new WifindContext);
-
-        var Feedback = new FeedbackReg
+        [Test]
+        public void FeedbackSubmitTest()
         {
-            user_id = null,
-            subject = "Website Down",
-            description = "Your website is down right now.",
-            rating = 2
-        };
+            wfc = new WiFindContext();
+            FeedbackControl = new FeedbackController(wfc);
 
-        var response = FeedbackControl.SubmitFeedback(FeedbackControl);
+            var Feedback = new FeedbackReg
+            {
+                user_id = null,
+                subject = "Website Down",
+                description = "Your website is down right now.",
+                rating = 2
+            };
 
-        Assert.AreEqual(response, "Feedback Submitted Successfully");
+            var response = FeedbackControl.SubmitFeedback(FeedbackControl);
+
+            Assert.AreEqual(response, "Feedback Submitted Successfully");
+        }
+
+        [Test]
+        public void FeedbackGetTest()
+        {
+            wfc = new WiFindContext();
+            FeedbackControl = new FeedbackController(wfc);
+
+            var Feedback = new FeedbackReg
+            {
+                user_id = null,
+                subject = "Website Down",
+                description = "Your website is down right now.",
+                rating = 2
+            };
+
+            var response = FeedbackControl.SubmitFeedback(FeedbackControl);
+
+            var response = FeedbackControl.GetFeedbacks();
+
+            Assert.IsNotNull(response);
+        }
+
     }
-
-    [Test]
-    public void FeedbackGetTest()
-    {
-        FeedbackControl = new FeedbackController(new WifindContext);
-
-        var Feedback = new FeedbackReg
-        {
-            user_id = null,
-            subject = "Website Down",
-            description = "Your website is down right now.",
-            rating = 2
-        };
-
-        var response = FeedbackControl.SubmitFeedback(FeedbackControl);
-
-        var response = FeedbackControl.GetFeedbacks();
-
-        Assert.IsNotNull(response);
-}
-
 }

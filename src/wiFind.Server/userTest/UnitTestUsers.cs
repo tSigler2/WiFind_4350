@@ -13,7 +13,8 @@ namespace wiFind.Server.UnitTest
         [SetUp]
         public void Setup()
         {
-            var UserControllerTest = new UserController(new WifindContext);
+            wfc = new WiFindContext();
+            var UserControllerTest = new UserController(wfc);
             var testUser = new User
                     {
                         user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
@@ -73,7 +74,7 @@ namespace wiFind.Server.UnitTest
                     };
 
             var response = UserControllerTest.UpdateUserProfile(newUpdate);
-            Assert.AreEqual("Successful update for user profile", response)
+            Assert.AreEqual("Successful update for user profile", response);
         }
 
         [Test]

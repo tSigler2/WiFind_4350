@@ -14,9 +14,8 @@ namespace wiFind.Server.UnitTest
         [SetUp]
         public void setup()
         {
-            var wifiControl = new WifiController(new WiFindContext);
-
-            
+            wfc = new WiFindContext();
+            var wifiControl = new WifiController(wfc);
         }
         
         [Test]
@@ -35,7 +34,7 @@ namespace wiFind.Server.UnitTest
                 time_listed = DateTime.UtcNow,
                 owned_by = "Cotton Eye Joe",
                 max_users = 10
-            }
+            };
 
             var response = wifiControl.AddWifi(testWifi);
 
