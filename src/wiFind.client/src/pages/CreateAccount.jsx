@@ -16,8 +16,18 @@ function CreateAccount() {
 
     const handleCreateAccount = async (e) => {
         e.preventDefault();
-        if (username === "" || email === "" || password === "" || firstName === "" || lastName === "" || dob === "" || phoneNumber === "") {
+        if (
+            username === "" ||
+            email === "" ||
+            password === "" ||
+            firstName === "" ||
+            lastName === "" ||
+            dob === "" ||
+            phoneNumber === ""
+        ) {
             setError("All fields must be filled out");
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            setError("Please enter a valid email address");
         } else {
             try {
                 const response = await fetch('https://localhost:7042/api/User/register', {
@@ -37,20 +47,15 @@ function CreateAccount() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Registration failed');
+                    const data = await response.json();
+                    throw new Error(data.message || 'Registration failed');
                 }
 
-                const data = await response.json();
-
-                localStorage.setItem("token", data.token);
-
-                // Do something with the response data
-                console.log(data);
-
+                navigate("/login");
                 setError(""); // Clear the error message
-                navigate("/"); // Redirect to the home page
+                alert("Account created successfully. Please log in."); // Show a success message
             } catch (error) {
-                setError(error.message);
+                setError(error.message || "Registration failed. Please try again later.");
             }
         }
     };
@@ -58,48 +63,48 @@ function CreateAccount() {
     return (
         <div className="login-container">
             <h2 style={{ color: "black" }}>Create Account</h2>
-            <form className="login-form" onSubmit={e => handleCreateAccount(e)}>
+            <form className="login-form" onSubmit={handleCreateAccount}>
                 <input 
                     type="text" 
                     placeholder="Username" 
                     value={username} 
-                    onChange={e => setUsername(e.target.value)} 
+                    onChange={(e) => setUsername(e.target.value)} 
                 />
                 <input 
                     type="email" 
                     placeholder="Email" 
                     value={email} 
-                    onChange={e => setEmail(e.target.value)} 
+                    onChange={(e) => setEmail(e.target.value)} 
                 />
                 <input 
                     type="password" 
                     placeholder="Password" 
                     value={password} 
-                    onChange={e => setPassword(e.target.value)} 
+                    onChange={(e) => setPassword(e.target.value)} 
                 />
                 <input 
                     type="text" 
                     placeholder="First Name" 
                     value={firstName} 
-                    onChange={e => setFirstName(e.target.value)} 
+                    onChange={(e) => setFirstName(e.target.value)} 
                 />
                 <input 
                     type="text" 
                     placeholder="Last Name" 
                     value={lastName} 
-                    onChange={e => setLastName(e.target.value)} 
+                    onChange={(e) => setLastName(e.target.value)} 
                 />
                 <input 
                     type="date" 
                     placeholder="Date of Birth" 
                     value={dob} 
-                    onChange={e => setDob(e.target.value)} 
+                    onChange={(e) => setDob(e.target.value)} 
                 />
                 <input 
                     type="text" 
                     placeholder="Phone Number" 
                     value={phoneNumber} 
-                    onChange={e => setPhoneNumber(e.target.value)} 
+                    onChange={(e) => setPhoneNumber(e.target.value)} 
                 />
                 <button className="create-account-button">Sign Up</button>
                 {error && <p className="error">{error}</p>}
@@ -112,3 +117,5 @@ function CreateAccount() {
 }
 
 export default CreateAccount;
+
+
