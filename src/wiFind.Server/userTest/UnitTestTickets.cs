@@ -4,27 +4,29 @@ using wiFind.Server.Controllers;
 using wiFind.Server.AuthModels;
 using wiFind.Server.ControlModels;
 
-namespace wiFind.Server.UnitTest;
-
-[TestFixture]
-public class TicketTests
+namespace wiFind.Server.UnitTest
 {
 
-    [Test]
-    public void TicketTest()
+    [TestFixture]
+    public class TicketTests
     {
-        ticketController = new SupportTicketController();
 
-        testTicket = new SupportTicketReg
+        [Test]
+        public void TicketTest()
         {
-            username = "testuser",
-            subject = "Terrible Service",
-            description = "Do Better"
-        };
+            ticketController = new SupportTicketController(new WifindContext);
 
-        response = ticketController.SubmitTicket(testTicket);
+            testTicket = new SupportTicketReg
+            {
+                username = "testuser",
+                subject = "Terrible Service",
+                description = "Do Better"
+            };
 
-        Assert.AreEqual("Ticket has been submitted.", response);
+            response = ticketController.SubmitTicket(testTicket);
+
+            Assert.AreEqual("Ticket has been submitted.", response);
+        }
+
     }
-
 }
