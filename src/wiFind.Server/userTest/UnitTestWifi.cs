@@ -14,13 +14,15 @@ namespace wiFind.Server.UnitTest
         [SetUp]
         public void setup()
         {
-            wfc = new WiFindContext();
-            var wifiControl = new WifiController(wfc);
+            
         }
         
         [Test]
         public void AddTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var wifiControl = new WifiController(wfc);
+
             var testWifi = new WifiReg{
                 wifi_name = "testing",
                 security = "WPA2",
@@ -44,6 +46,9 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void RemoveTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var wifiControl = new WifiController(wfc);
+
             Wifi wifi = new Wifi
             {
                 wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f",
@@ -61,12 +66,15 @@ namespace wiFind.Server.UnitTest
                 max_users = 1
             };
             var response = wifiControl.RemoveWifiListing(wifi);
-            Asser.AreEqual(response, "Successfully Removed.");
+            Assert.AreEqual(response, "Successfully Removed.");
         }
 
         [Test]
         public void EditWifiTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var wifiControl = new WifiController(wfc);
+
             Wifi wifi = new Wifi
             {
                 wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f",

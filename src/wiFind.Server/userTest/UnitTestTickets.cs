@@ -13,17 +13,17 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void TicketTest()
         {
-            wfc = new WiFindContext();
-            ticketController = new SupportTicketController(wfc);
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var ticketController = new SupportTicketController(wfc);
 
-            testTicket = new SupportTicketReg
+            var testTicket = new SupportTicketReg
             {
                 username = "testuser",
                 subject = "Terrible Service",
                 description = "Do Better"
             };
 
-            response = ticketController.SubmitTicket(testTicket);
+            var response = ticketController.SubmitTicket(testTicket);
 
             Assert.AreEqual("Ticket has been submitted.", response);
         }

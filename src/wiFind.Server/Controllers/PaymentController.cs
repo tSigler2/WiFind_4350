@@ -25,7 +25,7 @@ namespace wiFind.Server.Controllers
         }
 
         [HttpPost("purchase")]
-        public static Task<IActionResult> PurchaseCart(PaymentReg payment, Cart cart, PaymentModel paymentMod)
+        public static Task<IActionResult> PurchaseCart(PaymentReg payment, Cart cart)
         {
             if(!ModelState.IsValid) return BadRequest("Invalid Payment");
             
@@ -56,10 +56,6 @@ namespace wiFind.Server.Controllers
                 total += wifiCost;
 
                 return Ok("Wifi Bought");
-            }
-
-            var newRent = new RentModel{
-
             }
         }
     }

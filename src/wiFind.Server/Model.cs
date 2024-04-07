@@ -386,10 +386,10 @@ namespace wiFind.Server
         [Required, MaxLength(100)]
         public string security { get; set; } = "Unknown";
 
-        [Required, Range(1, 1000)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 1000)]
         public int download_speed { get; set; } = 1;
 
-        [Required, Range(1, 1000)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 1000)]
         public int upload_speed { get; set; } = 1;
 
         [Required]
@@ -420,7 +420,7 @@ namespace wiFind.Server
         // Max number of users allowed to rent this wifi.
         // Use Rents table to count how many records are associated with the wifi_id
         // then prevent users from attempting to rent this wifi if count reached max_users
-        [Required, Range(1,250)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 250)]
         public int max_users { get; set; }
 
         [JsonIgnore]
@@ -661,7 +661,7 @@ namespace wiFind.Server
         [MaxLength(500)]
         public string description { get; set; } = "";
 
-        [Required, Range(1,10)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 10)]
         public short rating { get; set; }
 
         [Required, DataType(DataType.Date)]

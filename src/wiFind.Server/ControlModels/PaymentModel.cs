@@ -2,7 +2,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace WiFind.Server.ControlModels
+
+namespace wiFind.Server.ControlModels
 {
     public class PaymentReg
     {
@@ -15,7 +16,7 @@ namespace WiFind.Server.ControlModels
         [Required, DataType(DataType.CreditCard)]
         public string ccNumber { get; set; }
 
-        [Required, Range(1, 10000)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 10000)]
         public int cvc { get; set; }
 
         [Required, MaxLength(200)]

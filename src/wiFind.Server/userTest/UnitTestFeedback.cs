@@ -13,8 +13,8 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void FeedbackSubmitTest()
         {
-            wfc = new WiFindContext();
-            FeedbackControl = new FeedbackController(wfc);
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var FeedbackControl = new FeedbackController(wfc);
 
             var Feedback = new FeedbackReg
             {
@@ -32,8 +32,8 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void FeedbackGetTest()
         {
-            wfc = new WiFindContext();
-            FeedbackControl = new FeedbackController(wfc);
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var FeedbackControl = new FeedbackController(wfc);
 
             var Feedback = new FeedbackReg
             {
@@ -49,6 +49,5 @@ namespace wiFind.Server.UnitTest
 
             Assert.IsNotNull(response);
         }
-
     }
 }

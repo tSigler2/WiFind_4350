@@ -13,7 +13,13 @@ namespace wiFind.Server.UnitTest
         [SetUp]
         public void Setup()
         {
-            wfc = new WiFindContext();
+            
+        }
+
+        [Test]
+        public void RegisterTest()
+        {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
             var UserControllerTest = new UserController(wfc);
             var testUser = new User
                     {
@@ -33,11 +39,7 @@ namespace wiFind.Server.UnitTest
                 dob = DateOnly.FromDateTime(new DateTime()),
                 phone_number = "657-8309"
             };
-        }
 
-        [Test]
-        public void RegisterTest()
-        {
             UserControllerTest.Setup(x => x.GenerateToken("username", "password")).Returns("dummy-token");
 
             var result = UserControllerTest.Register(testReg);
@@ -50,6 +52,27 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void LoginTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var UserControllerTest = new UserController(wfc);
+            var testUser = new User
+                    {
+                        user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+                        first_name = "user2",
+                        last_name = "teser",
+                        dob = DateOnly.FromDateTime(new DateTime()),
+                        phone_number = "211-1111-1111",
+                    };
+            var testReg = new UserReg
+            {
+                username = "toenail57",
+                password = "yum",
+                email = "ex@ex.org",
+                first_name = "toe",
+                last_name = "fungus",
+                dob = DateOnly.FromDateTime(new DateTime()),
+                phone_number = "657-8309"
+            };
+
             UserControllerTest.Register(testReg);
 
             var response = UserControllerTest.Login(testReg.username, testReg.password);
@@ -65,6 +88,27 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void UpdateTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var UserControllerTest = new UserController(wfc);
+            var testUser = new User
+                    {
+                        user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+                        first_name = "user2",
+                        last_name = "teser",
+                        dob = DateOnly.FromDateTime(new DateTime()),
+                        phone_number = "211-1111-1111",
+                    };
+            var testReg = new UserReg
+            {
+                username = "toenail57",
+                password = "yum",
+                email = "ex@ex.org",
+                first_name = "toe",
+                last_name = "fungus",
+                dob = DateOnly.FromDateTime(new DateTime()),
+                phone_number = "657-8309"
+            };
+
             newUpdate = new UserUpdate
                     {
                         user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
@@ -80,6 +124,27 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void RemoveUserTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var UserControllerTest = new UserController(wfc);
+            var testUser = new User
+                    {
+                        user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+                        first_name = "user2",
+                        last_name = "teser",
+                        dob = DateOnly.FromDateTime(new DateTime()),
+                        phone_number = "211-1111-1111",
+                    };
+            var testReg = new UserReg
+            {
+                username = "toenail57",
+                password = "yum",
+                email = "ex@ex.org",
+                first_name = "toe",
+                last_name = "fungus",
+                dob = DateOnly.FromDateTime(new DateTime()),
+                phone_number = "657-8309"
+            };
+
             var response = UserControllerTest.RemoveInactiveUser(testUser);
 
             Assert.AreEqual(response, "Placeholder for remove");
@@ -88,6 +153,27 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void GetInactiveUsersTest()
         {
+            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
+            var UserControllerTest = new UserController(wfc);
+            var testUser = new User
+                    {
+                        user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+                        first_name = "user2",
+                        last_name = "teser",
+                        dob = DateOnly.FromDateTime(new DateTime()),
+                        phone_number = "211-1111-1111",
+                    };
+            var testReg = new UserReg
+            {
+                username = "toenail57",
+                password = "yum",
+                email = "ex@ex.org",
+                first_name = "toe",
+                last_name = "fungus",
+                dob = DateOnly.FromDateTime(new DateTime()),
+                phone_number = "657-8309"
+            };
+
             var response = UserControllerTest.GetInactiveUsers();
 
             Assert.IsNotNull(response);
