@@ -5,6 +5,10 @@ VisualStudioVersion = 25.0.1706.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wiFind.Server", "wiFind.Server.csproj", "{45B32B62-76A2-4CD1-A292-153D990D368D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{E2F7716E-E1C3-4DAA-88DC-3C958E4E268A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userTest", "UserTest\userTest.csproj", "{A680D185-5528-4E9E-8E59-EBAF14A902EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,12 @@ Global
 		{45B32B62-76A2-4CD1-A292-153D990D368D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45B32B62-76A2-4CD1-A292-153D990D368D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45B32B62-76A2-4CD1-A292-153D990D368D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2F7716E-E1C3-4DAA-88DC-3C958E4E268A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2F7716E-E1C3-4DAA-88DC-3C958E4E268A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A680D185-5528-4E9E-8E59-EBAF14A902EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A680D185-5528-4E9E-8E59-EBAF14A902EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A680D185-5528-4E9E-8E59-EBAF14A902EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A680D185-5528-4E9E-8E59-EBAF14A902EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

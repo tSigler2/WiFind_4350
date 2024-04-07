@@ -435,7 +435,7 @@ namespace wiFind.Server
     {
         [JsonIgnore]
         [Key]
-        public string rent_id { get; set; }
+        public int rent_id { get; set; }
 
         public string? user_id {  get; set; }
 
