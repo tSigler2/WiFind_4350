@@ -8,7 +8,7 @@ namespace wiFind.Server.UnitTest
 {
 
     [TestFixture]
-    public class TicketTests
+    public class FeedbackTests
     {
         [Test]
         public void FeedbackSubmitTest()
