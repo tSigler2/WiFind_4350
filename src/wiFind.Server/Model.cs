@@ -64,7 +64,7 @@ namespace wiFind.Server
                 new User
                 {
                     user_id = "f69b8103-bf31-4cf0-a624-4f848de8a2eb",
-                    first_name = "user4",
+                    first_name = "admin3",
                     last_name = "tester",
                     dob = DateOnly.FromDateTime(new DateTime()),
                     phone_number = "444-444-4444",
@@ -150,18 +150,20 @@ namespace wiFind.Server
                 new AccountInfo
                 {
                     user_id = "f69b8103-bf31-4cf0-a624-4f848de8a2eb",
-                    username = "user4",
-                    email = "user4@example.com",
+                    username = "admin3",
+                    email = "admin3@example.com",
                     passwordHash = Utils.VarBinStrToBinaryArray("0xED8063B1DA458CC5BD9C7B84D18793B505FFE91CA8F147BEE6337BD1F2E4C9C44EDE55C77EC5DFE730D97F2F0D8D2AE15914F692C42FC8E060A4A5AA79135C64"),
                     passwordSalt = Utils.VarBinStrToBinaryArray("0x1583C3EC068A27E7925043E122FB41773C0C83F675876154DAC1F55C3BA1408D02C0933446B583BD12CC5FA46BE13B5469D421A66609AAF2DF97428B89CE578F01E6B3A74215E2663E2679C55DD345CD1D40A1E89D942407A7C936070935665AA3DC09502C560A5FC4D9A6F7936A7504CEF92755BBC0A1C73BE0D31598CC5FAF"),
+                    user_role = UserRole.AdminUser,
                 },
                 new AccountInfo
                 {
                     user_id = "ea2cef69-f132-402a-a162-e7d774388a64",
-                    username = "user5",
-                    email = "user5@example.com",
+                    username = "admin2",
+                    email = "admin2@example.com",
                     passwordHash = Utils.VarBinStrToBinaryArray("0xFA29DE8A6AE1ACAFA9D1A56A072B1FC3640DCE0770015BDBC2D42D29DBF4DAF1547840C10C28F0BB52AAE2083D9257D79C643FEB0FE703ED08E28124D1D5C0B7"),
                     passwordSalt = Utils.VarBinStrToBinaryArray("0xCC6B9204FD64DD60A75C8B2B5883A6156D4E1DF6BA77F09EA8E883F949C34569A639073DA78238453DF6A9848B751DF781AE10B9CCDD935AE5DC5A86455FDE4052FBBE3704319E70CB1B60168A903A3D0DA7908436658CFBBE774BD42E731B5855A2CD099209F55848DEAD420073728B9D0342D2B0D2A9C44DED291406844378"),
+                    user_role= UserRole.AdminTicket,
                 },
                 new AccountInfo
                 {
@@ -221,7 +223,7 @@ namespace wiFind.Server
                     curr_rate = 0.50M,
                     time_listed = DateTime.Now,
                     owned_by = "user9",
-                    max_users = 1
+                    max_users = 10
                 },
                 new Wifi
                 {
@@ -285,7 +287,7 @@ namespace wiFind.Server
                     curr_rate = 20.99M,
                     time_listed = DateTime.Now,
                     owned_by = "user3",
-                    max_users = 1
+                    max_users = 5
                 },
                 new Wifi
                 {
@@ -302,6 +304,152 @@ namespace wiFind.Server
                     time_listed = DateTime.Now,
                     owned_by = "user10",
                     max_users = 100
+                });
+            #endregion
+
+            #region RentSeed
+            modelBuilder.Entity<Rent>().HasData(
+                new Rent
+                {
+                    rent_id = "a8d15a9c-55fd-418e-bb02-c8084fab15d4",
+                    user_id = "f57d0e07-917a-47ea-86fc-eeee80ae5f13",
+                    wifi_id = "8f704d7a-7de0-4b03-8230-36cdcc6f21d0",
+                    start_time = DateTime.Now,
+                    locked_rate = 0.50M,
+                    guest_password = "abc123"
+                },
+                new Rent
+                {
+                    rent_id = "8a3c082c-d24e-4c40-842b-1b395ba32484",
+                    user_id = "f57d0e07-917a-47ea-86fc-eeee80ae5f13",
+                    wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f",
+                    start_time = DateTime.Now.AddMinutes(-30),
+                    locked_rate = 1.00M,
+                    guest_password = "surprised?"
+                }, 
+                new Rent
+                {
+                    rent_id = "e0f2ef9a-8f96-41d2-aafb-46115218a117",
+                    user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231",
+                    wifi_id = "8f704d7a-7de0-4b03-8230-36cdcc6f21d0",
+                    start_time = DateTime.Now.AddHours(-1),
+                    locked_rate = 5.50M,
+                    guest_password = "helloworld"
+                },
+                new Rent
+                {
+                    rent_id = "e0806ef7-7a42-48cb-9f31-d6538dfd3488",
+                    user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231",
+                    wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
+                    start_time = DateTime.Now.AddDays(-2),
+                    locked_rate = 0.10M,
+                    guest_password = ""
+                },
+                new Rent
+                {
+                    rent_id = "5601ce88-da39-4fa5-a5ba-573d53a8b4da",
+                    user_id = "1c96d917-98fc-402e-855e-5ddf1e5276b6",
+                    wifi_id = "1d475c5a-f088-48fc-bb73-e83c5cbd364a",
+                    start_time = DateTime.Now.AddDays(-9),
+                    end_time = DateTime.Now,
+                    locked_rate = 100M,
+                    guest_password = "PassW0T"
+                });
+            #endregion
+
+            #region FeedbackSeed
+            modelBuilder.Entity<Feedback>().HasData(
+                new Feedback
+                {
+                    feedback_id = "535079bc-8817-4f46-b6b3-f8216bf0852d",
+                    user_id = "1c96d917-98fc-402e-855e-5ddf1e5276b6",
+                    subject = "Feedback 1",
+                    description = "WiFind funds my fun in wifi.",
+                    rating = 10,
+                    date_stamp = DateOnly.FromDateTime(DateTime.Now),
+                },
+                new Feedback
+                {
+                    feedback_id = "c7e66719-826b-49aa-9304-2637ae4311ba",
+                    user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231",
+                    subject = "My Genuine Unpaid Review",
+                    description = "Useful. Try it.",
+                    rating = 10,
+                    date_stamp = DateOnly.FromDateTime(DateTime.Now),
+                },
+                new Feedback
+                {
+                    feedback_id = "dbda7ee1-d994-43a0-8080-1f41abfe4dee",
+                    user_id = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
+                    subject = "Feedback 2",
+                    description = "Review bombing because I work here and need a raise.",
+                    rating = 2,
+                    date_stamp = DateOnly.FromDateTime(DateTime.Now),
+                });
+            #endregion
+
+            #region SupportTicketSeed
+            modelBuilder.Entity<SupportTicket>().HasData(
+                new SupportTicket
+                {
+                    ticket_id = "0fc8975c-c0c4-4236-a4fe-3c6e6265867f",
+                    username = "user1",
+                    time_stamp = DateTime.Now.AddDays(-10),
+                    subject = "Concerned that TikTok is stealing my Wifi",
+                    description = "Please do something about it. ASAP. Or else I will never come here again!",
+                    status = TicketStatus.Open,
+                    assigned_to = null,
+                },
+                new SupportTicket
+                {
+                    ticket_id = "daf29cbb-7867-4063-abe7-a0e57cc5813d",
+                    username = "user6",
+                    time_stamp = DateTime.Now.AddDays(-2),
+                    subject = "Contact with wifi renter",
+                    description = "How do I contact the user renting out the StarLink wifi?",
+                    status = TicketStatus.InProgess,
+                    assigned_to = "06ed4db9-5799-4f39-85ba-3ac9c7f28729",
+                },
+                new SupportTicket
+                {
+                    ticket_id = "f636b4db-07b5-4eaf-a9cc-685ea568b82d",
+                    username = "user3",
+                    time_stamp = DateTime.Now,
+                    subject = "need to see my profit",
+                    description = "i need step by step with powerpoint slides on how to get to my revenue.",
+                    status = TicketStatus.InProgess,
+                    assigned_to = "ea2cef69-f132-402a-a162-e7d774388a64",
+                });
+            #endregion
+
+            #region PaymentInfoSeed
+            modelBuilder.Entity<PaymentInfo>().HasData(
+                new PaymentInfo
+                {
+                    payInfo_id = "3aa3d1a3-00c6-4a9d-b75b-43ab61b4c5b1",
+                    user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
+                    payment_type = "Visa",
+                    card_number = "4523 5441 2487 5516",
+                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(4)),
+                    name_on_card = "Hello World",
+                },
+                new PaymentInfo
+                {
+                    payInfo_id = "ba55b383-7ff8-44c4-b35c-3bb04b045c24",
+                    user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
+                    payment_type = "MasterCard",
+                    card_number = "5325 1730 0048 6151",
+                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(2)),
+                    name_on_card = "Hello World",
+                },
+                new PaymentInfo
+                {
+                    payInfo_id = "0ecf686c-4065-4854-a77d-0f430a498867",
+                    user_id = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
+                    payment_type = "Visa",
+                    card_number = "4523 5449 8586 0250",
+                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(1)),
+                    name_on_card = "GoodBye World",
                 });
             #endregion
         }
