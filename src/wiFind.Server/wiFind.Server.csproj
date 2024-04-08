@@ -8,6 +8,8 @@
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
     <UserSecretsId>91a2166f-61a2-40be-b765-021e9adc010d</UserSecretsId>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -30,6 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\wiFind.client\wiFind.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </ProjectReference>
   </ItemGroup>
 
