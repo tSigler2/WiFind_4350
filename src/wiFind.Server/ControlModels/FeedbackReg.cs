@@ -13,7 +13,7 @@ namespace wiFind.Server.ControlModels
         [MaxLength(500)]
         public string description { get; set; } = "";
 
-        [Required, Range(1, 10)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 10)]
         public short rating { get; set; }
     }
 }
