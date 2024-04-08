@@ -11,7 +11,7 @@ import Login from './pages/Login.jsx';
 import CreateAccount from './pages/CreateAccount.jsx';
 import Checkout from './pages/Checkout.jsx';
 import { CartProvider } from './components/CartProvider';
-
+import Profile from './pages/Profile.jsx';
 function App() {
   return (
   
@@ -31,6 +31,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         </CartProvider>
       </Router>
