@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace wiFind.Server.AuthModels
 {
@@ -26,5 +25,8 @@ namespace wiFind.Server.AuthModels
 
         [Required, DataType(DataType.PhoneNumber), MaxLength(20)]
         public string phone_number { get; set; } = "";
+
+        // only used by admin registration
+        public UserRole user_role {  get; set; }
     }
 }

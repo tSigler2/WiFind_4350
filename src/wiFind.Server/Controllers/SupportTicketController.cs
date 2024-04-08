@@ -4,10 +4,11 @@ using System.Net.WebSockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wiFind.Server.ControlModels;
+using wiFind.Server.Helpers;
 
 namespace wiFind.Server.Controllers
 {
@@ -22,13 +23,18 @@ namespace wiFind.Server.Controllers
             _wifFindContext = wifFindContext;
         }
 
-        // Gets all tickets, only used by admins
-        // TODO: Admin token validation
+        [Authorize]
         [HttpGet("alltickets")]
         public async Task<IActionResult> GetTickets()
         {
-            var ticketList = await _wifFindContext.SupportTickets.ToListAsync();
-            return Ok(ticketList);
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminTicket")
+            {
+                var ticketList = await _wifFindContext.SupportTickets.ToListAsync();
+                return Ok(ticketList);
+            }
+            return Unauthorized("Unauthorized");
+
         }
 
         [Authorize]
@@ -53,24 +59,26 @@ namespace wiFind.Server.Controllers
             return Ok("Ticket has been submitted.");
         }
 
-        // Removes tickets, only used by admins
-        // TODO: admin token validation
-        // Possibly add check for 'Complete' Status?
+        [Authorize]
         [HttpDelete("removeticket")]
         public async Task<IActionResult> RemoveTicket(SupportTicket ticket)
         {
-            var query = from t in _wifFindContext.Set<SupportTicket>() where t.ticket_id == ticket.ticket_id select t;
-            _wifFindContext.Remove(query);
-            await _wifFindContext.SaveChangesAsync();
-
-            return Ok("Ticket removed");
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminTicket")
+            {
+                var query = from t in _wifFindContext.Set<SupportTicket>() where t.ticket_id == ticket.ticket_id select t;
+                _wifFindContext.Remove(query);
+                await _wifFindContext.SaveChangesAsync();
+                return Ok("Ticket Removed.");
+            }
+            return Unauthorized("Unauthorized");
         }
 
         // Sends user email of ticket submission receipt
         private void SendEmailConfirmation(SupportTicket ticket)
         {
             // Join ticket with accountInfo to get email.
-            var query = from acctLogin in _wifFindContext.Set<UserAccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
+            var query = from acctLogin in _wifFindContext.Set<AccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
             var email = query.First();
 
             // TODO: Rest of email logic
