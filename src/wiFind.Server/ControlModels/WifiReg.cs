@@ -10,10 +10,10 @@ namespace wiFind.Server.ControlModels
         [Required, MaxLength(100)]
         public string security { get; set; } = "Unknown";
 
-        [Required, Range(1, 1000)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 1000)]
         public int download_speed { get; set; }
 
-        [Required, Range(1, 1000)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 1000)]
         public int upload_speed { get; set; }
 
         [Required]
@@ -36,7 +36,7 @@ namespace wiFind.Server.ControlModels
         [Required]
         public string owned_by { get; set; }
 
-        [Required, Range(1, 250)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 250)]
         public int max_users { get; set; }
     }
 }
