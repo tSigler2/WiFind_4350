@@ -25,18 +25,18 @@ namespace wiFind.Server.Controllers
 
         [Authorize]
         [HttpPost("purchase")]
-        public async Task<IActionResult> PurchaseCart(PurchaseModel payment, Cart cart)
+        public async Task<IActionResult> PurchaseCart(PurchaseModel payment)
         {
             if(!ModelState.IsValid) return BadRequest("Invalid Payment");
             
-            if(cart.cart.Count() == 0) return BadRequest("No Items in Cart");
+            if(payment.checkoutCart.cart.Count() == 0) return BadRequest("No Items in Cart");
 
             decimal total = 0.00M;
 
             var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == payment.username) select a.user_id;
 
             // i is the wifi's id
-            foreach(string i in cart.cart)
+            foreach(string i in payment.checkoutCart.cart)
             {
                 var wifiCost = from wifi in _wifFindContext.Set<Wifi>()
                                 where (wifi.wifi_id == i) select wifi.curr_rate;
@@ -47,7 +47,6 @@ namespace wiFind.Server.Controllers
                     user_id = userid.First(), // front end will need to pass in user's username atm. can be improved later to use id in validation token instead
                     wifi_id = i,
                     start_time = payment.start,
-                    end_time = payment.end,
                     locked_rate = wifiCost.First(),
                     //guest_password = "00000", // needs to be handled later somehow
                 };
@@ -60,7 +59,7 @@ namespace wiFind.Server.Controllers
             await _wifFindContext.SaveChangesAsync();
 
             // return total amount? 
-            return Ok("Wifi Bought. Total Cost: $" + total);
+            return Ok("Wifi Bought. Total Cost: $" + total + "per hour.");
         }
 
         [Authorize]

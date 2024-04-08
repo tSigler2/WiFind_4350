@@ -31,7 +31,6 @@ namespace wiFind.Server.ControlModels
         // added below two for logic in purchaseCart
         public DateTime start {  get; set; }
 
-        public DateTime end { get; set; }
-
+        public Cart checkoutCart { get; set; }
     }
 }
