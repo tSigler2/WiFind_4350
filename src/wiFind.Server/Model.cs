@@ -554,7 +554,7 @@ namespace wiFind.Server
         [ForeignKey("user_id")]
         public User User { get; set; }
 
-        public string? wifi_id { get; set; }
+        public string wifi_id { get; set; }
 
         [JsonIgnore]
         [ForeignKey("wifi_id")]

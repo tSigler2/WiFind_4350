@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 
 namespace wiFind.Server.ControlModels
 {
-    public class PaymentReg
+    public class PurchaseModel
     {
         [Required]
-        public string userid { get; set; }
+        public string username { get; set; }
 
         [Required]
         public string name { get; set; }
@@ -27,5 +27,11 @@ namespace wiFind.Server.ControlModels
 
         [Required]
         public DateOnly expDate { get; set; }
+
+        // added below two for logic in purchaseCart
+        public DateTime start {  get; set; }
+
+        public DateTime end { get; set; }
+
     }
 }
