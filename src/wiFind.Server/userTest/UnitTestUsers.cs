@@ -45,7 +45,9 @@ namespace wiFind.Server.UnitTest
             var result = UserControllerTest.Register(testReg);
 
             Assert.IsNotNull(result);
+
             Assert.AreEqual(200, result.StatusCode);
+
             Assert.AreEqual("dummy-token", result.Value);
         }
 
@@ -78,11 +80,11 @@ namespace wiFind.Server.UnitTest
             var response = UserControllerTest.Login(testReg.username, testReg.password);
             Assert.AreEqual(200, response.StatusCode);
 
-            var response = UserControllerTest.Login(testReg.username, "joe");
-            Assert.NotEqual(200, response.StatusCode);
+            response = UserControllerTest.Login(testReg.username, "joe");
+            Assert.AreNotEqual(200, response.StatusCode);
 
-            var response = UserControllerTest.Login("joe", testReg.password);
-            Assert.NotEqual(200, response.StatusCode);
+            response = UserControllerTest.Login("joe", testReg.password);
+            Assert.AreNotEqual(200, response.StatusCode);
         }
 
         [Test]
@@ -176,7 +178,7 @@ namespace wiFind.Server.UnitTest
 
             var response = UserControllerTest.GetInactiveUsers();
 
-            Assert.IsNotNull(response);
+            Assert.NotNull(response);
         }
     }
 }

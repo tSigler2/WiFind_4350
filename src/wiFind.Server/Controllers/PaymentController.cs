@@ -31,7 +31,7 @@ namespace wiFind.Server.Controllers
             
             if(cart.Count() == 0) return BadRequest("No Items in Cart");
 
-            float total = 0.0f;
+            decimal total = 0.00M;
 
             foreach(string i in cart)
             {
@@ -53,10 +53,10 @@ namespace wiFind.Server.Controllers
 
                 _WiFindContext.Rent.Add(rent);
 
-                total += wifiCost;
-
-                return Ok("Wifi Bought");
+                total += (decimal) wifiCost;
             }
+
+            return Ok("Wifi Bought");
         }
     }
 }

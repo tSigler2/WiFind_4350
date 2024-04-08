@@ -45,9 +45,9 @@ namespace wiFind.Server.UnitTest
 
             var response = FeedbackControl.SubmitFeedback(FeedbackControl);
 
-            var response = FeedbackControl.GetFeedbacks();
+            response = FeedbackControl.GetFeedbacks();
 
-            Assert.IsNotNull(response);
+            Assert.NotNull(response);
         }
     }
 }
