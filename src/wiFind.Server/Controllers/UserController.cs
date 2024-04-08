@@ -20,12 +20,10 @@ namespace wiFind.Server.Controllers
 
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly WiFindContext _wiFindContext;
         private IUserService _userService;
-        public UserController(ILogger<UserController> logger, WiFindContext wiFindContext, IUserService userService)
+        public UserController(WiFindContext wiFindContext, IUserService userService)
         {
-            _logger = logger;
             _wiFindContext = wiFindContext;
             _userService = userService;
         }

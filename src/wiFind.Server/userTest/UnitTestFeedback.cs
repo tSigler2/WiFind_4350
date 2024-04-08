@@ -1,8 +1,12 @@
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
+
+using wiFind.Server;
 using Microsoft.AspNetCore.Mvc;
 using wiFind.Server.Controllers;
 using wiFind.Server.AuthModels;
 using wiFind.Server.ControlModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace wiFind.Server.UnitTest
 {
@@ -10,13 +14,13 @@ namespace wiFind.Server.UnitTest
     [TestFixture]
     public class FeedbackTests
     {
+        private readonly WiFindContext _wifFindContext = null; // Use Moq.EntityFramework for testing.
         [Test]
         public void FeedbackSubmitTest()
         {
-            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
-            var FeedbackControl = new FeedbackController(wfc);
+            var FeedbackControl = new FeedbackController(_wifFindContext);
 
-            var Feedback = new FeedbackReg
+            var feedback = new FeedbackReg
             {
                 user_id = null,
                 subject = "Website Down",
@@ -24,30 +28,19 @@ namespace wiFind.Server.UnitTest
                 rating = 2
             };
 
-            var response = FeedbackControl.SubmitFeedback(FeedbackControl);
+            var response = FeedbackControl.SubmitFeedback(feedback);
 
-            Assert.AreEqual(response, "Feedback Submitted Successfully");
+            ClassicAssert.AreEqual(response, "Feedback Submitted Successfully");
         }
 
         [Test]
         public void FeedbackGetTest()
         {
-            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
-            var FeedbackControl = new FeedbackController(wfc);
+            var FeedbackControl = new FeedbackController(_wifFindContext);
 
-            var Feedback = new FeedbackReg
-            {
-                user_id = null,
-                subject = "Website Down",
-                description = "Your website is down right now.",
-                rating = 2
-            };
+            var response = FeedbackControl.GetFeedbacks();
 
-            var response = FeedbackControl.SubmitFeedback(FeedbackControl);
-
-            response = FeedbackControl.GetFeedbacks();
-
-            Assert.NotNull(response);
+            ClassicAssert.NotNull(response);
         }
     }
 }

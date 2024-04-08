@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
+
 using Microsoft.AspNetCore.Mvc;
 using wiFind.Server.Controllers;
 using wiFind.Server.AuthModels;
@@ -10,7 +12,8 @@ namespace wiFind.Server.UnitTest
     [TestFixture]
     public class WifiTests
     {
-        
+        private readonly WiFindContext _wifFindContext = null; // Use Moq.EntityFramework for testing.
+
         [SetUp]
         public void setup()
         {
@@ -20,8 +23,7 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void AddTest()
         {
-            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
-            var wifiControl = new WifiController(wfc);
+            var wifiControl = new WifiController(_wifFindContext);
 
             var testWifi = new WifiReg{
                 wifi_name = "testing",
@@ -40,14 +42,13 @@ namespace wiFind.Server.UnitTest
 
             var response = wifiControl.AddWifi(testWifi);
 
-            Assert.AreEqual(response, "Wifi listed successfully.");
+            ClassicAssert.AreEqual(response, "Wifi listed successfully.");
         }
 
         [Test]
         public void RemoveTest()
         {
-            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
-            var wifiControl = new WifiController(wfc);
+            var wifiControl = new WifiController(_wifFindContext);
 
             Wifi wifi = new Wifi
             {
@@ -66,14 +67,13 @@ namespace wiFind.Server.UnitTest
                 max_users = 1
             };
             var response = wifiControl.RemoveWifiListing(wifi);
-            Assert.AreEqual(response, "Successfully Removed.");
+            ClassicAssert.AreEqual(response, "Successfully Removed.");
         }
 
         [Test]
         public void EditWifiTest()
         {
-            var wfc = new WiFindContext(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mssql")));
-            var wifiControl = new WifiController(wfc);
+            var wifiControl = new WifiController(_wifFindContext);
 
             Wifi wifi = new Wifi
             {
@@ -94,7 +94,7 @@ namespace wiFind.Server.UnitTest
 
             var response = wifiControl.EditWifiListing(wifi);
 
-            Assert.AreEqual(response, "Placeholder at the moment");
+            ClassicAssert.AreEqual(response, "Placeholder at the moment");
         }
     }
 }
