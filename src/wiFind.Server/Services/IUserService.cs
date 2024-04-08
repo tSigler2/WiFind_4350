@@ -41,7 +41,9 @@ namespace wiFind.Server.Services
                 if (isValid)
                 {
                     var token = generateJwtToken(check);
-                    return new AuthResponse(check.username, token);
+                    // for the sake of ease on front end development, user role returned in the request.
+                    // otherwise, user_role should inside of the token
+                    return new AuthResponse(check.username, check.user_role.ToString(), token);
                 }
             }
             return null;

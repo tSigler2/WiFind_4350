@@ -11,6 +11,7 @@ using wiFind.Server.Helpers;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Services;
 using wiFind.Server.AuthModels;
+using System.Net.Sockets;
 
 namespace wiFind.Server.Controllers
 {
@@ -56,7 +57,6 @@ namespace wiFind.Server.Controllers
                 passwordHash = pHash,
                 passwordSalt = pSalt,
                 last_login = DateTime.UtcNow,
-                user_role = newUser.user_role,
             };
 
             acct.user_id = user.user_id;
@@ -64,10 +64,54 @@ namespace wiFind.Server.Controllers
             await _wiFindContext.SaveChangesAsync();
             
             var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password =  newUser.password });
-
-            return Ok(authToken);
+            AuthResponse res = new AuthResponse(newUser.username, "User", authToken.ToString());
+            return Ok(res);
         }
 
+        // Admin Registration, another admin is required to create an admin account
+        [Authorize]
+        [HttpPost("adminregister")]
+        public async Task<IActionResult> AdminRegister(UserReg newUser)
+        {
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminTicket" || context.user_role.ToString() == "AdminUser")
+            {
+                if (!ModelState.IsValid) return BadRequest("Invalid Registration");
+
+                if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
+                    return BadRequest("Email OR Username already Taken");
+
+                var (pHash, pSalt) = CreatePasswordHash(newUser.password);
+                var user = new User
+                {
+                    user_id = Guid.NewGuid().ToString(),
+                    first_name = newUser.first_name,
+                    last_name = newUser.last_name,
+                    dob = newUser.dob,
+                    phone_number = newUser.phone_number,
+                };
+                _wiFindContext.Users.Add(user);
+
+                var acct = new AccountInfo
+                {
+                    username = newUser.username,
+                    email = newUser.email,
+                    passwordHash = pHash,
+                    passwordSalt = pSalt,
+                    last_login = DateTime.UtcNow,
+                    user_role = newUser.user_role,
+                };
+
+                acct.user_id = user.user_id;
+                _wiFindContext.AccountInfos.Add(acct);
+                await _wiFindContext.SaveChangesAsync();
+
+                var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password = newUser.password });
+                AuthResponse res = new AuthResponse(newUser.username, newUser.user_role.ToString(), authToken.ToString());
+                return Ok(res);
+            }
+            return Unauthorized("Another Admin is required to register new Admins.");
+        }
 
         // Login Verification
         // Requires: User submitted a (username OR email) AND a password

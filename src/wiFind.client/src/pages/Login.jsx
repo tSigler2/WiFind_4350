@@ -25,7 +25,8 @@ function Login() {
                 }
     
                 const data = await response.json();
-    
+                localStorage.setItem("username", data.username);
+                localStorage.setItem("user_role", data.user_role);
                 localStorage.setItem("token", data.token);
     
                 setError(""); // Clear the error message

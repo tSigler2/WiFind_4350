@@ -26,6 +26,7 @@ namespace wiFind.Server.AuthModels
         [Required, DataType(DataType.PhoneNumber), MaxLength(20)]
         public string phone_number { get; set; } = "";
 
-        public UserRole user_role { get; set; } = UserRole.User;
+        // only used by admin registration
+        public UserRole user_role {  get; set; }
     }
 }
