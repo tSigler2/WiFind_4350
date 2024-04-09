@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './CreateAccount.css'; 
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer"; 
 
 function CreateAccount() {
     const [username, setUsername] = useState("");
@@ -112,6 +113,7 @@ function CreateAccount() {
             <p style={{ color: "black" }}>Already have an account? 
                 <Link to="/login" style={{ textDecoration: "none", color: "#A74D4A", marginLeft: "5px" }}>Login</Link>
             </p>
+            <Footer /> 
         </div>
     );
 }
