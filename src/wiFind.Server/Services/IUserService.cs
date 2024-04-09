@@ -12,7 +12,7 @@ namespace wiFind.Server.Services
     public interface IUserService
     {
         AuthResponse Authenticate(AuthRequest request);
-        User GetById(string id);
+        AccountInfo GetById(string id);
     }
 
     public class UserService : IUserService
@@ -28,7 +28,7 @@ namespace wiFind.Server.Services
 
         public AuthResponse Authenticate(AuthRequest request)
         {
-            var user = from accountLogin in _wifFindContext.Set<UserAccountInfo>() 
+            var user = from accountLogin in _wifFindContext.Set<AccountInfo>() 
                        where (accountLogin.username == request.username || accountLogin.email == request.username)
                        select accountLogin;
 
@@ -41,25 +41,30 @@ namespace wiFind.Server.Services
                 if (isValid)
                 {
                     var token = generateJwtToken(check);
-                    return new AuthResponse(check.user_id, token);
+                    // for the sake of ease on front end development, user role returned in the request.
+                    // otherwise, user_role should inside of the token
+                    return new AuthResponse(check.username, check.user_role.ToString(), token);
                 }
             }
             return null;
         }
 
-        public User GetById(string id)
+        public AccountInfo GetById(string id)
         {
-            return _wifFindContext.Users.FirstOrDefault(x => x.user_id == id);
+            return _wifFindContext.AccountInfos.FirstOrDefault(x => x.user_id == id);
         }
         
         // Going to need to refactor authorization to consider different roles (admin and each admin's role)
-        private string generateJwtToken(UserAccountInfo user)
+        private string generateJwtToken(AccountInfo user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.user_id) }),
+                Subject = new ClaimsIdentity(new [] { 
+                    new Claim("id", user.user_id),
+                    //new Claim(ClaimTypes.Role, user.user_role + ""),
+                }),
                 Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

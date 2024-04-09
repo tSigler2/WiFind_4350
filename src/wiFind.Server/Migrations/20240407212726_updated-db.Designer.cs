@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240407212726_updated-db")]
+    partial class updateddb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,23 +93,23 @@ namespace wiFind.Server.Migrations
                         },
                         new
                         {
-                            username = "admin3",
-                            email = "admin3@example.com",
+                            username = "user4",
+                            email = "user4@example.com",
                             last_login = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             passwordHash = new byte[] { 237, 128, 99, 177, 218, 69, 140, 197, 189, 156, 123, 132, 209, 135, 147, 181, 5, 255, 233, 28, 168, 241, 71, 190, 230, 51, 123, 209, 242, 228, 201, 196, 78, 222, 85, 199, 126, 197, 223, 231, 48, 217, 127, 47, 13, 141, 42, 225, 89, 20, 246, 146, 196, 47, 200, 224, 96, 164, 165, 170, 121, 19, 92, 100 },
                             passwordSalt = new byte[] { 21, 131, 195, 236, 6, 138, 39, 231, 146, 80, 67, 225, 34, 251, 65, 119, 60, 12, 131, 246, 117, 135, 97, 84, 218, 193, 245, 92, 59, 161, 64, 141, 2, 192, 147, 52, 70, 181, 131, 189, 18, 204, 95, 164, 107, 225, 59, 84, 105, 212, 33, 166, 102, 9, 170, 242, 223, 151, 66, 139, 137, 206, 87, 143, 1, 230, 179, 167, 66, 21, 226, 102, 62, 38, 121, 197, 93, 211, 69, 205, 29, 64, 161, 232, 157, 148, 36, 7, 167, 201, 54, 7, 9, 53, 102, 90, 163, 220, 9, 80, 44, 86, 10, 95, 196, 217, 166, 247, 147, 106, 117, 4, 206, 249, 39, 85, 187, 192, 161, 199, 59, 224, 211, 21, 152, 204, 95, 175 },
                             user_id = "f69b8103-bf31-4cf0-a624-4f848de8a2eb",
-                            user_role = 2
+                            user_role = 0
                         },
                         new
                         {
-                            username = "admin2",
-                            email = "admin2@example.com",
+                            username = "user5",
+                            email = "user5@example.com",
                             last_login = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             passwordHash = new byte[] { 250, 41, 222, 138, 106, 225, 172, 175, 169, 209, 165, 106, 7, 43, 31, 195, 100, 13, 206, 7, 112, 1, 91, 219, 194, 212, 45, 41, 219, 244, 218, 241, 84, 120, 64, 193, 12, 40, 240, 187, 82, 170, 226, 8, 61, 146, 87, 215, 156, 100, 63, 235, 15, 231, 3, 237, 8, 226, 129, 36, 209, 213, 192, 183 },
                             passwordSalt = new byte[] { 204, 107, 146, 4, 253, 100, 221, 96, 167, 92, 139, 43, 88, 131, 166, 21, 109, 78, 29, 246, 186, 119, 240, 158, 168, 232, 131, 249, 73, 195, 69, 105, 166, 57, 7, 61, 167, 130, 56, 69, 61, 246, 169, 132, 139, 117, 29, 247, 129, 174, 16, 185, 204, 221, 147, 90, 229, 220, 90, 134, 69, 95, 222, 64, 82, 251, 190, 55, 4, 49, 158, 112, 203, 27, 96, 22, 138, 144, 58, 61, 13, 167, 144, 132, 54, 101, 140, 251, 190, 119, 75, 212, 46, 115, 27, 88, 85, 162, 205, 9, 146, 9, 245, 88, 72, 222, 173, 66, 0, 115, 114, 139, 157, 3, 66, 210, 176, 210, 169, 196, 77, 237, 41, 20, 6, 132, 67, 120 },
                             user_id = "ea2cef69-f132-402a-a162-e7d774388a64",
-                            user_role = 1
+                            user_role = 0
                         },
                         new
                         {
@@ -189,35 +192,6 @@ namespace wiFind.Server.Migrations
                     b.HasIndex("user_id");
 
                     b.ToTable("Feedbacks");
-
-                    b.HasData(
-                        new
-                        {
-                            feedback_id = "535079bc-8817-4f46-b6b3-f8216bf0852d",
-                            date_stamp = new DateOnly(2024, 4, 7),
-                            description = "WiFind funds my fun in wifi.",
-                            rating = (short)10,
-                            subject = "Feedback 1",
-                            user_id = "1c96d917-98fc-402e-855e-5ddf1e5276b6"
-                        },
-                        new
-                        {
-                            feedback_id = "c7e66719-826b-49aa-9304-2637ae4311ba",
-                            date_stamp = new DateOnly(2024, 4, 7),
-                            description = "Useful. Try it.",
-                            rating = (short)10,
-                            subject = "My Genuine Unpaid Review",
-                            user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231"
-                        },
-                        new
-                        {
-                            feedback_id = "dbda7ee1-d994-43a0-8080-1f41abfe4dee",
-                            date_stamp = new DateOnly(2024, 4, 7),
-                            description = "Review bombing because I work here and need a raise.",
-                            rating = (short)2,
-                            subject = "Feedback 2",
-                            user_id = "c1c35566-4fd3-4839-aa94-d8c85ccd4943"
-                        });
                 });
 
             modelBuilder.Entity("wiFind.Server.PaymentInfo", b =>
@@ -251,35 +225,6 @@ namespace wiFind.Server.Migrations
                     b.HasIndex("user_id");
 
                     b.ToTable("PaymentInfos");
-
-                    b.HasData(
-                        new
-                        {
-                            payInfo_id = "3aa3d1a3-00c6-4a9d-b75b-43ab61b4c5b1",
-                            card_number = "4523 5441 2487 5516",
-                            exp_date = new DateOnly(2028, 4, 7),
-                            name_on_card = "Hello World",
-                            payment_type = "Visa",
-                            user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5"
-                        },
-                        new
-                        {
-                            payInfo_id = "ba55b383-7ff8-44c4-b35c-3bb04b045c24",
-                            card_number = "5325 1730 0048 6151",
-                            exp_date = new DateOnly(2026, 4, 7),
-                            name_on_card = "Hello World",
-                            payment_type = "MasterCard",
-                            user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5"
-                        },
-                        new
-                        {
-                            payInfo_id = "0ecf686c-4065-4854-a77d-0f430a498867",
-                            card_number = "4523 5449 8586 0250",
-                            exp_date = new DateOnly(2025, 4, 7),
-                            name_on_card = "GoodBye World",
-                            payment_type = "Visa",
-                            user_id = "c1c35566-4fd3-4839-aa94-d8c85ccd4943"
-                        });
                 });
 
             modelBuilder.Entity("wiFind.Server.Rent", b =>
@@ -313,58 +258,6 @@ namespace wiFind.Server.Migrations
                     b.HasIndex("wifi_id");
 
                     b.ToTable("Rents");
-
-                    b.HasData(
-                        new
-                        {
-                            rent_id = "a8d15a9c-55fd-418e-bb02-c8084fab15d4",
-                            end_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            guest_password = "abc123",
-                            locked_rate = 0.50m,
-                            start_time = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1319),
-                            user_id = "f57d0e07-917a-47ea-86fc-eeee80ae5f13",
-                            wifi_id = "8f704d7a-7de0-4b03-8230-36cdcc6f21d0"
-                        },
-                        new
-                        {
-                            rent_id = "8a3c082c-d24e-4c40-842b-1b395ba32484",
-                            end_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            guest_password = "surprised?",
-                            locked_rate = 1.00m,
-                            start_time = new DateTime(2024, 4, 7, 20, 54, 51, 753, DateTimeKind.Local).AddTicks(1323),
-                            user_id = "f57d0e07-917a-47ea-86fc-eeee80ae5f13",
-                            wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f"
-                        },
-                        new
-                        {
-                            rent_id = "e0f2ef9a-8f96-41d2-aafb-46115218a117",
-                            end_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            guest_password = "helloworld",
-                            locked_rate = 5.50m,
-                            start_time = new DateTime(2024, 4, 7, 20, 24, 51, 753, DateTimeKind.Local).AddTicks(1327),
-                            user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231",
-                            wifi_id = "8f704d7a-7de0-4b03-8230-36cdcc6f21d0"
-                        },
-                        new
-                        {
-                            rent_id = "e0806ef7-7a42-48cb-9f31-d6538dfd3488",
-                            end_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            guest_password = "",
-                            locked_rate = 0.10m,
-                            start_time = new DateTime(2024, 4, 5, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1332),
-                            user_id = "2a4aebdc-1a4f-47ee-b415-e4a6797f4231",
-                            wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71"
-                        },
-                        new
-                        {
-                            rent_id = "5601ce88-da39-4fa5-a5ba-573d53a8b4da",
-                            end_time = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1337),
-                            guest_password = "PassW0T",
-                            locked_rate = 100m,
-                            start_time = new DateTime(2024, 3, 29, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1335),
-                            user_id = "1c96d917-98fc-402e-855e-5ddf1e5276b6",
-                            wifi_id = "1d475c5a-f088-48fc-bb73-e83c5cbd364a"
-                        });
                 });
 
             modelBuilder.Entity("wiFind.Server.SupportTicket", b =>
@@ -403,37 +296,6 @@ namespace wiFind.Server.Migrations
                     b.HasIndex("username");
 
                     b.ToTable("SupportTickets");
-
-                    b.HasData(
-                        new
-                        {
-                            ticket_id = "0fc8975c-c0c4-4236-a4fe-3c6e6265867f",
-                            description = "Please do something about it. ASAP. Or else I will never come here again!",
-                            status = 0,
-                            subject = "Concerned that TikTok is stealing my Wifi",
-                            time_stamp = new DateTime(2024, 3, 28, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1390),
-                            username = "user1"
-                        },
-                        new
-                        {
-                            ticket_id = "daf29cbb-7867-4063-abe7-a0e57cc5813d",
-                            assigned_to = "06ed4db9-5799-4f39-85ba-3ac9c7f28729",
-                            description = "How do I contact the user renting out the StarLink wifi?",
-                            status = 1,
-                            subject = "Contact with wifi renter",
-                            time_stamp = new DateTime(2024, 4, 5, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1396),
-                            username = "user6"
-                        },
-                        new
-                        {
-                            ticket_id = "f636b4db-07b5-4eaf-a9cc-685ea568b82d",
-                            assigned_to = "ea2cef69-f132-402a-a162-e7d774388a64",
-                            description = "i need step by step with powerpoint slides on how to get to my revenue.",
-                            status = 1,
-                            subject = "need to see my profit",
-                            time_stamp = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1399),
-                            username = "user3"
-                        });
                 });
 
             modelBuilder.Entity("wiFind.Server.User", b =>
@@ -499,7 +361,7 @@ namespace wiFind.Server.Migrations
                             user_id = "f69b8103-bf31-4cf0-a624-4f848de8a2eb",
                             amt_made = 0.00m,
                             dob = new DateOnly(1, 1, 1),
-                            first_name = "admin3",
+                            first_name = "user4",
                             last_name = "tester",
                             phone_number = "444-444-4444"
                         },
@@ -619,11 +481,11 @@ namespace wiFind.Server.Migrations
                             wifi_id = "91720bff-b076-4b89-9a6e-36eebd68403f",
                             curr_rate = 0.50m,
                             download_speed = 500,
-                            max_users = 10,
+                            max_users = 1,
                             owned_by = "user9",
                             radius = 10f,
                             security = "SurpriseMe",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1223),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8201),
                             upload_speed = 500,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -639,7 +501,7 @@ namespace wiFind.Server.Migrations
                             owned_by = "user1",
                             radius = 10f,
                             security = "Unsecure",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1273),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8250),
                             upload_speed = 300,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -655,7 +517,7 @@ namespace wiFind.Server.Migrations
                             owned_by = "user1",
                             radius = 10f,
                             security = "More Secure",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1276),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8252),
                             upload_speed = 200,
                             wifi_latitude = 0f,
                             wifi_longitude = 0f,
@@ -671,7 +533,7 @@ namespace wiFind.Server.Migrations
                             owned_by = "user3",
                             radius = 10f,
                             security = "WPA2",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1278),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8255),
                             upload_speed = 444,
                             wifi_latitude = 10f,
                             wifi_longitude = 10f,
@@ -683,11 +545,11 @@ namespace wiFind.Server.Migrations
                             wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
                             curr_rate = 20.99m,
                             download_speed = 100,
-                            max_users = 5,
+                            max_users = 1,
                             owned_by = "user3",
                             radius = 10f,
                             security = "WPA3",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1281),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8258),
                             upload_speed = 50,
                             wifi_latitude = 100f,
                             wifi_longitude = -100f,
@@ -703,7 +565,7 @@ namespace wiFind.Server.Migrations
                             owned_by = "user10",
                             radius = 10f,
                             security = "Unsecured",
-                            time_listed = new DateTime(2024, 4, 7, 21, 24, 51, 753, DateTimeKind.Local).AddTicks(1285),
+                            time_listed = new DateTime(2024, 4, 7, 17, 27, 25, 925, DateTimeKind.Local).AddTicks(8260),
                             upload_speed = 300,
                             wifi_latitude = 10f,
                             wifi_longitude = -5f,

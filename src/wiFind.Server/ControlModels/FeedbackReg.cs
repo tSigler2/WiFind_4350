@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace wiFind.Server.ControlModels
 {
@@ -14,7 +13,7 @@ namespace wiFind.Server.ControlModels
         [MaxLength(500)]
         public string description { get; set; } = "";
 
-        [Required, Range(1, 10)]
+        [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 10)]
         public short rating { get; set; }
     }
 }

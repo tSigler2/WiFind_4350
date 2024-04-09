@@ -11,6 +11,7 @@ using wiFind.Server.Helpers;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Services;
 using wiFind.Server.AuthModels;
+using System.Net.Sockets;
 
 namespace wiFind.Server.Controllers
 {
@@ -19,12 +20,10 @@ namespace wiFind.Server.Controllers
 
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly WiFindContext _wiFindContext;
         private IUserService _userService;
-        public UserController(ILogger<UserController> logger, WiFindContext wiFindContext, IUserService userService)
+        public UserController(WiFindContext wiFindContext, IUserService userService)
         {
-            _logger = logger;
             _wiFindContext = wiFindContext;
             _userService = userService;
         }
@@ -35,7 +34,7 @@ namespace wiFind.Server.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Registration");
 
-            if (await _wiFindContext.UserAccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
+            if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
                 return BadRequest("Email OR Username already Taken");
 
             var (pHash, pSalt) = CreatePasswordHash(newUser.password);
@@ -46,27 +45,71 @@ namespace wiFind.Server.Controllers
                 last_name = newUser.last_name,
                 dob = newUser.dob,
                 phone_number = newUser.phone_number,
-                last_login = DateTime.UtcNow,
             };
             _wiFindContext.Users.Add(user);
 
-            var acct = new UserAccountInfo
+            var acct = new AccountInfo
             {
                 username = newUser.username,
                 email = newUser.email,
                 passwordHash = pHash,
-                passwordSalt = pSalt
+                passwordSalt = pSalt,
+                last_login = DateTime.UtcNow,
             };
 
             acct.user_id = user.user_id;
-            _wiFindContext.UserAccountInfos.Add(acct);
+            _wiFindContext.AccountInfos.Add(acct);
             await _wiFindContext.SaveChangesAsync();
             
             var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password =  newUser.password });
-
-            return Ok(authToken);
+            AuthResponse res = new AuthResponse(newUser.username, "User", authToken.ToString());
+            return Ok(res);
         }
 
+        // Admin Registration, another admin is required to create an admin account
+        [Authorize]
+        [HttpPost("adminregister")]
+        public async Task<IActionResult> AdminRegister(UserReg newUser)
+        {
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminTicket" || context.user_role.ToString() == "AdminUser")
+            {
+                if (!ModelState.IsValid) return BadRequest("Invalid Registration");
+
+                if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
+                    return BadRequest("Email OR Username already Taken");
+
+                var (pHash, pSalt) = CreatePasswordHash(newUser.password);
+                var user = new User
+                {
+                    user_id = Guid.NewGuid().ToString(),
+                    first_name = newUser.first_name,
+                    last_name = newUser.last_name,
+                    dob = newUser.dob,
+                    phone_number = newUser.phone_number,
+                };
+                _wiFindContext.Users.Add(user);
+
+                var acct = new AccountInfo
+                {
+                    username = newUser.username,
+                    email = newUser.email,
+                    passwordHash = pHash,
+                    passwordSalt = pSalt,
+                    last_login = DateTime.UtcNow,
+                    user_role = newUser.user_role,
+                };
+
+                acct.user_id = user.user_id;
+                _wiFindContext.AccountInfos.Add(acct);
+                await _wiFindContext.SaveChangesAsync();
+
+                var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password = newUser.password });
+                AuthResponse res = new AuthResponse(newUser.username, newUser.user_role.ToString(), authToken.ToString());
+                return Ok(res);
+            }
+            return Unauthorized("Another Admin is required to register new Admins.");
+        }
 
         // Login Verification
         // Requires: User submitted a (username OR email) AND a password
@@ -101,24 +144,34 @@ namespace wiFind.Server.Controllers
         // Below is for admins only. TODO: Figure out how to do admin token validations and roles
 
         // Returns Users who have been inactive for more than 3 months, only used by admins
+        [Authorize]
         [HttpGet("inactiveusers")]
-        public async Task<IEnumerable<User>> GetInactiveUsers()
+        public async Task<IActionResult> GetInactiveUsers()
         {
-            var inactiveTime = DateTime.UtcNow.AddMonths(-3);
-            var query = from user in _wiFindContext.Set<User>() where user.last_login < inactiveTime select user;
-            return query.AsEnumerable();
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminUser")
+            {
+                var inactiveTime = DateTime.UtcNow.AddMonths(-3);
+                var query = from user in _wiFindContext.Set<AccountInfo>() where user.last_login < inactiveTime select user;
+                var listings = await query.ToListAsync();
+                return Ok(listings);
+            }
+            return Unauthorized("Unauthorized");
         }
 
-        // Remove Users, only used by admins
+        [Authorize]
         [HttpDelete("removeusers")]
-        public async Task<IActionResult> RemoveInactiveUser(User user)
+        public async Task<IActionResult> RemoveInactiveUser(string username)
         {
-            //TODO: function for token validation. if wrong, return Unauthorized.
-            // Optional: could add extra check to ensure user is truly inactive for over 3 months
-            var query = from u in _wiFindContext.Set<User>() where u.user_id == user.user_id select u;
-            _wiFindContext.Remove(query);
-            await _wiFindContext.SaveChangesAsync(); 
-            return Ok("Placeholder for remove");
+            var context = (AccountInfo)HttpContext.Items["User"];
+            if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminUser")
+            {
+                var query = from u in _wiFindContext.Set<AccountInfo>() where u.username == username select u;
+                _wiFindContext.Remove(query);
+                await _wiFindContext.SaveChangesAsync();
+                return Ok("User Removed");
+            }
+            return Unauthorized("Unauthorized");
         }
 
         private (byte[] pHash, byte[] pSalt) CreatePasswordHash(string password)
