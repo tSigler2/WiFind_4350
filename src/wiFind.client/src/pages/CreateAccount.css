@@ -38,3 +38,14 @@ body {
     color: red;
   }
   
+  .footer-container {
+    background-color: #a74d4a;
+    color: #fff;
+    padding: 0 px;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center; 
+}
