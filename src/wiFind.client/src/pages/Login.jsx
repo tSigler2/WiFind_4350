@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Footer from '../components/Footer';
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -61,6 +62,7 @@ function Login() {
                     <p style={{ textAlign: "center", marginTop: "15px", color: "#333", fontSize: "14px" }}>Don't have an account? <Link to="/create-account" style={{ color: "#A74D4A", textDecoration: "none" }}>Register Here</Link></p>
                 </div>
             </div>
+            <Footer /> {/* Include the Footer component */}
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { CartContext } from "../components/CartContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./List.css"; // Import List page-specific styles
+import Footer from '../components/Footer'; 
 
 function List() {
     const [wifiListings, setWifiListings] = useState();
@@ -24,7 +25,6 @@ function List() {
         if (!response.ok) {
             navigate("/login"); // Redirect to login for token
             throw new Error(`HTTP error! status: ${response.status}`);
-
         }
 
         const data = await response.json();
@@ -52,14 +52,16 @@ function List() {
         ));
 
     return (
-        <div className="list-container">
-            <h1 className="list-title">Find Your Plan</h1>
-            <div className="list-row">
-                {contents}
+        <div>
+            <div className="list-container">
+                <h1 className="list-title">Find Your Plan</h1>
+                <div className="list-row">
+                    {contents}
+                </div>
             </div>
+            <Footer /> {/* Include the Footer component */}
         </div>
     );
 }
 
 export default List;
-

@@ -1,9 +1,12 @@
 /* List.css */
 
 .list-container {
-    padding: 50px;
-    background-color: #F9F9F9;
-    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .list-title {
@@ -32,6 +35,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: left;
+    display: inline-table; /* Ensure inline-table display */
+    background-image: linear-gradient(to bottom right, #fff, #f5f5f5); /* Gradient background */
 }
 
 .list-card-content {
@@ -64,8 +69,8 @@
 .list-card-button {
     padding: 10px 20px;
     background-color: transparent;
-    color: #A74D4A; 
-    border: 2px solid #A74D4A; 
+    color: #a74d4a;
+    border: 2px solid #a74d4a;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -73,27 +78,4 @@
 
 .list-card-button:hover {
     background-color: rgba(167, 77, 74, 0.1);
-}
-
-.list-card {
-    background-image: linear-gradient(to bottom right, #fff, #f5f5f5);
-}
-
-.list-card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.list-container,
-.list-row {
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.list-card {
-    display: inline-table;
 }

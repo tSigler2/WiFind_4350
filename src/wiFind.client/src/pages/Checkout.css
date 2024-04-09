@@ -1,0 +1,60 @@
+/* Checkout.css */
+
+.checkout-container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px; /* Adjust the max-width as needed */
+}
+
+.checkout-title {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 30px;
+    text-align: center; /* Center the title */
+}
+
+.checkout-item {
+    background-color: #f9f9f9; /* Lighter background color */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    margin-bottom: 20px;
+}
+
+.checkout-item-content {
+    padding: 20px;
+}
+
+.checkout-item-name {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.checkout-item-description {
+    margin-bottom: 10px;
+    color: #666; /* Darker description color */
+}
+
+.checkout-item-price {
+    font-size: 16px;
+    font-weight: bold; /* Make the price bold */
+}
+
+.quantity-selector {
+    margin-bottom: 10px;
+}
+
+.checkout-button {
+    padding: 10px 20px;
+    background-color: #a74d4a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block; /* Center the button */
+    margin: 20px auto; /* Center the button */
+}
+
+.checkout-button:hover {
+    background-color: #913f3d;
+}
