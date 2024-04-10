@@ -23,9 +23,9 @@
 
 | New | In Progress | Done |
 | --- | ----------- | ---- |
-| Best Architecture |  | Database Setup - Continued |
+| Best Architecture | Frontend Logic Implemenation | Database Setup - Continued |
 | Architectural Model - Physical View | Backend Logic Implementation | Architectural Model - Logical View |
-| Tests 7-9 Tables | Frontend Logic Implemenation | Architectural Model - Development View |
-| Tests 10-12 Tables | Tests 4-6 Tables | Architectural Model - Process View |
-| Tests 13-15 Tables |  | Architectural Model -  |
-|  |  | Tests 1-3 Tables |
+| Tests 7-9 Tables |  | Architectural Model - Development View |
+|  |  | Architectural Model - Process View |
+|  |  | Architectural Model - Logical View |
+|  |  | Tests Tables |
