@@ -12,10 +12,10 @@ namespace wiFind.Server.Services
 {
     public interface IUserService
     {
-        AuthResponse Authenticate(AuthRequest request);
+        AuthResponse Authenticate(AuthRequest request, AccountInfo acct);
         AccountInfo GetById(string id);
 
-        Task<AuthResponse> userRegistration(UserReg newUser);
+        Task<AuthRequest> userRegistration(UserReg newUser);
     }
 
     public class UserService : IUserService
@@ -28,21 +28,14 @@ namespace wiFind.Server.Services
             _appSettings = appSettings.Value;
             _wiFindContext = wiFindContext;
         }
-
-        public async Task<AuthResponse> userRegistration(UserReg newUser)
-        {
-            var existingAcct = from a in _wiFindContext.Set<AccountInfo>() 
-                               where (a.username ==  newUser.username || a.email == newUser.email ) 
-                               select a;
-            if (existingAcct != null)
-                return null;
-
+        public async Task<AuthRequest> userRegistration(UserReg newUser)
+        {   
             var (pHash, pSalt) = CreatePasswordHash(newUser.password);
             var user = new User
             {
                 user_id = Guid.NewGuid().ToString(),
                 first_name = newUser.first_name,
-                last_name = newUser.last_name,
+                last_name = newUser.last_name, 
                 dob = newUser.dob,
                 phone_number = newUser.phone_number,
             };
@@ -55,36 +48,29 @@ namespace wiFind.Server.Services
                 passwordHash = pHash,
                 passwordSalt = pSalt,
                 last_login = DateTime.UtcNow,
+                user_role = newUser.user_role,
             };
 
             acct.user_id = user.user_id;
             _wiFindContext.AccountInfos.Add(acct);
             await _wiFindContext.SaveChangesAsync();
 
-            var res = Authenticate(new AuthRequest { username = newUser.username, password = newUser.password });
+            //var res = Authenticate(new AuthRequest { username = newUser.username, password = newUser.password });
+            var res = new AuthRequest(newUser.username, newUser.password);
             return res;
         }
 
-        public AuthResponse Authenticate(AuthRequest request)
+        public AuthResponse Authenticate(AuthRequest request, AccountInfo account)
         {
-            var user = from accountLogin in _wiFindContext.Set<AccountInfo>() 
-                       where (accountLogin.username == request.username || accountLogin.email == request.username)
-                       select accountLogin;
-
-            if (user != null)
-            {
-                // check if login credentials are valid, then generate a token for the user
-                var check = user.First();
-                bool isValid = VerifyPassword(check.passwordHash, check.passwordSalt, request.password);
+                bool isValid = VerifyPassword(account.passwordHash, account.passwordSalt, request.password);
 
                 if (isValid)
                 {
-                    var token = generateJwtToken(check);
+                    var token = generateJwtToken(account);
                     // for the sake of ease on front end development, user role returned in the request.
                     // otherwise, user_role should inside of the token
-                    return new AuthResponse(check.username, check.user_role.ToString(), token);
+                    return new AuthResponse(account.username, account.user_role.ToString(), token);
                 }
-            }
             return null;
         }
 
@@ -93,7 +79,6 @@ namespace wiFind.Server.Services
             return _wiFindContext.AccountInfos.FirstOrDefault(x => x.user_id == id);
         }
         
-        // Going to need to refactor authorization to consider different roles (admin and each admin's role)
         private string generateJwtToken(AccountInfo user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

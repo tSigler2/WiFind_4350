@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using wiFindServerTest;
+using System.Data.Entity;
 
 namespace wiFind.Server.UnitTest
 {
@@ -23,24 +24,28 @@ namespace wiFind.Server.UnitTest
         [Test]
         public async Task RegisterTestSuccessful()
         {
-            var userData = Utils.generateDummyUsers().AsQueryable();
-            var accountInfoData = Utils.generateDummyAccountInfo().AsQueryable();
+            var users = Utils.generateDummyUsers();
+            var userData = users.AsQueryable();
 
-            var mockUserDbSet = new Mock<DbSet<User>>();
+            var accounts = Utils.generateDummyAccountInfo();
+            var accountInfoData = accounts.AsQueryable();
+
+            var mockUserDbSet = new Mock<Microsoft.EntityFrameworkCore.DbSet<User>>();
             mockUserDbSet.As<IDbAsyncEnumerable<User>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<User>(userData.GetEnumerator()));
 
-            mockUserDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<User>(userData.Provider));
+            mockUserDbSet.As<IQueryable<User>>().Setup(m=>m.Provider).Returns(new TestDbAsyncQueryProvider<User>(userData.Provider));
             mockUserDbSet.As<IQueryable<User>>().Setup(m=>m.Expression).Returns(userData.Expression);
             mockUserDbSet.As<IQueryable<User>>().Setup(m=>m.ElementType).Returns(userData.ElementType);
             mockUserDbSet.As<IQueryable<User>>().Setup(m=>m.GetEnumerator()).Returns(userData.GetEnumerator());
+            mockUserDbSet.Setup(d => d.Add(It.IsAny<User>())).Callback<User>((s) => users.Add(s));
 
-            var mockAccountInfoDbSet = new Mock<DbSet<AccountInfo>>();
-            mockUserDbSet.As<IDbAsyncEnumerable<AccountInfo>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<AccountInfo>(accountInfoData.GetEnumerator()));
-
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<AccountInfo>(accountInfoData.Provider));
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Expression).Returns(accountInfoData.Expression);
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.ElementType).Returns(accountInfoData.ElementType);
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.GetEnumerator()).Returns(accountInfoData.GetEnumerator());
+            var mockAccountInfoDbSet = new Mock<Microsoft.EntityFrameworkCore.DbSet<AccountInfo>>();
+            mockAccountInfoDbSet.As<IDbAsyncEnumerable<AccountInfo>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<AccountInfo>(accountInfoData.GetEnumerator()));
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<AccountInfo>(accountInfoData.Provider));
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Expression).Returns(accountInfoData.Expression);
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.ElementType).Returns(accountInfoData.ElementType);
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.GetEnumerator()).Returns(accountInfoData.GetEnumerator());
+            mockAccountInfoDbSet.Setup(d => d.Add(It.IsAny<AccountInfo>())).Callback<AccountInfo>((s) => accounts.Add(s));
 
             var mockWiFindContext = new Mock<WiFindContext>(new DbContextOptions<WiFindContext>());
             mockWiFindContext.Setup(c => c.Users).Returns(mockUserDbSet.Object);
@@ -58,32 +63,41 @@ namespace wiFind.Server.UnitTest
             };
 
             var _userService = new UserService(appSettings, mockWiFindContext.Object);
-            var test = await _userService.userRegistration(u);
+            var test = _userService.userRegistration(u);
 
+            var addedAccountInfo = accounts.ElementAt(10);
+            var addedUser = users.ElementAt(10);
+            
             ClassicAssert.IsNotNull(test);
+            ClassicAssert.True(addedAccountInfo.username == "Test");
+            ClassicAssert.True(addedUser.user_id == addedAccountInfo.user_id);
         }
 
         [Test]
-        public async Task RegisterTestUnSuccessful()
+        public void LoginTest()
         {
-            var userData = Utils.generateDummyUsers().AsQueryable();
-            var accountInfoData = Utils.generateDummyAccountInfo().AsQueryable();
+            var users = Utils.generateDummyUsers();
+            var userData = users.AsQueryable();
 
-            var mockUserDbSet = new Mock<DbSet<User>>();
+            var accounts = Utils.generateDummyAccountInfo();
+            var accountInfoData = accounts.AsQueryable();
+
+            var mockUserDbSet = new Mock<Microsoft.EntityFrameworkCore.DbSet<User>>();
             mockUserDbSet.As<IDbAsyncEnumerable<User>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<User>(userData.GetEnumerator()));
 
             mockUserDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<User>(userData.Provider));
             mockUserDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(userData.Expression);
             mockUserDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(userData.ElementType);
             mockUserDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(userData.GetEnumerator());
+            mockUserDbSet.Setup(d => d.Add(It.IsAny<User>())).Callback<User>((s) => users.Add(s));
 
-            var mockAccountInfoDbSet = new Mock<DbSet<AccountInfo>>();
-            mockUserDbSet.As<IDbAsyncEnumerable<AccountInfo>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<AccountInfo>(accountInfoData.GetEnumerator()));
-
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<AccountInfo>(accountInfoData.Provider));
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Expression).Returns(accountInfoData.Expression);
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.ElementType).Returns(accountInfoData.ElementType);
-            mockUserDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.GetEnumerator()).Returns(accountInfoData.GetEnumerator());
+            var mockAccountInfoDbSet = new Mock<Microsoft.EntityFrameworkCore.DbSet<AccountInfo>>();
+            mockAccountInfoDbSet.As<IDbAsyncEnumerable<AccountInfo>>().Setup(m => m.GetAsyncEnumerator()).Returns(new TestDbAsyncEnumerator<AccountInfo>(accountInfoData.GetEnumerator()));
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<AccountInfo>(accountInfoData.Provider));
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.Expression).Returns(accountInfoData.Expression);
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.ElementType).Returns(accountInfoData.ElementType);
+            mockAccountInfoDbSet.As<IQueryable<AccountInfo>>().Setup(m => m.GetEnumerator()).Returns(accountInfoData.GetEnumerator());
+            mockAccountInfoDbSet.Setup(d => d.Add(It.IsAny<AccountInfo>())).Callback<AccountInfo>((s) => accounts.Add(s));
 
             var mockWiFindContext = new Mock<WiFindContext>(new DbContextOptions<WiFindContext>());
             mockWiFindContext.Setup(c => c.Users).Returns(mockUserDbSet.Object);
@@ -93,58 +107,23 @@ namespace wiFind.Server.UnitTest
             {
                 first_name = "Test",
                 last_name = "Test",
-                email = "user1@test.com",
+                email = "Test@test.com",
                 dob = DateOnly.FromDateTime(DateTime.Now),
                 phone_number = "777-111-2222",
-                username = "user1",
-                password = "Testing",
+                username = "Test",
+                password = "Test",
             };
 
             var _userService = new UserService(appSettings, mockWiFindContext.Object);
-            var test = await _userService.userRegistration(u);
+            var test = _userService.userRegistration(u);
 
-            ClassicAssert.IsNull(test);
+            var addedAccountInfo = accounts.ElementAt(10);
+            var addedUser = users.ElementAt(10);
+
+            ClassicAssert.IsNotNull(test);
+            ClassicAssert.True(addedAccountInfo.username == "Test");
+            ClassicAssert.True(addedUser.user_id == addedAccountInfo.user_id);
         }
-        //[Test]
-        //public void LoginTest()
-        //{
-        //    var UserControllerTest = new UserController(_wifFindContext, _userService);
-        //    //var testUser = new User
-        //    //        {
-        //    //            user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
-        //    //            first_name = "user2",
-        //    //            last_name = "teser",
-        //    //            dob = DateOnly.FromDateTime(new DateTime()),
-        //    //            phone_number = "211-1111-1111",
-        //    //        };
-        //    var testReg = new UserReg
-        //    {
-        //        username = "toenail57",
-        //        password = "yum",
-        //        email = "ex@ex.org",
-        //        first_name = "toe",
-        //        last_name = "fungus",
-        //        dob = DateOnly.FromDateTime(new DateTime()),
-        //        phone_number = "111-657-8309"
-        //    };
-        //    var testLogin1 = new AuthRequest { username = "toenail57", password = "yum" };
-        //    var testLogin2 = new AuthRequest { username = "joyfuljoye", password = "yum" };
-        //    var testLogin3 = new AuthRequest { username = "toenail57", password = "cheezyYUM" };
-
-        //    // make sure the entry is created (might fail if the entry already exists though)
-        //    UserControllerTest.Register(testReg);
-
-        //    UserControllerTest.Request.Headers["token"] = generateDummyJwtToken();
-
-        //    var response = UserControllerTest.Login(testLogin1);
-        //    ClassicAssert.IsTrue(response.GetType() == typeof(OkObjectResult));
-
-        //    response = UserControllerTest.Login(testLogin2);
-        //    ClassicAssert.IsFalse(response.GetType() == typeof(OkObjectResult));
-
-        //    response = UserControllerTest.Login(testLogin3);
-        //    ClassicAssert.IsFalse(response.GetType() == typeof(OkObjectResult));
-        //}
 
         //[Test]
         //public void UpdateTest()
