@@ -1,11 +1,4 @@
-﻿using System;
-using System.Net.WebSockets;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wiFind.Server.Helpers;
 using wiFind.Server.ControlModels;
@@ -23,13 +16,23 @@ namespace wiFind.Server.Controllers
             _wifFindContext = wifFindContext;
         }
 
-        // Returns All Wifi Listing
+        // Returns All Wifi Listing, Do not include wifi ids in listing cards.
         [Authorize]
         [HttpGet("wifilistings")]
         public async Task<IActionResult> GetListings()
         {
             var listings = await _wifFindContext.Wifis.ToListAsync();
             return Ok(listings);
+        }
+
+        // Get User's Listed Wifi by username
+        [Authorize]
+        [HttpGet("listuserswifis")]
+        public async Task<IActionResult> ListUsersWifis(UsernameInput username)
+        {
+            var listedWifis = from w in _wifFindContext.Set<Wifi>() where w.owned_by == username.Username select w;
+            var asListObj = await listedWifis.ToListAsync();
+            return Ok(asListObj);
         }
 
         // Adds Wifi to listing
@@ -66,33 +69,48 @@ namespace wiFind.Server.Controllers
         // Parameter consideration: using just wifi_id instead of the entire object
         [Authorize]
         [HttpDelete("removewifi")]
-        public async Task<IActionResult> RemoveWifiListing(Wifi wifi)
+        public async Task<IActionResult> RemoveWifiListing(WifiUpdate wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
             if (query.Count() > 0)
                 return BadRequest("Cannot remove Wifi from listing if users are still using.");
 
-            _wifFindContext.Wifis.Remove(wifi);
+            var deletion = from w in _wifFindContext.Set<Wifi>() where wifi.wifi_id.Equals(w.wifi_id) select w;
+            _wifFindContext.Wifis.Remove(deletion.First());
             await _wifFindContext.SaveChangesAsync();
             return Ok("Successfully Removed.");
         }
 
-        // Edit Wifi, for users that want to edit information on the wifi listed
-        // Condition: User cannot reduce max number of user allowed IF RENTS count > new max
-        // Change to Post later? Not sure why but HttpPost causes middleware error (Swagger)
+        // Front end needs to pass the follow arguments hidden from user.
+        // Requires that you show the user's listings first then allow them to pick the wifi to edit so you can select that wifi's id
+        // wifi_id, time_listed, owned_by (which is the username). These should be the same as the object was initially
         [Authorize]
         [HttpPost("updatewifi")]
-        public async Task<IActionResult> EditWifiListing(Wifi wifi)
+        public async Task<IActionResult> EditWifiListing(WifiUpdate wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
-            if (query.Count() > wifi.max_users)
-                return BadRequest("Cannot update max users when current renters are greater.");
 
-            // Same as updateUserProfile, need to have wifi_id to override existing Wifi object...
-            _wifFindContext.Wifis.Add(wifi);
+            var updatedWifi = new Wifi
+            {
+                wifi_id = wifi.wifi_id,
+                wifi_name = wifi.wifi_name, 
+                security = wifi.security,
+                download_speed = wifi.download_speed,
+                upload_speed = wifi.upload_speed,
+                wifi_latitude = wifi.wifi_latitude,
+                wifi_longitude = wifi.wifi_longitude,
+                radius = wifi.radius,
+                wifi_source = wifi.wifi_source,
+                curr_rate = wifi.curr_rate,
+                time_listed = wifi.time_listed,
+                owned_by = wifi.owned_by,
+                max_users = wifi.max_users,
+            };
+
+            _wifFindContext.Wifis.Update(updatedWifi);
             await _wifFindContext.SaveChangesAsync();
 
-            return Ok("Placeholder at the moment");
+            return Ok("Wifi Id: " + wifi.wifi_id +" has been updated.");
         }
 
     }

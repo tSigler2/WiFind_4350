@@ -490,7 +490,6 @@ namespace wiFind.Server
 
     public class Wifi
     {
-        [JsonIgnore]
         [Key]
         public string wifi_id { get; set;}
 
