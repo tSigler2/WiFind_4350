@@ -64,8 +64,9 @@ namespace wiFind.Server.Controllers
 
         [Authorize]
         [HttpGet("getRenteeView")]
-        public async Task<IActionResult> GetRenteeView(string username)
+        public async Task<IActionResult> GetRenteeView(UsernameInput usernameInput)
         {
+            var username = usernameInput.Username;
             // this query could be improved via joining accountlogin and rent table but atm this is just for fast results
             var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == username) select a.user_id;
             var rentedWifi = from r in _wifFindContext.Set<Rent>() where (r.user_id == userid.First()) select r;

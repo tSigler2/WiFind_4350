@@ -103,123 +103,112 @@ namespace wiFind.Server.UnitTest
             mockWiFindContext.Setup(c => c.Users).Returns(mockUserDbSet.Object);
             mockWiFindContext.Setup(a => a.AccountInfos).Returns(mockAccountInfoDbSet.Object);
 
-            var u = new UserReg()
-            {
-                first_name = "Test",
-                last_name = "Test",
-                email = "Test@test.com",
-                dob = DateOnly.FromDateTime(DateTime.Now),
-                phone_number = "777-111-2222",
-                username = "Test",
-                password = "Test",
-            };
+            var u = new AuthRequest("user1","testing");
+            var a = accounts.ElementAt(0);
 
             var _userService = new UserService(appSettings, mockWiFindContext.Object);
-            var test = _userService.userRegistration(u);
-
-            var addedAccountInfo = accounts.ElementAt(10);
-            var addedUser = users.ElementAt(10);
+            var test = _userService.Authenticate(u, a);
 
             ClassicAssert.IsNotNull(test);
-            ClassicAssert.True(addedAccountInfo.username == "Test");
-            ClassicAssert.True(addedUser.user_id == addedAccountInfo.user_id);
+            ClassicAssert.AreNotEqual(test.token, "");
         }
 
-        //[Test]
-        //public void UpdateTest()
-        //{
-        //    var UserControllerTest = new UserController(_wifFindContext, _userService);
-        //    UserControllerTest.Request.Headers["token"] = generateDummyJwtToken();
+       // [Test]
+       // public void UpdateTest()
+       // {
+       //     var UserControllerTest = new UserController(_wifFindContext, _userService);
+       //     UserControllerTest.Request.Headers["token"] = generateDummyJwtToken();
 
-        //    //var testUser = new User
-        //    //        {
-        //    //            user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
-        //    //            first_name = "user2",
-        //    //            last_name = "teser",
-        //    //            dob = DateOnly.FromDateTime(new DateTime()),
-        //    //            phone_number = "211-1111-1111",
-        //    //        };
-        //    //var testReg = new UserReg
-        //    //{
-        //    //    username = "toenail57",
-        //    //    password = "yum",
-        //    //    email = "ex@ex.org",
-        //    //    first_name = "toe",
-        //    //    last_name = "fungus",
-        //    //    dob = DateOnly.FromDateTime(new DateTime()),
-        //    //    phone_number = "657-8309"
-        //    //};
+       //     //var testUser = new User
+       //     //        {
+       //     //            user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+       //     //            first_name = "user2",
+       //     //            last_name = "teser",
+       //     //            dob = DateOnly.FromDateTime(new DateTime()),
+       //     //            phone_number = "211-1111-1111",
+       //     //        };
+       //     //var testReg = new UserReg
+       //     //{
+       //     //    username = "toenail57",
+       //     //    password = "yum",
+       //     //    email = "ex@ex.org",
+       //     //    first_name = "toe",
+       //     //    last_name = "fungus",
+       //     //    dob = DateOnly.FromDateTime(new DateTime()),
+       //     //    phone_number = "657-8309"
+       //     //};
 
-        //    var newUpdate = new UserUpdate
-        //            {
-        //                user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
-        //                first_name = "user10:)",
-        //                last_name = "UNITtester",
-        //                phone_number = "000-000-0000",
-        //            };
+       //     var newUpdate = new UserUpdate
+       //     {
+       //         user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
+       //         first_name = "user10:)",
+       //         last_name = "UNITtester",
+       //         phone_number = "000-000-0000",
+       //     };
 
-        //    var response = UserControllerTest.UpdateUserProfile(newUpdate);
-        //    //ClassicAssert.AreEqual("Successful update for user profile", response);
-        //    ClassicAssert.IsTrue(response.GetType() == typeof(OkObjectResult));
-        //}
+       //     var response = UserControllerTest.UpdateUserProfile(newUpdate);
+       //     //ClassicAssert.AreEqual("Successful update for user profile", response);
+       //     ClassicAssert.IsTrue(response.GetType() == typeof(OkObjectResult));
+       // }
 
-        // caveats of this test: 1) account info must exist. 2) User Role: AdminUser OR AdminTicketUser is required which involves the HTTPContext.
-        // currently, this test is underconstruction and will not work as of yet.
-        //[Test]
-        //public void RemoveUserTest()
-        //{
-        //    var UserControllerTest = new UserController(_wifFindContext, _userService);
-        //    var testUser = new User
-        //            {
-        //                user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
-        //                first_name = "user2",
-        //                last_name = "teser",
-        //                dob = DateOnly.FromDateTime(new DateTime()),
-        //                phone_number = "211-1111-1111",
-        //            };
-        //    var testReg = new UserReg
-        //    {
-        //        username = "toenail57",
-        //        password = "yum",
-        //        email = "ex@ex.org",
-        //        first_name = "toe",
-        //        last_name = "fungus",
-        //        dob = DateOnly.FromDateTime(new DateTime()),
-        //        phone_number = "657-8309"
-        //    };
+       // caveats of this test: 1) account info must exist. 2) User Role: AdminUser OR AdminTicketUser is required which involves the HTTPContext.
+       // currently, this test is underconstruction and will not work as of yet.
 
-        //    var response = UserControllerTest.RemoveInactiveUser("toenail57");
+       //[Test]
+       // public void RemoveUserTest()
+       // {
+       //     var UserControllerTest = new UserController(_wifFindContext, _userService);
+       //     var testUser = new User
+       //     {
+       //         user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+       //         first_name = "user2",
+       //         last_name = "teser",
+       //         dob = DateOnly.FromDateTime(new DateTime()),
+       //         phone_number = "211-1111-1111",
+       //     };
+       //     var testReg = new UserReg
+       //     {
+       //         username = "toenail57",
+       //         password = "yum",
+       //         email = "ex@ex.org",
+       //         first_name = "toe",
+       //         last_name = "fungus",
+       //         dob = DateOnly.FromDateTime(new DateTime()),
+       //         phone_number = "657-8309"
+       //     };
 
-        //    ClassicAssert.AreEqual(response, "Placeholder for remove");
-        //}
+       //     var response = UserControllerTest.RemoveInactiveUser("toenail57");
 
-        // currently, this test will not work, refer to removeusertest() Reason #2
-        //[Test]
-        //public void GetInactiveUsersTest()
-        //{
-        //    var UserControllerTest = new UserController(_wifFindContext, _userService);
-        //    var testUser = new User
-        //            {
-        //                user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
-        //                first_name = "user2",
-        //                last_name = "teser",
-        //                dob = DateOnly.FromDateTime(new DateTime()),
-        //                phone_number = "211-1111-1111",
-        //            };
-        //    var testReg = new UserReg
-        //    {
-        //        username = "toenail57",
-        //        password = "yum",
-        //        email = "ex@ex.org",
-        //        first_name = "toe",
-        //        last_name = "fungus",
-        //        dob = DateOnly.FromDateTime(new DateTime()),
-        //        phone_number = "657-8309"
-        //    };
+       //     ClassicAssert.AreEqual(response, "Placeholder for remove");
+       // }
 
-        //    var response = UserControllerTest.GetInactiveUsers();
+       // currently, this test will not work, refer to removeusertest() Reason #2
+       // [Test]
+       // public void GetInactiveUsersTest()
+       // {
+       //     var UserControllerTest = new UserController(_wifFindContext, _userService);
+       //     var testUser = new User
+       //     {
+       //         user_id = "35ced7de-6cde-4d80-abc7-fb5d86179912",
+       //         first_name = "user2",
+       //         last_name = "teser",
+       //         dob = DateOnly.FromDateTime(new DateTime()),
+       //         phone_number = "211-1111-1111",
+       //     };
+       //     var testReg = new UserReg
+       //     {
+       //         username = "toenail57",
+       //         password = "yum",
+       //         email = "ex@ex.org",
+       //         first_name = "toe",
+       //         last_name = "fungus",
+       //         dob = DateOnly.FromDateTime(new DateTime()),
+       //         phone_number = "657-8309"
+       //     };
 
-        //    ClassicAssert.NotNull(response);
-        //}
+       //     var response = UserControllerTest.GetInactiveUsers();
+
+       //     ClassicAssert.NotNull(response);
+       // }
     }
 }

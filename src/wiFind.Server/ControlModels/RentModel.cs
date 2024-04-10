@@ -10,7 +10,7 @@ namespace wiFind.Server.ControlModels
         [Required]
         public string rentID { get; set; }
 
-        [Required]
+        [Required, JsonIgnore]
         public string? userID { get; set; }
 
         [Required]

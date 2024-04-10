@@ -60,6 +60,7 @@ namespace wiFind.Server.Services
             return res;
         }
 
+
         public AuthResponse Authenticate(AuthRequest request, AccountInfo account)
         {
                 bool isValid = VerifyPassword(account.passwordHash, account.passwordSalt, request.password);
@@ -123,5 +124,7 @@ namespace wiFind.Server.Services
 
             return true;
         }
+        
+        // User helper functions END
     }
 }
