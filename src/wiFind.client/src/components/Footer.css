@@ -5,23 +5,28 @@
     color: #fff;
     padding: 20px;
     text-align: center;
-    width: 100%; 
-    position: fixed; 
-    bottom: 0; 
-    left: 0; 
-    right: 0; 
+    height: auto; /* Remove fixed height to accommodate content */
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .footer-container p {
     margin: 0;
 }
-
 .social-icons {
     display: flex;
     justify-content: center;
 }
 
 .social-icon {
-    color: #fff;
-    margin: 0 10px;
+    color: #fff; /* Change the color as needed */
+    margin: 0 10px; /* Adjust the margin to add spacing between icons */
+}
+/* Center the copyright text */
+.copyright {
+    display: flex;
+    justify-content: center;
 }
