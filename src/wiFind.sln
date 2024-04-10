@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		run_db.sh = run_db.sh
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wiFindServerTest", "wiFindServerTest\wiFindServerTest.csproj", "{721A7BD2-0417-4EDD-9134-B0BDBA26B45A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D89D69D6-EB27-4A5E-9495-E8E30C3FD402}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{721A7BD2-0417-4EDD-9134-B0BDBA26B45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{721A7BD2-0417-4EDD-9134-B0BDBA26B45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{721A7BD2-0417-4EDD-9134-B0BDBA26B45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{721A7BD2-0417-4EDD-9134-B0BDBA26B45A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

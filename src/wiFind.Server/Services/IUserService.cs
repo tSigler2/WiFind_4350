@@ -31,7 +31,10 @@ namespace wiFind.Server.Services
 
         public async Task<AuthResponse> userRegistration(UserReg newUser)
         {
-            if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
+            var existingAcct = from a in _wiFindContext.Set<AccountInfo>() 
+                               where (a.username ==  newUser.username || a.email == newUser.email ) 
+                               select a;
+            if (existingAcct != null)
                 return null;
 
             var (pHash, pSalt) = CreatePasswordHash(newUser.password);
