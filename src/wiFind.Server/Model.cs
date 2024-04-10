@@ -22,13 +22,13 @@ namespace wiFind.Server
 {
     public class WiFindContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Wifi> Wifis { get; set; }
-        public DbSet<Rent> Rents { get; set; }
-        public DbSet<PaymentInfo> PaymentInfos { get; set; }
-        public DbSet<AccountInfo> AccountInfos { get; set; }
-        public DbSet<SupportTicket> SupportTickets { get; set; }
-        public DbSet<Feedback> Feedbacks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Wifi> Wifis { get; set; }
+        public virtual  DbSet<Rent> Rents { get; set; }
+        public virtual DbSet<PaymentInfo> PaymentInfos { get; set; }
+        public virtual DbSet<AccountInfo> AccountInfos { get; set; }
+        public virtual DbSet<SupportTicket> SupportTickets { get; set; }
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
 
         public string DbPath { get; }
         public WiFindContext(DbContextOptions<WiFindContext> options) : base(options) { }

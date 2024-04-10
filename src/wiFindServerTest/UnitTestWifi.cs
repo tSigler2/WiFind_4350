@@ -73,7 +73,7 @@ namespace wiFind.Server.UnitTest
         [Test]
         public void EditWifiTest()
         {
-            var wifiControl = new WifiController(_wifFindContext);
+            private readonly WiFindContext _wifFindContext = null; // Use Moq.EntityFramework for testing.
 
             Wifi wifi = new Wifi
             {
