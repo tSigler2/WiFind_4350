@@ -1,8 +1,8 @@
-// Checkout.jsx
 import React, { useContext } from 'react';
 import { CartContext } from '../components/CartContext';
 import './Checkout.css'; // Import Checkout page-specific styles
-import Footer from '../components/Footer'; // Import Footer component
+import Footer from '../components/Footer'; 
+import PaymentForm from '../components/PaymentForm'; 
 
 function Checkout() {
   const { cart } = useContext(CartContext);
@@ -35,11 +35,12 @@ function Checkout() {
               </div>
             ))}
             <div className="total-price">Total Price: ${totalPrice.toFixed(2)}</div>
+            <PaymentForm /> {/* Include the PaymentForm component */}
             <button className="checkout-button">Proceed to Checkout</button>
           </div>
         )}
       </div>
-      <Footer /> {/* Include the Footer component */}
+      <Footer /> 
     </div>
   );
 }
