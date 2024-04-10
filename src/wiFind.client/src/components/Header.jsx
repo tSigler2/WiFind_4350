@@ -2,7 +2,10 @@ import React from 'react';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'; 
+import logo from '../images/logo-transparent.png';
+
+
 function Header() {
     const token = localStorage.getItem("token");
     const navigate = useNavigate(); // Get the navigate function
@@ -17,9 +20,9 @@ function Header() {
 
     return (
         <header className="header">
-        <nav className="navbar">
+        <nav className="navbar"> 
             <Link to="/" className='navbar__title'>
-                WiFi Finder & Rentals
+            <img src={logo} alt="Logo" className="logo" />
             </Link>
             <div className="navbar__links">
                 <Link to="/rent">Rent</Link>
