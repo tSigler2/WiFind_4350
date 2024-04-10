@@ -1,41 +1,24 @@
-Instructions for Docker DB Set Up
 
-PreReqs: 
-	1. Have Docker installed and running.
-	2. VS Installer should show you have "ASP.NET and web development", "Azure Development", ".NET Desktop development"
-	3. You have NuGet Packet Manager
-	4. Have the following NuGet Packages:
-		1) Microsoft.AspNetCore.SpaProxy
-		2) Microsoft.EntityFrameworkCore.SqlServer
-		3) Microsoft.EntityFrameworkCore.Tools
-		4) Swashbuckle.AspNetCore
 
-1) Create a new branch from main (In GitHub) and build the build.
-2) Open Powershell terminal and copy the command in "run_db.sh" in Solution Items
-3) Check Docker containers if "wifindthesql" and run it.
-4) Open Azure Data Studio
-5) Go to New then New connnection.
-6) Change input type to Connection String.
-7) Go back to VS, wiFind.Server, Connected Services and open Secrets.json (right click and choose manage)
-8) Copy the content in the string.
-9) Open Azure Data Studio and paste it into connection string. Connect.
-	- It won't work if you dont have the container running.
 
-10) Go back to VS and go to the NuGet Packet Manager Console.
+
+Instructions for Running with Project with DB
+
+1) Clone project from GitHub via 'Open in Visual Studio'. Complete the cloning process.
+2) Double Click on wiFind.sln to build the solution (client and server projects). Wait until this process is done because it will take a long time.
+3) Go into Docker and Pause the container 'vs' that Visual Studio automatically made for you.
+
+4) Open Developer Powershell terminal and copy the command in "run_db.sh" in Solution Items. Wait for this to finish because it will take forever too.
+5) Check Docker containers if "wifindthesql" and that it is running.
+
+6) In VS, open the packet manager console.
 	- (Tools -> NuGet Packet Manager -> Packet Manager Console)
 
-11) Type Update-Database into the console.
-	- Doing this will use the latest Migration file (found in the Migrations folder)
-	- When db models are changed, these migrations makes it easier to change the db.
-	- Sometimes, you may need to manually drop the tables in Azure Data Studio before you can update to a newer Migration. (First, Try 'Update-Database 0' to reset the database.)
+7) Type 'EntityFrameworkCore\Update-Database' into the console. You should expect a pause then some long log messages. For this to work, you do need to have docker connected.
+	- If there's an error message then reach out to me because I'd have to read error messages again.
 
-12) Go back to Azure Data Studio and refresh your view.
-13) The tables will be under Databases -> System Databases -> master -> Tables.
-	- the project's table is called dbo._ (like dbo.Users)
+Optional for Visualization in Azure Data Studio
 
-14) Go back to VS and run the project. Open the client side link.
-15) Some User objects are made as a test when the front end is opened.
-16) Go back to Azure Data Studio, right click dbo.Users and choose "Select top 1000".
-	- This runs a sql query on Users table and you should see some records with Ids.
-
-TODO: DB seed
+1) Open Azure Data Studio. Click New Connection. Choose Input type Connection String.
+2) Copy Paste "Server=localhost, 1433; User Id=SA; Password=SQueaL4w1f1nd!; Integrated Security=False; MultipleActiveResultSets=True; TrustServerCertificate=True" and Connect.
+	- if there is an issue, use input type parameters and use the string above to figure out which arguments belong where.
