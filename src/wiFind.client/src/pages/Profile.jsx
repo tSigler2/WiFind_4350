@@ -1,73 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-function Profile() {
-    const [user, setUser] = useState(null);
-    const [rentedWifi, setRentedWifi] = useState(null);
-    const navigate = useNavigate();
+const Profile = () => {
+  const [userId, setUserId] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-    useEffect(() => {
-        // Fetch the user data and rented Wi-Fi when the component mounts
-        /*
-        fetch('/api/user', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => setUser(data));
-
-        fetch('/api/rentedWifi', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => setRentedWifi(data));
-        */
-    }, []);
-
-    const handleUpdateAccount = (newData) => {
-        // Update the user data
-        /*
-        fetch('/api/user', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(newData)
-        })
-        .then(response => response.json())
-        .then(data => setUser(data));
-        */
-    };
-
-    const handleLogout = () => {
-        // Clear the token and navigate to the login page
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
-
-    if (!user || !rentedWifi) {
-        // If the data hasn't loaded yet, render a loading message
-        return <div>Loading...</div>;
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUserId(user.user_id);
+      setFirstName(user.first_name);
+      setLastName(user.last_name);
+      setPhoneNumber(user.phone_number);
     }
+  }, []);
 
-    return (
-        <div>
-            <h1>Profile</h1>
-            <h2>Your Account</h2>
-            <AccountForm user={user} onUpdate={handleUpdateAccount} />
-            <h2>Your Rented Wi-Fi</h2>
-            <WifiList wifi={rentedWifi} />
-            <button onClick={handleLogout}>Logout</button>
-        </div>
-    );
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch('https://localhost:7042/api/User/updateprofile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id:  "15ced7de-6cde-4d80-abc7-fb5d86179912",
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+      }),
+    });
+
+    if (response.ok) {
+      alert('Profile updated successfully');
+    } else {
+      alert('Error updating profile');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        First Name:
+        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+      </label>
+      <label>
+        Last Name:
+        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+      </label>
+      <label>
+        Phone Number:
+        <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+      </label>
+      <button type="submit">Update Profile</button>
+    </form>
+  );
+};
 
 export default Profile;
