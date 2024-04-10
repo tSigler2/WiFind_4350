@@ -1,14 +1,17 @@
-// Checkout.jsx
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../components/CartContext';
-import './Checkout.css'; // Import Checkout page-specific styles
-import Footer from '../components/Footer'; // Import Footer component
+import { useNavigate } from 'react-router-dom';
+import './Checkout.css';
+import Footer from '../components/Footer';
+import PaymentForm from '../components/PaymentForm';
 
 function Checkout() {
-  const { cart } = useContext(CartContext);
+  const { cart, removeFromCart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   // Calculate total price
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce((total, item) => total + item.curr_rate, 0);
 
   return (
     <div>
@@ -20,26 +23,18 @@ function Checkout() {
           <div>
             {cart.map((item, index) => (
               <div key={index} className="checkout-item">
-                <h2>{item.name}</h2>
-                <p>{item.description}</p>
-                <p>Price: ${item.price}</p>
-                <div className="quantity-selector">
-                  Quantity: 
-                  <input 
-                    type="number" 
-                    value={item.quantity} 
-                    onChange={(e) => console.log(e.target.value)} // Implement quantity change logic
-                    min="1" 
-                  />
-                </div>
+                <h2>{item.wifi_name}</h2>
+                <p>Rate: ${item.curr_rate}</p>
+                <button onClick={() => removeFromCart(item)}>Remove from Cart</button>
               </div>
             ))}
             <div className="total-price">Total Price: ${totalPrice.toFixed(2)}</div>
-            <button className="checkout-button">Proceed to Checkout</button>
+            <button className="checkout-button" onClick={() => setShowPaymentForm(true)}>Proceed to Checkout</button>
+            {showPaymentForm && <PaymentForm />}
           </div>
         )}
       </div>
-      <Footer /> {/* Include the Footer component */}
+      <Footer />
     </div>
   );
 }

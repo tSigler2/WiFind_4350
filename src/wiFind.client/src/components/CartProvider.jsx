@@ -8,8 +8,12 @@ export function CartProvider({ children }) {
     setCart(prevCart => [...prevCart, item]);
   }
 
+  function removeFromCart(itemToRemove) {
+    setCart(prevCart => prevCart.filter(item => item.wifi_name !== itemToRemove.wifi_name));
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
