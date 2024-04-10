@@ -34,35 +34,8 @@ namespace wiFind.Server.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Registration");
 
-            if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
-                return BadRequest("Email OR Username already Taken");
-
-            var (pHash, pSalt) = CreatePasswordHash(newUser.password);
-            var user = new User
-            {
-                user_id = Guid.NewGuid().ToString(),
-                first_name = newUser.first_name,
-                last_name = newUser.last_name,
-                dob = newUser.dob,
-                phone_number = newUser.phone_number,
-            };
-            _wiFindContext.Users.Add(user);
-
-            var acct = new AccountInfo
-            {
-                username = newUser.username,
-                email = newUser.email,
-                passwordHash = pHash,
-                passwordSalt = pSalt,
-                last_login = DateTime.UtcNow,
-            };
-
-            acct.user_id = user.user_id;
-            _wiFindContext.AccountInfos.Add(acct);
-            await _wiFindContext.SaveChangesAsync();
-            
-            var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password =  newUser.password });
-            AuthResponse res = new AuthResponse(newUser.username, "User", authToken.ToString());
+            var res = await _userService.userRegistration(newUser);
+            if (res == null) return BadRequest("Email or Username has already been taken.");
             return Ok(res);
         }
 
