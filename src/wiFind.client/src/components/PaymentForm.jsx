@@ -47,7 +47,70 @@ function PaymentForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-           
+            <label>
+                Username:
+                <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                Full Name:
+                <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                Credit Card Number:
+                <input
+                    type="text"
+                    name="ccNumber"
+                    value={formData.ccNumber}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                CVC:
+                <input
+                    type="text"
+                    name="cvc"
+                    value={formData.cvc}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                Address:
+                <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                Zip Code:
+                <input
+                    type="text"
+                    name="zipCode"
+                    value={formData.zipCode}
+                    onChange={handleChange}
+                />
+            </label>
+            <label>
+                Expiry Date:
+                <input
+                    type="text"
+                    name="expDate"
+                    value={formData.expDate}
+                    onChange={handleChange}
+                />
+            </label>
+            <button type="submit">Submit Payment</button>
         </form>
     );
 }
