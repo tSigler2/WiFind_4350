@@ -25,7 +25,7 @@
 | --- | ----------- | ---- |
 | Best Architecture | Frontend Logic Implemenation | Database Setup - Continued |
 | Architectural Model - Physical View | Backend Logic Implementation | Architectural Model - Logical View |
-| Tests 7-9 Tables |  | Architectural Model - Development View |
+|  |  | Architectural Model - Development View |
 |  |  | Architectural Model - Process View |
 |  |  | Architectural Model - Logical View |
 |  |  | Tests Tables |
