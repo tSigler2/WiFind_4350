@@ -33,13 +33,18 @@ namespace wiFind.Server.Controllers
         public async Task<IActionResult> Register(UserReg newUser)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Registration");
+            var accountExists = await Queries.hasExistingAccount(newUser, _wiFindContext);
+            if (accountExists) { return BadRequest("Username or Email has already been taken."); }
+            newUser.user_role = UserRole.User;
 
-            var res = await _userService.userRegistration(newUser);
-            if (res == null) return BadRequest("Email or Username has already been taken.");
-            return Ok(res);
+            var resNoToken = await _userService.userRegistration(newUser);
+            var getAccountInfo = await Queries.getAccountInfoByUsernameOrEmail(resNoToken, _wiFindContext);
+            var accountToValidate = getAccountInfo.First();
+            var resWithToken = _userService.Authenticate(resNoToken, accountToValidate);
+            return Ok(resWithToken);
         }
 
-        // Admin Registration, another admin is required to create an admin account
+        // Admin Registration, another admin is required to create an admin account, user_role is needed in UserReg.
         [Authorize]
         [HttpPost("adminregister")]
         public async Task<IActionResult> AdminRegister(UserReg newUser)
@@ -48,38 +53,16 @@ namespace wiFind.Server.Controllers
             if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminTicket" || context.user_role.ToString() == "AdminUser")
             {
                 if (!ModelState.IsValid) return BadRequest("Invalid Registration");
+                if (newUser.user_role == null) return BadRequest("Please designate the user role.");
 
-                if (await _wiFindContext.AccountInfos.AnyAsync(a => (a.email == newUser.email || a.username == newUser.username)))
-                    return BadRequest("Email OR Username already Taken");
-
-                var (pHash, pSalt) = CreatePasswordHash(newUser.password);
-                var user = new User
-                {
-                    user_id = Guid.NewGuid().ToString(),
-                    first_name = newUser.first_name,
-                    last_name = newUser.last_name,
-                    dob = newUser.dob,
-                    phone_number = newUser.phone_number,
-                };
-                _wiFindContext.Users.Add(user);
-
-                var acct = new AccountInfo
-                {
-                    username = newUser.username,
-                    email = newUser.email,
-                    passwordHash = pHash,
-                    passwordSalt = pSalt,
-                    last_login = DateTime.UtcNow,
-                    user_role = newUser.user_role,
-                };
-
-                acct.user_id = user.user_id;
-                _wiFindContext.AccountInfos.Add(acct);
-                await _wiFindContext.SaveChangesAsync();
-
-                var authToken = _userService.Authenticate(new AuthRequest { username = newUser.username, password = newUser.password });
-                AuthResponse res = new AuthResponse(newUser.username, newUser.user_role.ToString(), authToken.ToString());
-                return Ok(res);
+                var accountExists = await Queries.hasExistingAccount(newUser, _wiFindContext);
+                if (accountExists) return BadRequest("Username or Email has already been taken");
+                 
+                var resNoToken = await _userService.userRegistration(newUser);
+                var getAccountInfo = await Queries.getAccountInfoByUsernameOrEmail(resNoToken, _wiFindContext);
+                var accountToValidate = getAccountInfo.First();
+                var resWithToken = _userService.Authenticate(resNoToken, accountToValidate);
+                return Ok(resWithToken);
             }
             return Unauthorized("Another Admin is required to register new Admins.");
         }
@@ -89,7 +72,9 @@ namespace wiFind.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(AuthRequest credentials)
         {
-            var response = _userService.Authenticate(credentials);
+            var getAccountInfo = await Queries.getAccountInfoByUsernameOrEmail(credentials, _wiFindContext);
+            var accountToValidate = getAccountInfo.First();
+            var response = _userService.Authenticate(credentials, accountToValidate);
             if (response == null) return BadRequest(new { message = "Login Credentials is incorrect." });
             return Ok(response);
         }
@@ -145,20 +130,6 @@ namespace wiFind.Server.Controllers
                 return Ok("User Removed");
             }
             return Unauthorized("Unauthorized");
-        }
-
-        private (byte[] pHash, byte[] pSalt) CreatePasswordHash(string password)
-        {   
-
-            byte[] salt;
-            byte[] hash;
-
-            using (var hmac = new HMACSHA512())
-            {
-                salt = hmac.Key;
-                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            }
-            return (hash, salt);
         }
     }
 }
