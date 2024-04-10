@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../components/CartContext';
+import { useNavigate } from 'react-router-dom';
 import './Checkout.css';
 import Footer from '../components/Footer';
+import PaymentForm from '../components/PaymentForm';
 
 function Checkout() {
   const { cart, removeFromCart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.curr_rate, 0);
@@ -25,7 +29,8 @@ function Checkout() {
               </div>
             ))}
             <div className="total-price">Total Price: ${totalPrice.toFixed(2)}</div>
-            <button className="checkout-button">Proceed to Checkout</button>
+            <button className="checkout-button" onClick={() => setShowPaymentForm(true)}>Proceed to Checkout</button>
+            {showPaymentForm && <PaymentForm />}
           </div>
         )}
       </div>
