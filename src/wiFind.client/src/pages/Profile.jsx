@@ -19,25 +19,33 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('https://localhost:7042/api/User/updateprofile', {
-      method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
-      },
-      body: JSON.stringify({
-        username:  localStorage.getItem('username'),
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: phoneNumber,
-      }),
-    });
+    //const response = await fetch('https://localhost:7042/api/User/updateprofile', {
+    //  method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/json',
+    //        'Authorization': 'Bearer ' + localStorage.getItem("token")
+    //  },
+    //  body: JSON.stringify({
+    //    username:  localStorage.getItem('username'),
+    //    first_name: firstName,
+    //    last_name: lastName,
+    //    phone_number: phoneNumber,
+    //  }),
+    //});
 
-    if (response.ok) {
-      alert('Profile updated successfully');
-    } else {
-      alert('Error updating profile');
-    }
+    //if (response.ok) {
+    //  alert('Profile updated successfully');
+    //} else {
+    //  alert('Error updating profile');
+    //  }
+      var data = JSON.stringify({
+          username: localStorage.getItem('username'),
+          first_name: firstName,
+          last_name: lastName,
+          phone_number: phoneNumber,
+      });
+      localStorage.setItem("updateUserItem", data);
+      alert("Check application local storage if this item was saved as updateUserItem");
   };
 
   return (

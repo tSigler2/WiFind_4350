@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './CreateAccount.css'; 
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer"; 
+import * as Placeholders from '../placeholders/placeholders.jsx'
 
 function CreateAccount() {
     const [username, setUsername] = useState("");
@@ -31,29 +33,32 @@ function CreateAccount() {
             setError("Please enter a valid email address");
         } else {
             try {
-                const response = await fetch('https://localhost:7042/api/User/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password,
-                        first_name: firstName,
-                        last_name: lastName,
-                        dob,
-                        phone_number: phoneNumber
-                    })
-                });
+                //const response = await fetch('https://localhost:7042/api/User/register', {
+                //    method: 'POST',
+                //    headers: {
+                //        'Content-Type': 'application/json'
+                //    },
+                //    body: JSON.stringify({
+                //        username,
+                //        email,
+                //        password,
+                //        first_name: firstName,
+                //        last_name: lastName,
+                //        dob,
+                //        phone_number: phoneNumber
+                //    })
+                //});
 
-                if (!response.ok) {
-                    throw new Error(response.status == 400? 'Username or Email already exists.' : 'Registration failed');
-                }
-
-                navigate("/login");
+                //if (!response.ok) {
+                //    throw new Error(response.status == 400? 'Username or Email already exists.' : 'Registration failed');
+                //}
+                //const data = await response.json();
+                const data = Placeholders.user6loginSucess;
+                localStorage.setItem("username", data.username);
+                localStorage.setItem("user_role", data.user_role);
+                localStorage.setItem("token", data.token);
+                navigate("/");
                 setError(""); // Clear the error message
-                alert("Account created successfully. Please log in."); // Show a success message
             } catch (error) {
                 setError(error.message || "Registration failed. Please try again later.");
             }
