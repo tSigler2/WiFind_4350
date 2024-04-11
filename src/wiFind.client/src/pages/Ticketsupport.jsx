@@ -19,20 +19,27 @@ function TicketSupport() {
       return;
     }
       try {
-          const response = await fetch('https://localhost:7042/api/SupportTicket/submitticket', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  email: inputEmail,
-                  subject: inputSubject,
-                  description: inputDescription,
-              }),
+          //const response = await fetch('https://localhost:7042/api/SupportTicket/submitticket', {
+          //    method: 'POST',
+          //    headers: {
+          //        'Content-Type': 'application/json',
+          //    },
+          //    body: JSON.stringify({
+          //        email: inputEmail,
+          //        subject: inputSubject,
+          //        description: inputDescription,
+          //    }),
+          //});
+          //if (response.ok) {
+          //    alert('Ticket was successfully submitted');
+          //} else { alert('Error occured during ticket submission'); }
+          let data = JSON.stringify({
+              email: inputEmail,
+              subject: inputSubject,
+              description: inputDescription,
           });
-          if (response.ok) {
-              alert('Ticket was successfully submitted');
-          } else { alert('Error occured during ticket submission'); }
+          localStorage.setItem("submittedFb", data);
+          alert("Submitted. check local storage with key submittedFb");
     } catch (error) {
       setError("Failed to submit ticket. Please try again later.");
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { CartContext } from './CartContext';
 
@@ -23,25 +24,27 @@ function PaymentForm() {
 
     const handleSubmit = async (e) => { 
         e.preventDefault();
-
         try {
-            // Send form data using Fetch API
-            const response = await fetch('https://localhost:7042/api/Payment/purchase', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                },
-                body: JSON.stringify(formData)
-            });
+            //// Send form data using Fetch API
+            //const response = await fetch('https://localhost:7042/api/Payment/purchase', {
+            //    method: 'POST',
+            //    headers: {
+            //        'Content-Type': 'application/json',
+            //        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            //    },
+            //    body: JSON.stringify(formData)
+            //});
 
-            if (!response.ok) {
-                throw new Error('Failed to submit payment form');
-            }
+            //if (!response.ok) {
+            //    throw new Error('Failed to submit payment form');
+            //}
 
-            const data = await response.json();
-            console.log('Payment submitted successfully:', data);
+            //const data = await response.json();
+            localStorage.setItem("submitPayment", formData);
+            //console.log('Payment submitted successfully:', data);
+
             // Handle successful payment submission
+            alert("Sucessfully paid"); //replace this with a toast message?
         } catch (error) {
             console.error('Error submitting payment form:', error.message);
             // Handle error

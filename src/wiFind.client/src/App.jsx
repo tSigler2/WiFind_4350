@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // App.js
 import React from 'react';
 import Header from './components/Header.jsx';
@@ -12,19 +13,17 @@ import CreateAccount from './pages/CreateAccount.jsx';
 import Checkout from './pages/Checkout.jsx';
 import { CartProvider } from './components/CartProvider';
 import Profile from './pages/Profile.jsx';
+import Admin from './pages/Admin.jsx';
+
 function App() {
   return (
-  
     <div className="App">
-      
- 
       <div style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'transparent', padding: '10px', textAlign: 'center' }}>
       <Router>
         <Header />
         <CartProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-  
           <Route path="/Ticketsupport" element={<TicketSupport />} />
           <Route path="/rent" element={<Rent />} />
           <Route path="/list" element={<List />} />
@@ -32,6 +31,8 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<Admin />}>
+          </Route>
         </Routes>
         </CartProvider>
       </Router>
