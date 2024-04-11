@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using wiFind.Server.AuthModels;
 using wiFind.Server.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace wiFind.Server.Services
 {

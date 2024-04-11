@@ -1,17 +1,10 @@
-﻿using System;
-using System.Net.WebSockets;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using wiFind.Server.Helpers;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Services;
 using wiFind.Server.AuthModels;
-using System.Net.Sockets;
 
 namespace wiFind.Server.Controllers
 {
@@ -79,16 +72,17 @@ namespace wiFind.Server.Controllers
             return Ok(response);
         }
 
-        // Update User Profile
-        // Input should have same user_id and not let db generate one
-        // Authorization checK: in header do: 'Authorization' then Paste the token 
         [Authorize]
         [HttpPost("updateprofile")]
         public async Task<IActionResult> UpdateUserProfile(UserUpdate update)
         {
             // Change this to query and edit user matching guid
-            var query = from u in _wiFindContext.Set<User>() where u.user_id == update.user_id select u;
+            var q = from a in _wiFindContext.Set<AccountInfo>() where a.username == update.username select a.user_id;
+            var acctuserid = q.First();
+
+            var query = from u in _wiFindContext.Set<User>() where u.user_id == acctuserid select u;
             var user = query.First();
+
             user.first_name = update.first_name;
             user.last_name = update.last_name;
             user.phone_number = update.phone_number;
@@ -99,7 +93,7 @@ namespace wiFind.Server.Controllers
             return Ok("Successful update for user profile");
         }
 
-        // Below is for admins only. TODO: Figure out how to do admin token validations and roles
+        // Below is for admins only
 
         // Returns Users who have been inactive for more than 3 months, only used by admins
         [Authorize]

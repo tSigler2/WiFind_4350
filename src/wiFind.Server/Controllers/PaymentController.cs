@@ -1,12 +1,4 @@
-using System;
-using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Helpers;
 
@@ -22,21 +14,21 @@ namespace wiFind.Server.Controllers
         {
             _wifFindContext = wfc;
         }
-
+        // Need an endpoint that Returns summary from list of wifi_ids in cart for purchase
         [Authorize]
         [HttpPost("purchase")]
         public async Task<IActionResult> PurchaseCart(PurchaseModel payment)
         {
             if(!ModelState.IsValid) return BadRequest("Invalid Payment");
             
-            if(payment.checkoutCart.cart.Count() == 0) return BadRequest("No Items in Cart");
+            if(payment.checkoutCart.Count() == 0) return BadRequest("No Items in Cart");
 
             decimal total = 0.00M;
 
             var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == payment.username) select a.user_id;
 
             // i is the wifi's id
-            foreach(string i in payment.checkoutCart.cart)
+            foreach(string i in payment.checkoutCart)
             {
                 var wifiCost = from wifi in _wifFindContext.Set<Wifi>()
                                 where (wifi.wifi_id == i) select wifi.curr_rate;
@@ -61,33 +53,5 @@ namespace wiFind.Server.Controllers
             // return total amount? 
             return Ok("Wifi Bought. Total Cost: $" + total + "per hour.");
         }
-
-        [Authorize]
-        [HttpGet("getRenteeView")]
-        public async Task<IActionResult> GetRenteeView(UsernameInput usernameInput)
-        {
-            var username = usernameInput.Username;
-            // this query could be improved via joining accountlogin and rent table but atm this is just for fast results
-            var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == username) select a.user_id;
-            var rentedWifi = from r in _wifFindContext.Set<Rent>() where (r.user_id == userid.First()) select r;
-
-            var reqList = new List<RentDTO>();
-
-            foreach (var item in rentedWifi)
-            {
-                reqList.Add(new RentDTO
-                {
-                    rentID = item.rent_id,
-                    wifiID = item.wifi_id,
-                    start = item.start_time,
-                    end = item.end_time,
-                    locked_rate = item.locked_rate,
-                    guest_password = item.guest_password,
-                });
-            }
-            return Ok(reqList);
-        }
-
-        // ToDo: Renter View. Will need to pass in list of wifi id's since the seller may be renting out many wifis
     }
 }

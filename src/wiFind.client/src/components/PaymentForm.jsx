@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { CartContext } from './CartContext';
 
 function PaymentForm() {
     const [formData, setFormData] = useState({
-        username: '',
+        username: localStorage.getItem("username"), // use local storage item "username"
         name: '',
         ccNumber: '',
         cvc: '',
@@ -15,7 +16,8 @@ function PaymentForm() {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: value,
+            Cart: CartContext.Cart
         }));
     };
 
@@ -27,7 +29,8 @@ function PaymentForm() {
             const response = await fetch('https://localhost:7042/api/Payment/purchase', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
                 },
                 body: JSON.stringify(formData)
             });
@@ -47,17 +50,17 @@ function PaymentForm() {
 
     return (
         <form onSubmit={handleSubmit}>
+            {/*<label>*/}
+            {/*    Username:*/}
+            {/*    <input*/}
+            {/*        type="text"*/}
+            {/*        name="username"*/}
+            {/*        value={formData.username}*/}
+            {/*        onChange={handleChange}*/}
+            {/*    />*/}
+            {/*</label>*/}
             <label>
-                Username:
-                <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Full Name:
+                Name on Card:
                 <input
                     type="text"
                     name="name"

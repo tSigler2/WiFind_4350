@@ -5,22 +5,34 @@ import TicketHeroSection from "../components/TicketHeroSection";
 import "./TicketSupport.css";
 
 function TicketSupport() {
-  const [username, setUsername] = useState("");
-  const [subject, setSubject] = useState("");
-  const [description, setDescription] = useState("");
+  const [inputEmail, setEmail] = useState("");
+  const [inputSubject, setSubject] = useState("");
+  const [inputDescription, setDescription] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username || !subject || !description) {
+    if (!inputEmail || !inputSubject || !inputDescription) {
       setError("Please fill out all fields");
       return;
     }
-    try {
-      await submitTicket({ username, subject, description });
-      setError("");
+      try {
+          const response = await fetch('https://localhost:7042/api/SupportTicket/submitticket', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  email: inputEmail,
+                  subject: inputSubject,
+                  description: inputDescription,
+              }),
+          });
+          if (response.ok) {
+              alert('Ticket was successfully submitted');
+          } else { alert('Error occured during ticket submission'); }
     } catch (error) {
       setError("Failed to submit ticket. Please try again later.");
     }
@@ -33,13 +45,13 @@ function TicketSupport() {
         <h1 className="ticket-support-title">Contact Support</h1>
         <form onSubmit={handleSubmit} className="ticket-support-form">
           <div className="form-group">
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="username">Email:</label>
             <input
               type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username" // Placeholder for username
+              id="email"
+              value={inputEmail}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email" // Placeholder for email
             />
           </div>
           <div className="form-group">
@@ -47,7 +59,7 @@ function TicketSupport() {
             <input
               type="text"
               id="subject"
-              value={subject}
+              value={inputSubject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Enter the subject of your ticket" // Placeholder for subject
             />
@@ -56,7 +68,7 @@ function TicketSupport() {
             <label htmlFor="description">Description:</label>
             <textarea
               id="description"
-              value={description}
+              value={inputDescription}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter the description of your issue" // Placeholder for description
             />

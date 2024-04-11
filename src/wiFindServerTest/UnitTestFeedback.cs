@@ -22,7 +22,7 @@ namespace wiFind.Server.UnitTest
 
             var feedback = new FeedbackReg
             {
-                user_id = null,
+                // adjusted feedbacks to be anonymous
                 subject = "Website Down",
                 description = "Your website is down right now.",
                 rating = 2

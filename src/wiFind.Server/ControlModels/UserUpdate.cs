@@ -6,7 +6,7 @@ namespace wiFind.Server.ControlModels
     public class UserUpdate
     {
         [Required]
-        public string user_id { get; set; }
+        public string username { get; set; }
 
         [Required, MaxLength(100)]
         public string first_name { get; set; }
