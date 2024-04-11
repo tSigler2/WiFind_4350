@@ -24,7 +24,7 @@ function Checkout() {
             {cart.map((item, index) => (
               <div key={index} className="checkout-item">
                 <h2>{item.wifi_name}</h2>
-                <p>Rate: ${item.curr_rate}</p>
+                    <p>Hourly Rate: ${item.curr_rate.toFixed(2)}</p>
                 <button onClick={() => removeFromCart(item)}>Remove from Cart</button>
               </div>
             ))}

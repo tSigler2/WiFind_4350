@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wiFind.Server;
 
@@ -11,9 +12,11 @@ using wiFind.Server;
 namespace wiFind.Server.Migrations
 {
     [DbContext(typeof(WiFindContext))]
-    partial class WiFindContextModelSnapshot : ModelSnapshot
+    [Migration("20240411054351_sanity-check-before-pr")]
+    partial class sanitycheckbeforepr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

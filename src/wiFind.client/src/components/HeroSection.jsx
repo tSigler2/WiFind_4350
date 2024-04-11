@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import backgroundImage from '../images/wifi1.jpg'; // Import the image
 

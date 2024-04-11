@@ -43,12 +43,16 @@ namespace wiFind.Server.Controllers
 
         // ToDo: Renter View. Will need to pass in list of wifi id's since the seller may be renting out many wifis
         // Should return Each Wifi + # of users using that wifi
-        //[Authorize]
-        //[HttpGet("getrenterview")]
-        //public async Task<IActionResult> GetRenterView(UsernameInput usernameInput)
-        //{
+        [Authorize]
+        [HttpGet("getrenterview")]
+        public async Task<IActionResult> GetRenterView(UsernameInput usernameInput)
+        {
+            // Need to show that where renter wifi's are not in rent have 0 users using it.
+            // Need to show that where renter wifi's exist on inner join rent have whatever number of users using it.
+            var renterwifis = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
 
-        //}
+            return BadRequest("Under construction");
+        }
         // ToDo: Get Renter's Wifis for Editting?
     }
 }

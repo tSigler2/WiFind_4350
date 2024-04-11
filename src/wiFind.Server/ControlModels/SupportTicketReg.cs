@@ -5,7 +5,7 @@ namespace wiFind.Server.ControlModels
     public class SupportTicketReg
     {
         [Required]
-        public string username { get; set; }
+        public string email { get; set; }
 
         [Required, MaxLength(50)]
         public string subject { get; set; }

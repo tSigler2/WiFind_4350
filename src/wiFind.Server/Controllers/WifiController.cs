@@ -88,7 +88,8 @@ namespace wiFind.Server.Controllers
         [HttpPost("updatewifi")]
         public async Task<IActionResult> EditWifiListing(WifiUpdate wifi)
         {
-            var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
+            var query = from w in _wifFindContext.Set<Wifi>() where w.wifi_id == wifi.wifi_id select w;
+            var initialwifi = query.First();
 
             var updatedWifi = new Wifi
             {
@@ -102,8 +103,8 @@ namespace wiFind.Server.Controllers
                 radius = wifi.radius,
                 wifi_source = wifi.wifi_source,
                 curr_rate = wifi.curr_rate,
-                time_listed = wifi.time_listed,
-                owned_by = wifi.owned_by,
+                time_listed = initialwifi.time_listed,
+                owned_by = initialwifi.owned_by,
                 max_users = wifi.max_users,
             };
 

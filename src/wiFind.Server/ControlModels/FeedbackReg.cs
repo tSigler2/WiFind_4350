@@ -5,7 +5,7 @@ namespace wiFind.Server.ControlModels
 {
     public class FeedbackReg
     {
-        public string? user_id { get; set; }
+        //public string? user_id { get; set; } // making feedbacks anonymous for temporary
 
         [Required, MaxLength(30)]
         public string subject { get; set; }

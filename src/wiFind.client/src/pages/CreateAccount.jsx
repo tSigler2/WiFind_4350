@@ -48,8 +48,7 @@ function CreateAccount() {
                 });
 
                 if (!response.ok) {
-                    const data = await response.json();
-                    throw new Error(data.message || 'Registration failed');
+                    throw new Error(response.status == 400? 'Username or Email already exists.' : 'Registration failed');
                 }
 
                 navigate("/login");

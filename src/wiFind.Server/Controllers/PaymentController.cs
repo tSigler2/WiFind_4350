@@ -21,14 +21,14 @@ namespace wiFind.Server.Controllers
         {
             if(!ModelState.IsValid) return BadRequest("Invalid Payment");
             
-            if(payment.checkoutCart.cart.Count() == 0) return BadRequest("No Items in Cart");
+            if(payment.checkoutCart.Count() == 0) return BadRequest("No Items in Cart");
 
             decimal total = 0.00M;
 
             var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == payment.username) select a.user_id;
 
             // i is the wifi's id
-            foreach(string i in payment.checkoutCart.cart)
+            foreach(string i in payment.checkoutCart)
             {
                 var wifiCost = from wifi in _wifFindContext.Set<Wifi>()
                                 where (wifi.wifi_id == i) select wifi.curr_rate;

@@ -26,11 +26,12 @@ namespace wiFind.Server.ControlModels
         public string zipCode { get; set; }
 
         [Required]
-        public DateOnly expDate { get; set; }
+        public string expDate { get; set; } // would need to implement a regex to validate MM/YYYY
 
         // added below two for logic in purchaseCart
         public DateTime start {  get; set; }
 
-        public Cart checkoutCart { get; set; }
+        [Required]
+        public List<string> checkoutCart { get; set; }
     }
 }

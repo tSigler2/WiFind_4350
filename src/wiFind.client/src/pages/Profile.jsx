@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Profile = () => {
-  const [userId, setUserId] = useState('');
+  //const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -9,7 +9,7 @@ const Profile = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-      setUserId(user.user_id);
+      //setUserId(user.user_id);
       setFirstName(user.first_name);
       setLastName(user.last_name);
       setPhoneNumber(user.phone_number);
@@ -21,11 +21,12 @@ const Profile = () => {
 
     const response = await fetch('https://localhost:7042/api/User/updateprofile', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
       },
       body: JSON.stringify({
-        user_id:  "15ced7de-6cde-4d80-abc7-fb5d86179912",
+        username:  localStorage.getItem('username'),
         first_name: firstName,
         last_name: lastName,
         phone_number: phoneNumber,

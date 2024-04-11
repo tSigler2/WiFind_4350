@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { CartContext } from "../components/CartContext.jsx";
@@ -38,15 +39,15 @@ function List() {
             <div key={listing.wifi_name} className="list-card">
                 <div className="list-card-content">
                     <h3 className="list-card-title">{listing.wifi_name}</h3>
-                    <p className="list-card-description">Rate: {listing.curr_rate}</p>
+                    <p className="list-card-description">Hourly Rate: ${listing.curr_rate.toFixed(2)}</p>
                     <p className="list-card-description">Security: {listing.security}</p>
                     <p className="list-card-description">Source: {listing.wifi_source}</p>
-                    <p className="list-card-description">Download Speed: {listing.download_speed}</p>
-                    <p className="list-card-description">Upload Speed: {listing.upload_speed}</p>
+                    <p className="list-card-description">Download: {listing.download_speed} Mbps</p>
+                    <p className="list-card-description">Upload: {listing.upload_speed} Mbps</p>
                     <p className="list-card-description">Listed by: {listing.owned_by}</p>
-                    <p className="list-card-description">Max users: {listing.max_users}</p>
-                    <p className="list-card-description">Source: {listing.time_listed}</p>
-                    <button className="list-card-button" onClick={() => addToCart(listing)}>Add to Cart</button>
+                    <p className="list-card-description">Max Users: {listing.max_users}</p>
+                    <p className="list-card-description">Listed On: {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
+                    <button className="list-card-button" onClick={() => { alert(listing.wifi_name + " has been added to cart."); addToCart(listing) }}>Add to Cart</button>
                 </div>
             </div>
         ));

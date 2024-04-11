@@ -393,7 +393,7 @@ namespace wiFind.Server
                 new SupportTicket
                 {
                     ticket_id = "0fc8975c-c0c4-4236-a4fe-3c6e6265867f",
-                    username = "user1",
+                    email = "user1@example.com",
                     time_stamp = DateTime.Now.AddDays(-10),
                     subject = "Concerned that TikTok is stealing my Wifi",
                     description = "Please do something about it. ASAP. Or else I will never come here again!",
@@ -403,7 +403,7 @@ namespace wiFind.Server
                 new SupportTicket
                 {
                     ticket_id = "daf29cbb-7867-4063-abe7-a0e57cc5813d",
-                    username = "user6",
+                    email = "user6@example.com",
                     time_stamp = DateTime.Now.AddDays(-2),
                     subject = "Contact with wifi renter",
                     description = "How do I contact the user renting out the StarLink wifi?",
@@ -413,7 +413,7 @@ namespace wiFind.Server
                 new SupportTicket
                 {
                     ticket_id = "f636b4db-07b5-4eaf-a9cc-685ea568b82d",
-                    username = "user3",
+                    email = "user3@example.com",
                     time_stamp = DateTime.Now,
                     subject = "need to see my profit",
                     description = "i need step by step with powerpoint slides on how to get to my revenue.",
@@ -430,7 +430,7 @@ namespace wiFind.Server
                     user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
                     payment_type = "Visa",
                     card_number = "4523 5441 2487 5516",
-                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(4)),
+                    exp_date = "04/2030",
                     name_on_card = "Hello World",
                 },
                 new PaymentInfo
@@ -439,7 +439,7 @@ namespace wiFind.Server
                     user_id = "f4140a29-60b3-4e84-a8d6-0274432509a5",
                     payment_type = "MasterCard",
                     card_number = "5325 1730 0048 6151",
-                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(2)),
+                    exp_date = "04/2040",
                     name_on_card = "Hello World",
                 },
                 new PaymentInfo
@@ -448,7 +448,7 @@ namespace wiFind.Server
                     user_id = "c1c35566-4fd3-4839-aa94-d8c85ccd4943",
                     payment_type = "Visa",
                     card_number = "4523 5449 8586 0250",
-                    exp_date = DateOnly.FromDateTime(DateTime.Today.AddYears(1)),
+                    exp_date = "05/2025",
                     name_on_card = "GoodBye World",
                 });
             #endregion
@@ -599,7 +599,7 @@ namespace wiFind.Server
         public string card_number { get; set; }
 
         [Required]
-        public DateOnly exp_date { get; set; }
+        public string exp_date { get; set; }
     }
 
     // User should be able to log in with either user's unique username or unique email
@@ -644,8 +644,8 @@ namespace wiFind.Server
         [Key]
         public string ticket_id { get; set; }
 
-        [Required]
-        public string username { get; set; }
+        [Required, DataType(DataType.EmailAddress)]
+        public string email { get; set; }
 
         [JsonIgnore]
         [ForeignKey("username")]

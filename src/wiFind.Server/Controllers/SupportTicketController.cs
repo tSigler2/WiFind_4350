@@ -37,7 +37,6 @@ namespace wiFind.Server.Controllers
 
         }
 
-        [Authorize]
         [HttpPost("submitticket")]
         public async Task<IActionResult> SubmitTicket(SupportTicketReg ticket)
         {
@@ -46,7 +45,7 @@ namespace wiFind.Server.Controllers
             _wifFindContext.SupportTickets.Add(new SupportTicket
             {
                 ticket_id = ticketid,
-                username = ticket.username,
+                email = ticket.email,
                 subject = ticket.subject,
                 description = ticket.description,
                 status = TicketStatus.Open,
@@ -56,7 +55,7 @@ namespace wiFind.Server.Controllers
 
             // SendEmailConfirmation(ticketid, ticket); // send newly generated ticket_id and DTO which contains user input
 
-            return Ok("Ticket has been submitted.");
+            return Ok("Ticket id: "+ticketid);
         }
 
         [Authorize]
@@ -74,15 +73,15 @@ namespace wiFind.Server.Controllers
             return Unauthorized("Unauthorized");
         }
 
-        // Sends user email of ticket submission receipt
-        private void SendEmailConfirmation(SupportTicket ticket)
-        {
-            // Join ticket with accountInfo to get email.
-            var query = from acctLogin in _wifFindContext.Set<AccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
-            var email = query.First();
+        // Sends user email of ticket submission receipt // This feature is deprecated due to student debt
+        //private void SendEmailConfirmation(SupportTicket ticket)
+        //{
+        //    // Join ticket with accountInfo to get email.
+        //    var query = from acctLogin in _wifFindContext.Set<AccountInfo>() join suppTicket in _wifFindContext.Set<SupportTicket>() on acctLogin.username equals ticket.username select acctLogin;
+        //    var email = query.First();
 
-            // TODO: Rest of email logic
-        }
+        //    // TODO: Rest of email logic
+        //}
     }
 
 }

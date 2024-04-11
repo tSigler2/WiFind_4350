@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -29,10 +30,10 @@ function Header() {
                 <Link to="/list">List</Link>
                 <Link to="/Ticketsupport">Ticket Support</Link>
                 {token && token !== '' ? <Link to="/profile">Profile</Link> : null} {/* Only show the Profile link if the user is logged in */}
-                {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
-                 <Link to="/checkout">
-                    <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
-                </Link>
+                    {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
+                    {token && token !== '' ? <Link to="/checkout">
+                        <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
+                    </Link> : null} {/* Only show the Profile link if the user is logged in */}
             </div>
         </nav>
     </header>

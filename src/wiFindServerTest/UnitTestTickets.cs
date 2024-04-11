@@ -21,7 +21,7 @@ namespace wiFind.Server.UnitTest
 
             var testTicket = new SupportTicketReg
             {
-                username = "testuser",
+                email = "testuser@example.com",
                 subject = "Terrible Service",
                 description = "Do Better"
             };
