@@ -4,13 +4,12 @@ import { CartContext } from './CartContext';
 
 function PaymentForm() {
     const [formData, setFormData] = useState({
-        username: localStorage.getItem("username"), // use local storage item "username"
         name: '',
         ccNumber: '',
         cvc: '',
         address: '',
         zipCode: '',
-        expDate: ''
+        expDate: '',
     });
 
     const handleChange = (e) => {
@@ -18,33 +17,55 @@ function PaymentForm() {
         setFormData(prevState => ({
             ...prevState,
             [name]: value,
-            Cart: CartContext.Cart
+            checkoutCart: CartContext.Cart
         }));
     };
 
     const handleSubmit = async (e) => { 
         e.preventDefault();
         try {
-            //// Send form data using Fetch API
-            //const response = await fetch('https://localhost:7042/api/Payment/purchase', {
+            const testing = await fetch('https://localhost:7042/api/Rent/getrenteeview',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                    },
+                    body: JSON.stringify({ username: localStorage.getItem("username") })
+                });
+            console.log(testing);
+            // Send form data using Fetch API
+            // 2 separate fetches will occur for purchase.
+            // 1 fetch that validates card info. This will be replaced by third party like Stripe
+            // 2. successful response from 1st api will lead to rent entry creation which hopefully will be a list of wifi_ids
+            const response = await fetch('https://localhost:7042/api/Payment/purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit payment form');
+            }
+            //let wifi_ids = [];
+            //CartContext.Cart.
+            //const res2 = await fetch('https://localhost:7042/api/Payment/saveRentedWifis', {
             //    method: 'POST',
             //    headers: {
             //        'Content-Type': 'application/json',
             //        'Authorization': 'Bearer ' + localStorage.getItem("token"),
             //    },
-            //    body: JSON.stringify(formData)
-            //});
-
-            //if (!response.ok) {
-            //    throw new Error('Failed to submit payment form');
-            //}
-
-            //const data = await response.json();
-            localStorage.setItem("submitPayment", formData);
-            //console.log('Payment submitted successfully:', data);
+            //    body: JSON.stringify(CartContext.Cart)
+            //})
+            const data = await response.json();
+            //localStorage.setItem("submitPayment", formData);
+            console.log('Payment submitted successfully:', data);
 
             // Handle successful payment submission
-            alert("Sucessfully paid"); //replace this with a toast message?
+            alert("Sucessfully paid");
         } catch (error) {
             console.error('Error submitting payment form:', error.message);
             // Handle error

@@ -15,20 +15,20 @@ function Login() {
             setError("Username and password cannot be empty");
         } else {
             try {
-                //const response = await fetch('https://localhost:7042/api/User/login', {
-                //    method: 'POST',
-                //    headers: {
-                //        'Content-Type': 'application/json'
-                //    },
-                //    body: JSON.stringify({ username, password })
-                //});
+                const response = await fetch('https://localhost:7042/api/User/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
     
-                //if (!response.ok) {
-                //    throw new Error('Login failed');
-                //}
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
     
-                //const data = await response.json();
-                const data = Placeholders.user6loginSucess;
+                const data = await response.json();
+                //const data = Placeholders.user6loginSucess;
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("user_role", data.user_role);
                 localStorage.setItem("token", data.token);

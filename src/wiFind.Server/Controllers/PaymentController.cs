@@ -20,38 +20,41 @@ namespace wiFind.Server.Controllers
         public async Task<IActionResult> PurchaseCart(PurchaseModel payment)
         {
             if(!ModelState.IsValid) return BadRequest("Invalid Payment");
-            
-            if(payment.checkoutCart.Count() == 0) return BadRequest("No Items in Cart");
 
-            decimal total = 0.00M;
-
-            var userid = from a in _wifFindContext.Set<AccountInfo>() where (a.username == payment.username) select a.user_id;
-
-            // i is the wifi's id
-            foreach(string i in payment.checkoutCart)
-            {
-                var wifiCost = from wifi in _wifFindContext.Set<Wifi>()
-                                where (wifi.wifi_id == i) select wifi.curr_rate;
-                
-                var rent = new Rent
-                {
-                    rent_id = Guid.NewGuid().ToString(), //(_wifFindContext.Rent.Max(total => (int?)total.rentID) ?? 0) + 1, generate a new guid?
-                    user_id = userid.First(), // front end will need to pass in user's username atm. can be improved later to use id in validation token instead
-                    wifi_id = i,
-                    start_time = payment.start,
-                    locked_rate = wifiCost.First(),
-                    //guest_password = "00000", // needs to be handled later somehow
-                };
-
-                _wifFindContext.Rents.Add(rent);
-
-                total += wifiCost.First();
-            }
-            // need to savechanges after adding new rent objects
-            await _wifFindContext.SaveChangesAsync();
+            // This endpoint is just a placeholder for third party payment group
 
             // return total amount? 
-            return Ok("Wifi Bought. Total Cost: $" + total + "per hour.");
+            return Ok("Payment Method is Valid.");
+        }
+
+        [Authorize]
+        [HttpPost("saveRentedWifis")]
+        public async Task<IActionResult> saveRentedWifis(CartDTO newlyRentedWifis) {
+            // Need cart list to be here
+            var context = (AccountInfo)HttpContext.Items["User"];
+            var userid = context.user_id;
+            List<Wifi> wifi = new List<Wifi>();
+            foreach(var id in newlyRentedWifis.wifis_id_in_cart)
+            {
+                var w = _wifFindContext.Set<Wifi>().Find(id);
+                wifi.Add(w);
+            }
+            foreach(var w in wifi)
+            {
+                await _wifFindContext.Set<Rent>().AddAsync(
+                    new Rent
+                    {
+                        rent_id = Guid.NewGuid().ToString(),
+                        user_id = userid,
+                        wifi_id = w.wifi_id,
+                        start_time = DateTime.Now,
+                        locked_rate = w.curr_rate,
+                        guest_password = "tba",
+                    });
+            }
+            await _wifFindContext.SaveChangesAsync();
+
+            return Ok("Saved");
         }
     }
 }

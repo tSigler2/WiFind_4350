@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Helpers;
 
@@ -16,7 +17,7 @@ namespace wiFind.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("getrenteeview")]
+        [HttpPost("getrenteeview")]
         public async Task<IActionResult> GetRenteeView(UsernameInput usernameInput)
         {
             var username = usernameInput.Username;
@@ -44,14 +45,23 @@ namespace wiFind.Server.Controllers
         // ToDo: Renter View. Will need to pass in list of wifi id's since the seller may be renting out many wifis
         // Should return Each Wifi + # of users using that wifi
         [Authorize]
-        [HttpGet("getrenterview")]
+        [HttpPost("getrenterview")]
         public async Task<IActionResult> GetRenterView(UsernameInput usernameInput)
         {
             // Need to show that where renter wifi's are not in rent have 0 users using it.
             // Need to show that where renter wifi's exist on inner join rent have whatever number of users using it.
-            var renterwifis = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
-
-            return BadRequest("Under construction");
+            //var renterwifis = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
+            IList<RenterDTO> rentedWifiInfo = [
+                new RenterDTO{
+                    wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
+                    num_users_renting = 1,
+                },
+                new RenterDTO{
+                    wifi_id = "eca15f8b-ddfe-4109-bc9f-2e053e728c14",
+                    num_users_renting = 0,
+                }];
+            return Ok(rentedWifiInfo);
+            //return BadRequest("Under construction");
         }
         // ToDo: Get Renter's Wifis for Editting?
     }
