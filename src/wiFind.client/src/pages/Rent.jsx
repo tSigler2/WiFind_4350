@@ -115,7 +115,7 @@ function Rent() {
         <div>
             <h1>Rent</h1>
             <h2>My Rented Out Wifis</h2>
-            {rentedWifis.map(wifi => (
+            {rentedWifis.length == 0? <h4>No rented out Wifis found.</h4> :rentedWifis.map(wifi => (
                 <div key={wifi.rentID}>
                     <p>Wifi ID: {wifi.wifi_id}</p>
                     <p>Number of Users Renting: {wifi.num_users_renting}</p>
@@ -154,7 +154,7 @@ function Rent() {
                 <button type="submit">List Wifi</button>
             </form>
             <h2>Wifis I am Renting</h2>
-            {listedWifis.map(wifi => (
+            {listedWifis.length == 0? <h4>No Wifis rented at this time.</h4> :listedWifis.map(wifi => (
                 <div key={wifi.rentID}>
                     <p>Wifi ID: {wifi.wifiID}</p>
                     <p>Start: {new Date(wifi.start).toLocaleString()}</p>

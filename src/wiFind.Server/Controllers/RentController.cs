@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.Json;
+using Microsoft.IdentityModel.Tokens;
 using wiFind.Server.ControlModels;
 using wiFind.Server.Helpers;
 
@@ -51,22 +52,37 @@ namespace wiFind.Server.Controllers
         {
             // Need to show that where renter wifi's are not in rent have 0 users using it.
             // Need to show that where renter wifi's exist on inner join rent have whatever number of users using it.
-            //var rentedout = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
-            //await rentedout.ForEachAsync( (e) => {
-            //    var occurances = from r in _wiFindContext.Set<Rent>() where (r.wifi_id == e.wifi_id) select r;
-                
-            //});
+            IList<RenterDTO> res = new List<RenterDTO>();
+            try
+            {
+                var rentedout = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
+                if (rentedout.IsNullOrEmpty<Wifi>()) { return Ok(Array.Empty<RenterDTO>()); }
+                var list = rentedout.ToList();
+                list.ForEach(e =>
+                {
+                    var count = 0;
+                    var occurances = from r in _wiFindContext.Set<Rent>() where (r.wifi_id == e.wifi_id) select r;
+                    if (!occurances.IsNullOrEmpty<Rent>())
+                    {
+                        count = occurances.Count();
+                    }
+                    res.Add(new RenterDTO { wifi_id = e.wifi_id, num_users_renting = count });
+                });
+            } catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
-            IList<RenterDTO> rentedWifiInfo = [
-                new RenterDTO{
-                    wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
-                    num_users_renting = 1,
-                },
-                new RenterDTO{
-                    wifi_id = "eca15f8b-ddfe-4109-bc9f-2e053e728c14",
-                    num_users_renting = 0,
-                }];
-            return Ok(rentedWifiInfo);
+            //IList<RenterDTO> rentedWifiInfo = [
+            //    new RenterDTO{
+            //        wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
+            //        num_users_renting = 1,
+            //    },
+            //    new RenterDTO{
+            //        wifi_id = "eca15f8b-ddfe-4109-bc9f-2e053e728c14",
+            //        num_users_renting = 0,
+            //    }];
+            return Ok(res);
             //return BadRequest("Under construction");
         }
         // ToDo: Get Renter's Wifis for Editting?
