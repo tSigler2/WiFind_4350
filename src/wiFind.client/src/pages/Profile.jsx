@@ -9,14 +9,24 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setFirstName(user.first_name);
-      setLastName(user.last_name);
-      setPhoneNumber(user.phone_number);
-    }
+      populateUserProfileInfo();
   }, []);
-
+    async function populateUserProfileInfo() {
+        const res = await fetch('https://localhost:7042/api/User/getuserprofile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            setFirstName(data.first_name);
+            setLastName(data.last_name);
+            setPhoneNumber(data.phone_number);
+        }
+        else { alert('Error occured while getting your user profile info.') }
+    }
   const handleSubmit = async (e) => {
     e.preventDefault();
 

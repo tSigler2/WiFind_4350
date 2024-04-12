@@ -109,19 +109,21 @@ function Rent() {
             if (!response.ok) {
                 throw new Error('Was the form filled completely?');
             }
-
+            // need to refresh view of leased wifis
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
     const handleDelete = async (rentID) => {
     try {
-        const response = await fetch(`https://localhost:7042/api/Rent/delete/${rentID}`, {
+        const response = await fetch(`https://localhost:7042/api/Rent/removerent`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem("token"),
             },
+            body: JSON.stringify({ rent_id: rentID })
         });
 
         if (!response.ok) {
@@ -133,7 +135,29 @@ function Rent() {
     } catch (error) {
         console.error('Error:', error);
     }
-};
+    };
+
+    const handleWifiDelete = async (wifi_id) => {
+        try {
+            const response = await fetch(`https://localhost:7042/api/Wifi/removewifi`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                },
+                body: JSON.stringify({wifi_id: wifi_id})
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete WiFi.');
+            }
+
+            // After successful deletion, update the listedWifis state to reflect the changes
+            setRentedWifis(prevRentedWifis => prevRentedWifis.filter(wifi => wifi.wifi_id !== wifi_id));
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
 
     return (
@@ -147,7 +171,7 @@ function Rent() {
                         <div key={wifi.rentID}>
                             <p>Wifi ID: {wifi.wifi_id}</p>
                             <p>Number of Users Renting: {wifi.num_users_renting}</p>
-                            <button onClick={() => handleDelete(wifi.rentID)}>Delete</button>
+                            <button onClick={() => handleWifiDelete(wifi.wifi_id)}>Delete</button>
                         </div>
                     ))}
                 </div>
@@ -178,6 +202,18 @@ function Rent() {
                         <label>
                             Upload Speed:
                             <input type="number" name="upload_speed" value={wifiData.upload_speed} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Latitude:
+                            <input type="number" name="wifi_latitude" value={wifiData.wifi_latitude} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Longitude:
+                            <input type="number" name="wifi_longitude" value={wifiData.wifi_longitude} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Radius:
+                            <input type="number" name="radius" value={wifiData.radius} onChange={handleInputChange} />
                         </label>
                         <label>
                             Max Users:
