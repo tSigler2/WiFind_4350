@@ -55,16 +55,6 @@ function List() {
                     </span>
                     <button className="list-card-button" onClick={ () => { addToCart(listing) } }>Add to Cart</button>
                     <ToastContainer />
-            
-                    <p className="list-card-description">Hourly Rate: ${listing.curr_rate.toFixed(2)}</p>
-                    <p className="list-card-description">Security: {listing.security}</p>
-                    <p className="list-card-description">Source: {listing.wifi_source}</p>
-                    <p className="list-card-description">Download: {listing.download_speed} Mbps</p>
-                    <p className="list-card-description">Upload: {listing.upload_speed} Mbps</p>
-                    <p className="list-card-description">Listed by: {listing.owned_by}</p>
-                    <p className="list-card-description">Max Users: {listing.max_users}</p>
-                    <p className="list-card-description">Listed On: {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
-                    <button className="list-card-button" onClick={() => { addToCart(listing); alert(listing.wifi_name+"added to cart.") } }>Add to Cart</button>
                 </div>
             </div>
         ));
