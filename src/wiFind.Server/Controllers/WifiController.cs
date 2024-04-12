@@ -70,7 +70,7 @@ namespace wiFind.Server.Controllers
         // Parameter consideration: using just wifi_id instead of the entire object
         [Authorize]
         [HttpDelete("removewifi")]
-        public async Task<IActionResult> RemoveWifiListing(WifiUpdate wifi)
+        public async Task<IActionResult> RemoveWifiListing(WifiRemovalDTO wifi)
         {
             var query = from rent in _wifFindContext.Set<Rent>() where rent.wifi_id == wifi.wifi_id select rent;
             if (query.Count() > 0)

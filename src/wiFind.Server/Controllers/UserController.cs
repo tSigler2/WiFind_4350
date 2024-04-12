@@ -73,6 +73,25 @@ namespace wiFind.Server.Controllers
         }
 
         [Authorize]
+        [HttpGet("getuserprofile")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            // Change this to query and edit user matching guid
+            var context = (AccountInfo)HttpContext.Items["User"];
+            var user_id = context.user_id;
+            var q = from u in _wiFindContext.Set<User>() where u.user_id == user_id select u;
+            var userinfo = q.First();
+            var res = new UserProfileInfoDTO
+            {
+                first_name = userinfo.first_name,
+                last_name = userinfo.last_name,
+                phone_number = userinfo.phone_number,
+            };
+
+            return Ok(res);
+        }
+
+        [Authorize]
         [HttpPost("updateprofile")]
         public async Task<IActionResult> UpdateUserProfile(UserUpdate update)
         {

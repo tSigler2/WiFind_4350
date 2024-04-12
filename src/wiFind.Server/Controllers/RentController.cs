@@ -85,6 +85,15 @@ namespace wiFind.Server.Controllers
             return Ok(res);
             //return BadRequest("Under construction");
         }
-        // ToDo: Get Renter's Wifis for Editting?
+
+        [Authorize]
+        [HttpDelete("removerent")]
+        public async Task<IActionResult> RemoveRent(RentRemoveDTO rent_id)
+        {
+            var rent_record = _wiFindContext.Set<Rent>().Find(rent_id.rent_id);
+            _wiFindContext.Set<Rent>().Remove(rent_record);
+            await _wiFindContext.SaveChangesAsync();
+            return Ok("rent record removed.");
+        }
     }
 }
