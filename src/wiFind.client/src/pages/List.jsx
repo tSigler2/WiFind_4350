@@ -54,7 +54,6 @@ function List() {
                     <p className="list-card-description"><span className="list-card-label">Listed On:</span> {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
                     </span>
                     <button className="list-card-button" onClick={ () => { addToCart(listing) } }>Add to Cart</button>
-                    <ToastContainer />
                 </div>
             </div>
         ));
