@@ -1,4 +1,5 @@
 ﻿
+using System.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using wiFind.Server.ControlModels;
@@ -50,7 +51,12 @@ namespace wiFind.Server.Controllers
         {
             // Need to show that where renter wifi's are not in rent have 0 users using it.
             // Need to show that where renter wifi's exist on inner join rent have whatever number of users using it.
-            //var renterwifis = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
+            //var rentedout = from w in _wiFindContext.Set<Wifi>() where (w.owned_by == usernameInput.Username) select w;
+            //await rentedout.ForEachAsync( (e) => {
+            //    var occurances = from r in _wiFindContext.Set<Rent>() where (r.wifi_id == e.wifi_id) select r;
+                
+            //});
+
             IList<RenterDTO> rentedWifiInfo = [
                 new RenterDTO{
                     wifi_id = "1c243a97-b08d-4edb-b6e0-2fcadfe26c71",
