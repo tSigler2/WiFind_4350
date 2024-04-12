@@ -1,24 +1,24 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import AdminTicketAction from '../components/AdminTicketAction'
+import AdminUserAction from '../components/AdminUserAction'
+import Footer from '../components/Footer';
 
 const Admin = () => {
-    const notify = () => toast.success("Lazy to Customize This Before Tmrrw.",
-        {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "light",
-        });
+    const adminrole = localStorage.getItem("user_role");
+    const ticketaction = adminrole.includes("Ticket");
+    const useraction = adminrole.includes("User");
 
     return (
-        <div>Admin Page with Admin Options
-            <button onClick={notify}>Test Toast</button>
+        <div>
+            <h1>Admin Portal</h1>
+            <div>
+                {ticketaction ? <AdminTicketAction></AdminTicketAction> : null}
+            </div>
+            <div>
+                {useraction ? <AdminUserAction></AdminUserAction> : null}
+            </div>
+            <Footer /> {/* Include the Footer component */}
         </div>
 
     );

@@ -1,0 +1,35 @@
+.your-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .your-table th,
+    .your-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .your-table select {
+        width: 100%;
+    }
+
+    .your-table button {
+        margin-right: 5px;
+    }
+.dialog-box {
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1; /* Ensure it's above the table */
+    cursor: grab;
+}
+li {
+    list-style-type: disclosure-closed;
+}
+li:hover {
+    background-color: indianred;
+}

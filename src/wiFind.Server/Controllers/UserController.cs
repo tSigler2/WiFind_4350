@@ -113,13 +113,13 @@ namespace wiFind.Server.Controllers
 
         [Authorize]
         [HttpDelete("removeusers")]
-        public async Task<IActionResult> RemoveInactiveUser(string username)
+        public async Task<IActionResult> RemoveInactiveUser(UsernameInput username)
         {
             var context = (AccountInfo)HttpContext.Items["User"];
             if (context.user_role.ToString() == "AdminTicketUser" || context.user_role.ToString() == "AdminUser")
             {
-                var query = from u in _wiFindContext.Set<AccountInfo>() where u.username == username select u;
-                _wiFindContext.Remove(query);
+                var query = from u in _wiFindContext.Set<AccountInfo>() where u.username == username.Username select u;
+                _wiFindContext.Remove(query.First());
                 await _wiFindContext.SaveChangesAsync();
                 return Ok("User Removed");
             }
