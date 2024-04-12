@@ -1,81 +1,69 @@
-/* List.css */
-
-.list-container {
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.list-title {
-    color: #333;
-    font-size: 36px;
-    margin-bottom: 30px;
-}
-
-.list-row {
-    justify-content: space-around;
-    margin-bottom: 50px;
-}
-
-.list-options {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.list-card {
-    width: 280px;
-    height: 280px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-align: left;
-    display: inline-table; /* Ensure inline-table display */
-    background-image: linear-gradient(to bottom right, #fff, #f5f5f5); /* Gradient background */
+.wifi-icon {
+    font-size: 30px;
+    color: #A74D4A; 
+    margin-bottom: 20px;
 }
 
 .list-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
     padding: 20px;
-}
-
-.list-card-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.list-card-price {
-    font-size: 16px;
-}
-
-.list-card-description {
-    margin-bottom: 10px;
-}
-
-.list-card-features {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 10px;
-}
-
-.list-card-features li {
-    margin-bottom: 5px;
 }
 
 .list-card-button {
     padding: 10px 20px;
     background-color: transparent;
-    color: #a74d4a;
-    border: 2px solid #a74d4a;
+    color: #a74d4a !important; 
+    border: 2px solid #a74d4a !important; 
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px; 
 }
 
 .list-card-button:hover {
     background-color: rgba(167, 77, 74, 0.1);
+}
+
+.list-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 50px;
+}
+
+.list-card {
+    width: calc(33.33% - 20px); 
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: left;
+    background-image: linear-gradient(to bottom right, #fff, #f5f5f5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+
+.list-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.list-card-description {
+    color: #555; 
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+.list-card-label {
+    color: #af9d9c; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    font-size: 1.1rem; 
+    background-color: #f2f2f2; 
+    padding: 3px 6px; 
+    border-radius: 3px; 
 }

@@ -12,7 +12,7 @@ export const wifilistings = [
         "wifi_source": "Starlink",
         "curr_rate": 20.99,
         "time_listed": "2024-04-11T01:43:50.886777",
-        "owned_by": "user3",
+        "owned_by": "User3",
         "max_users": 5
     },
     {
@@ -27,7 +27,7 @@ export const wifilistings = [
         "wifi_source": "Fiber",
         "curr_rate": 2.00,
         "time_listed": "2024-04-11T01:43:50.8867762",
-        "owned_by": "user1",
+        "owned_by": "User1",
         "max_users": 50
     },
     {
@@ -42,7 +42,7 @@ export const wifilistings = [
         "wifi_source": "Fiber",
         "curr_rate": 5.00,
         "time_listed": "2024-04-11T01:43:50.8867765",
-        "owned_by": "user1",
+        "owned_by": "User1",
         "max_users": 10
     },
     {
@@ -57,7 +57,7 @@ export const wifilistings = [
         "wifi_source": "Starlink",
         "curr_rate": 10.00,
         "time_listed": "2024-04-11T01:43:50.8867774",
-        "owned_by": "user10",
+        "owned_by": "User10",
         "max_users": 100
     },
     {
@@ -72,7 +72,7 @@ export const wifilistings = [
         "wifi_source": "HotSpot",
         "curr_rate": 0.50,
         "time_listed": "2024-04-11T01:43:50.8867715",
-        "owned_by": "user9",
+        "owned_by": "User9",
         "max_users": 10
     },
     {
@@ -87,7 +87,7 @@ export const wifilistings = [
         "wifi_source": "ATT Fiber",
         "curr_rate": 1.00,
         "time_listed": "2024-04-11T01:43:50.8867767",
-        "owned_by": "user3",
+        "owned_by": "User3",
         "max_users": 50
     }
 ]
