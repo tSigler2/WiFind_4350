@@ -26,14 +26,14 @@ function Header() {
             <img src={logo} alt="Logo" className="logo" />
             </Link>
             <div className="navbar__links">
-                <Link to="/rent">Rent</Link>
+                {token && token !== '' ? <Link to="/rent">Rent</Link> : null} {/* Only show the Rent link if the user is logged in */}
                 <Link to="/list">List</Link>
                 <Link to="/Ticketsupport">Ticket Support</Link>
                 {token && token !== '' ? <Link to="/profile">Profile</Link> : null} {/* Only show the Profile link if the user is logged in */}
-                    {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
-                    {token && token !== '' ? <Link to="/checkout">
-                        <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
-                    </Link> : null} {/* Only show the Profile link if the user is logged in */}
+                {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
+                {token && token !== '' ? <Link to="/checkout">
+                    <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
+                </Link> : null} {/* Only show the Profile link if the user is logged in */}
             </div>
         </nav>
     </header>
