@@ -17,7 +17,7 @@ namespace wiFind.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("getrenteeview")]
+        [HttpPost("getrenteeview")]
         public async Task<IActionResult> GetRenteeView(UsernameInput usernameInput)
         {
             var username = usernameInput.Username;
@@ -45,7 +45,7 @@ namespace wiFind.Server.Controllers
         // ToDo: Renter View. Will need to pass in list of wifi id's since the seller may be renting out many wifis
         // Should return Each Wifi + # of users using that wifi
         [Authorize]
-        [HttpGet("getrenterview")]
+        [HttpPost("getrenterview")]
         public async Task<IActionResult> GetRenterView(UsernameInput usernameInput)
         {
             // Need to show that where renter wifi's are not in rent have 0 users using it.
