@@ -58,6 +58,18 @@ namespace wiFind.Server.Controllers
             return Ok("Ticket id: "+ticketid);
         }
 
+        [HttpPost("updateticket")]
+        public async Task<IActionResult> UpdateTicket(UpdateTicket ticket)
+        {
+            if (!ModelState.IsValid) return BadRequest("Invalid Ticket Submission");
+            var adminid = _wifFindContext.Set<AccountInfo>().Find(ticket.assigned_to);
+            var getTicketInfo = _wifFindContext.Set<SupportTicket>().Find(ticket.ticket_id);
+            getTicketInfo.status = ticket.ticketStatus;
+            getTicketInfo.assigned_to = adminid.user_id;
+            await _wifFindContext.SaveChangesAsync();
+            return Ok("Update Success");
+        }
+
         [Authorize]
         [HttpDelete("removeticket")]
         public async Task<IActionResult> RemoveTicket(SupportTicket ticket)

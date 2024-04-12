@@ -640,7 +640,6 @@ namespace wiFind.Server
 
     public class SupportTicket
     {
-        [JsonIgnore]
         [Key]
         public string ticket_id { get; set; }
 
