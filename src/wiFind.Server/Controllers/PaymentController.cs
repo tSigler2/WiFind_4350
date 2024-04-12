@@ -38,7 +38,7 @@ namespace wiFind.Server.Controllers
                     rent_id = Guid.NewGuid().ToString(), //(_wifFindContext.Rent.Max(total => (int?)total.rentID) ?? 0) + 1, generate a new guid?
                     user_id = userid.First(), // front end will need to pass in user's username atm. can be improved later to use id in validation token instead
                     wifi_id = i,
-                    start_time = payment.start,
+                    start_time = DateTime.Now,
                     locked_rate = wifiCost.First(),
                     //guest_password = "00000", // needs to be handled later somehow
                 };

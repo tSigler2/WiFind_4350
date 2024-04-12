@@ -6,43 +6,30 @@ import { useNavigate } from "react-router-dom";
 import "./List.css"; // Import List page-specific styles
 import Footer from '../components/Footer'; 
 import * as Placeholders from '../placeholders/placeholders.jsx'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function List() {
     const [wifiListings, setWifiListings] = useState();
     const { addToCart } = useContext(CartContext);
     const navigate = useNavigate();
-    const notifyAdd = () => toast.success("Item added to cart.",
-        {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "light",
-        });
 
     useEffect(() => {
         populateWifiListings();
     }, []);
 
     async function populateWifiListings() {
-        //const token = localStorage.getItem('token');
-        //const response = await fetch('https://localhost:7042/api/Wifi/wifilistings', {
-        //    headers: {
-        //        'Authorization': `Bearer ${token}`
-        //    }
-        //});
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://localhost:7042/api/Wifi/wifilistings', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-        //if (!response.ok) {
-        //    navigate("/login"); // Redirect to login for token
-        //    throw new Error(`HTTP error! status: ${response.status}`);
-        //}
-        let data = Placeholders.wifilistings;
-        //const data = await response.json();
+        if (!response.ok) {
+            navigate("/login"); // Redirect to login for token
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        //let data = Placeholders.wifilistings;
+        const data = await response.json();
         //console.log(data); 
         setWifiListings(data);
     }
@@ -61,8 +48,7 @@ function List() {
                     <p className="list-card-description">Listed by: {listing.owned_by}</p>
                     <p className="list-card-description">Max Users: {listing.max_users}</p>
                     <p className="list-card-description">Listed On: {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
-                    <button className="list-card-button" onClick={ () => { addToCart(listing) } }>Add to Cart</button>
-                    <ToastContainer />
+                    <button className="list-card-button" onClick={() => { addToCart(listing); alert(listing.wifi_name+"added to cart.") } }>Add to Cart</button>
                 </div>
             </div>
         ));
