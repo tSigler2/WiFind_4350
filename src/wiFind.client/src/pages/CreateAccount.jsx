@@ -33,27 +33,27 @@ function CreateAccount() {
             setError("Please enter a valid email address");
         } else {
             try {
-                //const response = await fetch('https://localhost:7042/api/User/register', {
-                //    method: 'POST',
-                //    headers: {
-                //        'Content-Type': 'application/json'
-                //    },
-                //    body: JSON.stringify({
-                //        username,
-                //        email,
-                //        password,
-                //        first_name: firstName,
-                //        last_name: lastName,
-                //        dob,
-                //        phone_number: phoneNumber
-                //    })
-                //});
+                const response = await fetch('https://localhost:7042/api/User/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        first_name: firstName,
+                        last_name: lastName,
+                        dob,
+                        phone_number: phoneNumber
+                    })
+                });
 
-                //if (!response.ok) {
-                //    throw new Error(response.status == 400? 'Username or Email already exists.' : 'Registration failed');
-                //}
-                //const data = await response.json();
-                const data = Placeholders.user6loginSucess;
+                if (!response.ok) {
+                    throw new Error(response.status == 400? 'Username or Email already exists.' : 'Registration failed');
+                }
+                const data = await response.json();
+                //const data = Placeholders.user6loginSucess;
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("user_role", data.user_role);
                 localStorage.setItem("token", data.token);
