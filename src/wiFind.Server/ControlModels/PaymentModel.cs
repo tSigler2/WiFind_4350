@@ -8,9 +8,6 @@ namespace wiFind.Server.ControlModels
     public class PurchaseModel
     {
         [Required]
-        public string username { get; set; }
-
-        [Required]
         public string name { get; set; }
 
         [Required, DataType(DataType.CreditCard)]
@@ -27,11 +24,5 @@ namespace wiFind.Server.ControlModels
 
         [Required]
         public string expDate { get; set; } // would need to implement a regex to validate MM/YYYY
-
-        //// added below two for logic in purchaseCart
-        //public DateTime start {  get; set; }
-
-        [Required]
-        public List<string> checkoutCart { get; set; }
     }
 }
