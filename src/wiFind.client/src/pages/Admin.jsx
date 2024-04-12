@@ -19,8 +19,8 @@ const Admin = () => {
     return (
         <div>Admin Page with Admin Options
             <button onClick={notify}>Test Toast</button>
-            <ToastContainer/>
         </div>
+
     );
 }
 

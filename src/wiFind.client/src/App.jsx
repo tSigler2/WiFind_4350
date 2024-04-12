@@ -14,7 +14,7 @@ import Checkout from './pages/Checkout.jsx';
 import { CartProvider } from './components/CartProvider';
 import Profile from './pages/Profile.jsx';
 import Admin from './pages/Admin.jsx';
-
+import { ToastContainer, toast } from 'react-toastify';
 function App() {
   return (
     <div className="App">
@@ -37,7 +37,7 @@ function App() {
         </CartProvider>
       </Router>
       </div>
-
+          <ToastContainer />
     </div>
   );
 }
