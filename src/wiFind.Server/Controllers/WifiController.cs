@@ -42,6 +42,7 @@ namespace wiFind.Server.Controllers
         public async Task<IActionResult> AddWifi(WifiReg wifi)
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Wifi Submission");
+            var context = (AccountInfo)HttpContext.Items["User"];
 
             _wifFindContext.Wifis.Add(new Wifi
             {
@@ -55,8 +56,8 @@ namespace wiFind.Server.Controllers
                 radius = wifi.radius,
                 wifi_source = wifi.wifi_source,
                 curr_rate = wifi.curr_rate,
-                time_listed = wifi.time_listed,
-                owned_by = wifi.owned_by,
+                time_listed = DateTime.Now,
+                owned_by = context.username,
                 max_users = wifi.max_users
             });
             await _wifFindContext.SaveChangesAsync();

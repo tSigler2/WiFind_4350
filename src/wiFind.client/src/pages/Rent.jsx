@@ -15,11 +15,10 @@ function Rent() {
         radius: 0,
         wifi_source: "",
         curr_rate: 0,
-        time_listed: new Date().toISOString(),
-        owned_by: "",
         max_users: 0
     });
 
+    // These are the wifis that the user is renting out at this time
     useEffect(() => {
         const fetchRentedWifis = async () => {
             try {
@@ -51,6 +50,7 @@ function Rent() {
         fetchRentedWifis();
     }, []);
 
+    // These are the Wifi's that are actually being rented by the user at this time
     useEffect(() => {
         const fetchListedWifis = async () => {
             try {
@@ -103,12 +103,9 @@ function Rent() {
             });
 
             if (!response.ok) {
-                throw new Error('Server response was not ok.');
+                throw new Error('Was the form filled completely?');
             }
 
-            const data = await response.json();
-
-            console.log('Wifi added:', data);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -117,14 +114,11 @@ function Rent() {
     return (
         <div>
             <h1>Rent</h1>
-            <p>Rent Wifi</p>
+            <h2>My Rented Out Wifis</h2>
             {rentedWifis.map(wifi => (
                 <div key={wifi.rentID}>
-                    <p>Wifi ID: {wifi.wifiID}</p>
-                    <p>Start: {new Date(wifi.start).toLocaleString()}</p>
-                    <p>End: {new Date(wifi.end).toLocaleString()}</p>
-                    <p>Locked Rate: {wifi.locked_rate}</p>
-                    <p>Guest Password: {wifi.guest_password}</p>
+                    <p>Wifi ID: {wifi.wifi_id}</p>
+                    <p>Number of Users Renting: {wifi.num_users_renting}</p>
                 </div>
             ))}
             <h2>List your Wifi</h2>
@@ -154,21 +148,17 @@ function Rent() {
                     <input type="number" name="upload_speed" value={wifiData.upload_speed} onChange={handleInputChange} />
                 </label>
                 <label>
-                    Listed By:
-                    <input type="text" name="owned_by" value={wifiData.owned_by} onChange={handleInputChange} />
-                </label>
-                <label>
                     Max Users:
                     <input type="number" name="max_users" value={wifiData.max_users} onChange={handleInputChange} />
                 </label>
                 <button type="submit">List Wifi</button>
             </form>
-            <h2>Your Listed Wifis</h2>
+            <h2>Wifis I am Renting</h2>
             {listedWifis.map(wifi => (
                 <div key={wifi.rentID}>
                     <p>Wifi ID: {wifi.wifiID}</p>
                     <p>Start: {new Date(wifi.start).toLocaleString()}</p>
-                    <p>End: {new Date(wifi.end).toLocaleString()}</p>
+                    {/*<p>End: {new Date(wifi.end).toLocaleString()}</p>*/}
                     <p>Locked Rate: {wifi.locked_rate}</p>
                     <p>Guest Password: {wifi.guest_password}</p>
                 </div>

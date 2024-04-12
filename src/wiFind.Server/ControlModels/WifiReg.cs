@@ -30,11 +30,6 @@ namespace wiFind.Server.ControlModels
 
         [Required, DataType(DataType.Currency)]
         public decimal curr_rate { get; set; } = 0.0M;
-        [Required]
-        public DateTime time_listed { get; set; }
-
-        [Required]
-        public string owned_by { get; set; }
 
         [Required, System.ComponentModel.DataAnnotations.RangeAttribute(1, 250)]
         public int max_users { get; set; }

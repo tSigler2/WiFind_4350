@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { CartContext } from './CartContext';
+import { useNavigate } from "react-router-dom";
 
 function PaymentForm() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         ccNumber: '',
@@ -20,20 +22,11 @@ function PaymentForm() {
             checkoutCart: CartContext.Cart
         }));
     };
+    const cart = useContext(CartContext);
 
     const handleSubmit = async (e) => { 
         e.preventDefault();
         try {
-            const testing = await fetch('https://localhost:7042/api/Rent/getrenteeview',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                    },
-                    body: JSON.stringify({ username: localStorage.getItem("username") })
-                });
-            console.log(testing);
             // Send form data using Fetch API
             // 2 separate fetches will occur for purchase.
             // 1 fetch that validates card info. This will be replaced by third party like Stripe
@@ -50,25 +43,28 @@ function PaymentForm() {
             if (!response.ok) {
                 throw new Error('Failed to submit payment form');
             }
-            //let wifi_ids = [];
-            //CartContext.Cart.
-            //const res2 = await fetch('https://localhost:7042/api/Payment/saveRentedWifis', {
-            //    method: 'POST',
-            //    headers: {
-            //        'Content-Type': 'application/json',
-            //        'Authorization': 'Bearer ' + localStorage.getItem("token"),
-            //    },
-            //    body: JSON.stringify(CartContext.Cart)
-            //})
-            const data = await response.json();
+            let wifi_ids = [];
+            cart.cart.forEach((item) => {
+                wifi_ids.push(item.wifi_id);
+            });
+            const res2 = await fetch('https://localhost:7042/api/Payment/saveRentedWifis', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ wifis_id_in_cart: wifi_ids })
+            })
+            if (!res2.ok) {
+                throw new Error('Issue with update not payment');
+            }
+            else {
+                alert('Payment Successful!');
+                navigate("/rent");
+            }
             //localStorage.setItem("submitPayment", formData);
-            console.log('Payment submitted successfully:', data);
-
-            // Handle successful payment submission
-            alert("Sucessfully paid");
         } catch (error) {
             console.error('Error submitting payment form:', error.message);
-            // Handle error
         }
     };
 
