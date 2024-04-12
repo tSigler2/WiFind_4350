@@ -214,3 +214,12 @@ export const adminonlyActionAllTickets = [
         "assigned_to": null
     }
 ]
+
+export const allticketadmins = [
+    {
+        "username": "admin1"
+    },
+    {
+        "username": "admin2"
+    }
+]

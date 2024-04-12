@@ -9,8 +9,9 @@ import logo from '../images/logo-transparent.png';
 
 function Header() {
     const token = localStorage.getItem("token");
+    const userrole = localStorage.getItem("user_role");
     const navigate = useNavigate(); // Get the navigate function
-
+    
     const handleLogout = (event) => {
         event.preventDefault(); // Prevent the default action (the page reload)
         localStorage.clear(); // Clear local storage
@@ -23,14 +24,15 @@ function Header() {
             <Link to="/" className='navbar__title'>
             <img src={logo} alt="Logo" className="logo" />
             </Link>
-            <div className="navbar__links">
+                <div className="navbar__links">
+                {token && token !== '' && userrole && userrole.includes('Admin') ? <Link to="/admin">Admin</Link> : null}
                 {token && token !== '' ? <Link to="/rent">Rent</Link> : null} {/* Only show the Rent link if the user is logged in */}
                 <Link to="/list">List</Link>
                 <Link to="/Ticketsupport">Ticket Support</Link>
                 {token && token !== '' ? <Link to="/profile">Profile</Link> : null} {/* Only show the Profile link if the user is logged in */}
                 {token && token !== '' ? <a href="/logout" onClick={handleLogout}>Logout</a> : <Link to="/login">Login</Link>}
                 {token && token !== '' ? <Link to="/checkout">
-                    <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
+                <FontAwesomeIcon icon={faShoppingCart} /> {/* Display the cart icon */}
                 </Link> : null} {/* Only show the Profile link if the user is logged in */}
             </div>
         </nav>
