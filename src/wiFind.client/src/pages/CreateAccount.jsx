@@ -101,7 +101,7 @@ function CreateAccount() {
                 />
                 <input 
                     type="date" 
-                    placeholder="Date of Birth" 
+                    placeholder="Date of Birth (YYYY-MM-DD)"
                     value={dob} 
                     onChange={(e) => setDob(e.target.value)} 
                 />

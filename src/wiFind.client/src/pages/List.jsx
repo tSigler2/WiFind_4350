@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import "./List.css"; // Import List page-specific styles
 import Footer from '../components/Footer'; 
 import * as Placeholders from '../placeholders/placeholders.jsx'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWifi } from '@fortawesome/free-solid-svg-icons';
 
 function List() {
     const [wifiListings, setWifiListings] = useState();
@@ -39,16 +41,20 @@ function List() {
         : wifiListings.map(listing => (
             <div key={listing.wifi_name} className="list-card">
                 <div className="list-card-content">
+                <FontAwesomeIcon icon={faWifi} className="wifi-icon" style={{ fontWeight: "bold" }} />
                     <h3 className="list-card-title">{listing.wifi_name}</h3>
-                    <p className="list-card-description">Hourly Rate: ${listing.curr_rate.toFixed(2)}</p>
-                    <p className="list-card-description">Security: {listing.security}</p>
-                    <p className="list-card-description">Source: {listing.wifi_source}</p>
-                    <p className="list-card-description">Download: {listing.download_speed} Mbps</p>
-                    <p className="list-card-description">Upload: {listing.upload_speed} Mbps</p>
-                    <p className="list-card-description">Listed by: {listing.owned_by}</p>
-                    <p className="list-card-description">Max Users: {listing.max_users}</p>
-                    <p className="list-card-description">Listed On: {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
-                    <button className="list-card-button" onClick={() => { addToCart(listing); alert(listing.wifi_name+"added to cart.") } }>Add to Cart</button>
+                    <span>
+                    <p className="list-card-description"><span className="list-card-label">Hourly Rate:</span> ${listing.curr_rate.toFixed(2)}</p>
+                    <p className="list-card-description"><span className="list-card-label">Security:</span> {listing.security}</p>
+                    <p className="list-card-description"><span className="list-card-label">Source:</span> {listing.wifi_source}</p>
+                    <p className="list-card-description"><span className="list-card-label">Download:</span> {listing.download_speed} Mbps</p>
+                    <p className="list-card-description"><span className="list-card-label">Upload:</span> {listing.upload_speed} Mbps</p>
+                    <p className="list-card-description"><span className="list-card-label">Listed by:</span> {listing.owned_by}</p>
+                    <p className="list-card-description"><span className="list-card-label">Max Users:</span> {listing.max_users}</p>
+                    <p className="list-card-description"><span className="list-card-label">Listed On:</span> {(listing.time_listed+"").substring(0, (listing.time_listed+"").indexOf("T"))}</p>
+                    </span>
+                    <button className="list-card-button" onClick={ () => { addToCart(listing) } }>Add to Cart</button>
+                    <ToastContainer />
                 </div>
             </div>
         ));
