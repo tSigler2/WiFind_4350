@@ -12,11 +12,9 @@ function Header() {
     const navigate = useNavigate(); // Get the navigate function
 
     const handleLogout = (event) => {
-        event.preventDefault(); // Prevent the default action
-        localStorage.removeItem("token"); // Remove the token from local storage
-        localStorage.removeItem("username");
-        localStorage.removeItem("user_role");
-        navigate("/login"); // Redirect to the home page
+        event.preventDefault(); // Prevent the default action (the page reload)
+        localStorage.clear(); // Clear local storage
+        navigate("/login"); // Redirect to the login page
     }
 
     return (
