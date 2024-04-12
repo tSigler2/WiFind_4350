@@ -24,7 +24,7 @@ function PaymentForm() {
     };
     const cart = useContext(CartContext);
 
-    const handleSubmit = async (e) => { 
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             // Send form data using Fetch API
@@ -137,5 +137,4 @@ function PaymentForm() {
         </form>
     );
 }
-
 export default PaymentForm;

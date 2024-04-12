@@ -1,0 +1,82 @@
+.rent-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 50px;
+   
+}
+
+.section {
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    .section h2 {
+        margin-top: 0;
+    }
+
+@media screen and (min-width: 768px) {
+    .rent-container {
+        align-items: flex-start; 
+    }
+
+    .section {
+        flex-basis: calc(33.33% - 40px);
+        width: auto; 
+        margin-bottom: 5px;
+    }
+    
+    }
+
+     .delete-button:hover {
+            background-color: #cc0000;
+     }
+
+    .label-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; 
+    }
+
+        .label-container label {
+         
+            width: calc(50% - 5px); 
+           
+        }
+
+        .label-container input {
+            width: 100%; 
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px; 
+        }
+
+        .list-button,
+        .delete-button {
+        padding: 10px 20px; 
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+         .list-button {
+        background-color: #A74D4A;
+        color: #fff;
+    }
+
+        .delete-button {
+        background-color: #A74D4A;
+        color: #fff;
+    }
+
+
+}
+
+

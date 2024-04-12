@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
+import "./Rent.css";
+import HeroSection from "../components/RentHeroSection"; // Import the HeroSection component
 import Footer from '../components/Footer';
 
 function Rent() {
@@ -8,17 +10,17 @@ function Rent() {
     const [wifiData, setWifiData] = useState({ // State to store the wifi data from the form
         wifi_name: "",
         security: "",
-        download_speed: 0,
-        upload_speed: 0,
-        wifi_latitude: 0,
-        wifi_longitude: 0,
-        radius: 0,
+        download_speed: "",
+        upload_speed: "",
+        wifi_latitude: "",
+        wifi_longitude: "",
+        radius: "",
         wifi_source: "",
-        curr_rate: 0,
-        max_users: 0
+        curr_rate: "",
+        max_users: ""
     });
 
-    // These are the wifis that the user is renting out at this time
+    // Fetch rented WiFis
     useEffect(() => {
         const fetchRentedWifis = async () => {
             try {
@@ -28,15 +30,15 @@ function Rent() {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem("token"),
                     },
-                    body: JSON.stringify({username:localStorage.getItem("username")})
+                    body: JSON.stringify({ username: localStorage.getItem("username") })
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Server response was not ok.');
                 }
-    
+
                 const data = await response.json();
-    
+
                 if (Array.isArray(data)) {
                     setRentedWifis(data);
                 } else {
@@ -46,11 +48,11 @@ function Rent() {
                 console.error('Error:', error);
             }
         };
-    
+
         fetchRentedWifis();
     }, []);
 
-    // These are the Wifi's that are actually being rented by the user at this time
+    // Fetch listed WiFis
     useEffect(() => {
         const fetchListedWifis = async () => {
             try {
@@ -60,15 +62,15 @@ function Rent() {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem("token"),
                     },
-                    body: JSON.stringify({username:localStorage.getItem("username")})
+                    body: JSON.stringify({ username: localStorage.getItem("username") })
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Server response was not ok.');
                 }
-    
+
                 const data = await response.json();
-    
+
                 if (Array.isArray(data)) {
                     setListedWifis(data);
                 } else {
@@ -78,10 +80,11 @@ function Rent() {
                 console.error('Error:', error);
             }
         };
-    
+
         fetchListedWifis();
     }, []);
 
+    // Handle input changes in the form
     const handleInputChange = (event) => {
         setWifiData({
             ...wifiData,
@@ -89,6 +92,7 @@ function Rent() {
         });
     };
 
+    // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -110,62 +114,100 @@ function Rent() {
             console.error('Error:', error);
         }
     };
+    const handleDelete = async (rentID) => {
+    try {
+        const response = await fetch(`https://localhost:7042/api/Rent/delete/${rentID}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete WiFi.');
+        }
+
+        // After successful deletion, update the listedWifis state to reflect the changes
+        setListedWifis(prevListedWifis => prevListedWifis.filter(wifi => wifi.rentID !== rentID));
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 
     return (
         <div>
-            <h1>Rent</h1>
-            <h2>My Rented Out Wifis</h2>
-            {rentedWifis.length == 0? <h4>No rented out Wifis found.</h4> :rentedWifis.map(wifi => (
-                <div key={wifi.rentID}>
-                    <p>Wifi ID: {wifi.wifi_id}</p>
-                    <p>Number of Users Renting: {wifi.num_users_renting}</p>
+            <HeroSection /> {/* Include the HeroSection component */}
+            <div className="rent-container">
+                <div className="section">
+            
+                    <h2>Leased Wifis</h2>
+                    {rentedWifis.length === 0 ? <h4>No rented out Wifis found.</h4> : rentedWifis.map(wifi => (
+                        <div key={wifi.rentID}>
+                            <p>Wifi ID: {wifi.wifi_id}</p>
+                            <p>Number of Users Renting: {wifi.num_users_renting}</p>
+                            <button onClick={() => handleDelete(wifi.rentID)}>Delete</button>
+                        </div>
+                    ))}
                 </div>
-            ))}
-            <h2>List your Wifi</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Wifi Name:
-                    <input type="text" name="wifi_name" value={wifiData.wifi_name} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Hourly Rate:
-                    <input type="number" name="curr_rate" value={wifiData.curr_rate} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Security:
-                    <input type="text" name="security" value={wifiData.security} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Source:
-                    <input type="text" name="wifi_source" value={wifiData.wifi_source} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Download Speed:
-                    <input type="number" name="download_speed" value={wifiData.download_speed} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Upload Speed:
-                    <input type="number" name="upload_speed" value={wifiData.upload_speed} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Max Users:
-                    <input type="number" name="max_users" value={wifiData.max_users} onChange={handleInputChange} />
-                </label>
-                <button type="submit">List Wifi</button>
-            </form>
-            <h2>Wifis I am Renting</h2>
-            {listedWifis.length == 0? <h4>No Wifis rented at this time.</h4> :listedWifis.map(wifi => (
-                <div key={wifi.rentID}>
-                    <p>Wifi ID: {wifi.wifiID}</p>
-                    <p>Start: {new Date(wifi.start).toLocaleString()}</p>
-                    {/*<p>End: {new Date(wifi.end).toLocaleString()}</p>*/}
-                    <p>Locked Rate: {wifi.locked_rate}</p>
-                    <p>Guest Password: {wifi.guest_password}</p>
+                <div className="section">
+                    <h2>List Wifi</h2>
+                    <form onSubmit={handleSubmit} className="label-container">
+
+                        <label>
+                            Wifi Name:
+                            <input type="text" name="wifi_name" value={wifiData.wifi_name} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Hourly Rate:
+                            <input type="number" name="curr_rate" value={wifiData.curr_rate} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Security:
+                            <input type="text" name="security" value={wifiData.security} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Source:
+                            <input type="text" name="wifi_source" value={wifiData.wifi_source} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Download Speed:
+                            <input type="number" name="download_speed" value={wifiData.download_speed} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Upload Speed:
+                            <input type="number" name="upload_speed" value={wifiData.upload_speed} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Max Users:
+                            <input type="number" name="max_users" value={wifiData.max_users} onChange={handleInputChange} />
+                        </label>
+                        <div className="button-container">
+                            <button className="list-button" type="submit">List </button>
+                            <button className="delete-button" onClick={handleDelete}>Delete</button>
+                            </div>
+                    </form>
+
                 </div>
-            ))}
+                <div className="section">
+                    <h2>Active Rentals</h2>
+                    {listedWifis.length === 0 ? <h4>No Wifis rented at this time.</h4> : listedWifis.map(wifi => (
+                        <div key={wifi.rentID}>
+                            <p>Wifi ID: {wifi.wifiID}</p>
+                            <p>Start: {new Date(wifi.start).toLocaleString()}</p>
+                            {/*<p>End: {new Date(wifi.end).toLocaleString()}</p>*/}
+                            <p>Locked Rate: {wifi.locked_rate}</p>
+                            <p>Guest Password: {wifi.guest_password}</p>
+                            <button onClick={() => handleDelete(wifi.rentID)}>Delete</button>
+                        </div>
+                    ))}
+                </div>
+            </div>
             <Footer /> {/* Include the Footer component */}
         </div>
     );
 }
 
 export default Rent;
+
