@@ -59,7 +59,7 @@ const Profile = () => {
       //alert("Check application local storage if this item was saved as updateUserItem");
   };
 
-  return (
+    return (
     <div className="profile-container">
       <div className="avatar">
         <FontAwesomeIcon icon={faUser} size="5x" />
@@ -79,8 +79,8 @@ const Profile = () => {
           <input type="text" id="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
         </div>
         <button type="submit">Update Profile</button>
-      </form>
-    </div>
+          </form>
+        </div>
   );
 };
 export default Profile;

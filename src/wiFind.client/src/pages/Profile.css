@@ -6,9 +6,10 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
+    width: -webkit-fill-available;
+}
   
   .avatar {
     margin-bottom: 20px;
@@ -45,6 +46,13 @@
     border: 1px solid #ccc;
     border-radius: 3px;
   }
+
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
   
   .profile-button {
     padding: 10px 20px;
