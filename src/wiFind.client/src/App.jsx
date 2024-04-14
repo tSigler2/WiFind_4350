@@ -12,9 +12,9 @@ import Login from './pages/Login.jsx';
 import CreateAccount from './pages/CreateAccount.jsx';
 import Checkout from './pages/Checkout.jsx';
 import { CartProvider } from './components/CartProvider';
-import Profile from './pages/Profile.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 import Admin from './pages/Admin.jsx';
-import { ToastContainer, toast } from 'react-toastify';
+
 function App() {
   return (
     <div className="App">
@@ -30,14 +30,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<Admin />}>
           </Route>
         </Routes>
         </CartProvider>
       </Router>
       </div>
-          <ToastContainer />
     </div>
   );
 }

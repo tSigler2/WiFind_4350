@@ -111,6 +111,39 @@ namespace wiFind.Server.Controllers
 
             return Ok("Successful update for user profile");
         }
+        [Authorize]
+        [HttpPost("savedpaymentinfos")]
+        public async Task<IActionResult> SavedPaymentInfos()
+        {
+            var context = (AccountInfo)HttpContext.Items["User"];
+            var user_id = context.user_id;
+
+            var savedpaymentinfos = from p in _wiFindContext.Set<PaymentInfo>() where p.user_id == user_id select p;
+            var asListObj = await savedpaymentinfos.ToListAsync();
+            return Ok(asListObj);
+        }
+
+        [Authorize]
+        [HttpPost("addpaymentinfo")]
+        public async Task<IActionResult> AddPaymentInfo(AddPaymentInfoDTO newpaymentinfo)
+        {
+            var context = (AccountInfo)HttpContext.Items["User"];
+            var user_id = context.user_id;
+
+            _wiFindContext.Set<PaymentInfo>().Add(new PaymentInfo
+            {
+                payInfo_id = Guid.NewGuid().ToString(),
+                user_id = user_id,
+                payment_type = newpaymentinfo.payment_type,
+                card_number = newpaymentinfo.card_number,
+                name_on_card = newpaymentinfo.name_on_card,
+                exp_date = newpaymentinfo.exp_date,
+            });
+
+            await _wiFindContext.SaveChangesAsync();
+
+            return Ok("Successful payment info saved to user.");
+        }
 
         // Below is for admins only
 
