@@ -2,8 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import the Link component
 import backgroundImage from '../images/wifi1.jpg'; // Import the image
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function HeroSection() {
   return (
