@@ -20,20 +20,20 @@ function App() {
     <div className="App">
       <div style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'transparent', padding: '10px', textAlign: 'center' }}>
       <Router>
-        <Header />
         <CartProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Ticketsupport" element={<TicketSupport />} />
-          <Route path="/rent" element={<Rent />} />
-          <Route path="/list" element={<List />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin" element={<Admin />}>
-          </Route>
-        </Routes>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/Ticketsupport" element={<TicketSupport />} />
+            <Route path="/rent" element={<Rent />} />
+            <Route path="/list" element={<List />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/admin" element={<Admin />}>
+            </Route>
+          </Routes>
         </CartProvider>
       </Router>
       </div>
@@ -42,6 +42,3 @@ function App() {
 }
 
 export default App;
-
-
-

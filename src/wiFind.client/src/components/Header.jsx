@@ -1,19 +1,20 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, {useContext} from 'react';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'; 
 import logo from '../images/logo-transparent.png';
-
+import { CartContext } from './CartContext';
 
 function Header() {
     const token = localStorage.getItem("token");
     const userrole = localStorage.getItem("user_role");
     const navigate = useNavigate(); // Get the navigate function
-    
+    const {clearCart} = useContext(CartContext); // Get the clearCart function from the CartContext
     const handleLogout = (event) => {
         event.preventDefault(); // Prevent the default action (the page reload)
+        clearCart(); // Clear the cart
         localStorage.clear(); // Clear local storage
         navigate("/login"); // Redirect to the login page
     }
