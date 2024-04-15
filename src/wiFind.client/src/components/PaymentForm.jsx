@@ -19,18 +19,14 @@ function PaymentForm() {
         setFormData(prevState => ({
             ...prevState,
             [name]: value,
-            checkoutCart: CartContext.Cart
         }));
     };
-    const cart = useContext(CartContext);
+    const { cart, clearCart } = useContext(CartContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             // Send form data using Fetch API
-            // 2 separate fetches will occur for purchase.
-            // 1 fetch that validates card info. This will be replaced by third party like Stripe
-            // 2. successful response from 1st api will lead to rent entry creation which hopefully will be a list of wifi_ids
             const response = await fetch('https://localhost:7042/api/Payment/purchase', {
                 method: 'POST',
                 headers: {
@@ -44,7 +40,7 @@ function PaymentForm() {
                 throw new Error('Failed to submit payment form');
             }
             let wifi_ids = [];
-            cart.cart.forEach((item) => {
+            cart.forEach((item) => {
                 wifi_ids.push(item.wifi_id);
             });
             const res2 = await fetch('https://localhost:7042/api/Payment/saveRentedWifis', {
@@ -60,9 +56,9 @@ function PaymentForm() {
             }
             else {
                 alert('Payment Successful!');
+                clearCart();
                 navigate("/rent");
             }
-            //localStorage.setItem("submitPayment", formData);
         } catch (error) {
             console.error('Error submitting payment form:', error.message);
         }
@@ -70,15 +66,6 @@ function PaymentForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            {/*<label>*/}
-            {/*    Username:*/}
-            {/*    <input*/}
-            {/*        type="text"*/}
-            {/*        name="username"*/}
-            {/*        value={formData.username}*/}
-            {/*        onChange={handleChange}*/}
-            {/*    />*/}
-            {/*</label>*/}
             <label>
                 Name on Card:
                 <input

@@ -11,9 +11,12 @@ export function CartProvider({ children }) {
   function removeFromCart(itemToRemove) {
     setCart(prevCart => prevCart.filter(item => item.wifi_name !== itemToRemove.wifi_name));
   }
+  function clearCart() {
+    setCart([]);
+  }
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
