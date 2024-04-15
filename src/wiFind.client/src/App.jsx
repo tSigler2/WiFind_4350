@@ -10,7 +10,7 @@ import Rent from './pages/Rent.jsx';
 import List from './pages/List.jsx';
 import Login from './pages/Login.jsx';
 import CreateAccount from './pages/CreateAccount.jsx';
-import Checkout from './pages/Checkout.jsx';
+import CheckoutPage from './pages/CheckoutPage.jsx';
 import { CartProvider } from './components/CartProvider';
 import ProfilePage from './pages/ProfilePage.jsx';
 import Admin from './pages/Admin.jsx';
@@ -29,7 +29,7 @@ function App() {
           <Route path="/list" element={<List />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<Admin />}>
           </Route>

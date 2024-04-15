@@ -221,7 +221,6 @@ function Rent() {
                         </label>
                         <div className="button-container">
                             <button className="list-button" type="submit">List </button>
-                            <button className="delete-button" onClick={handleDelete}>Delete</button>
                             </div>
                     </form>
 
